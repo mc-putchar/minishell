@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: dlu<dlu@student.42berlin.de>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/17 11:50:17 by dlu              ###   ########.fr       */
+/*   Created: 2023/04/21 00:38:11 by dlu               #+#    #+#             */
+/*   Updated: 2023/05/23 11:48:35 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include "libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <errno.h>
-
-# define PROMPT	"Minishell > "
-
-typedef struct s_cmd
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
-	char	**args;
-}	t_cmd;
+	int	i;
 
-#endif
+	i = -1;
+	if (!s || !f)
+		return ;
+	while (s[++i])
+		f((unsigned int)i, &s[i]);
+}

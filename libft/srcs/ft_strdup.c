@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: dlu<dlu@student.42berlin.de>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/17 11:50:17 by dlu              ###   ########.fr       */
+/*   Created: 2023/04/21 04:56:55 by dlu               #+#    #+#             */
+/*   Updated: 2023/05/23 11:39:23 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <errno.h>
-
-# define PROMPT	"Minishell > "
-
-typedef struct s_cmd
+char	*ft_strdup(const char *s1)
 {
-	char	**args;
-}	t_cmd;
+	char	*dup;
+	size_t	len;
 
-#endif
+	len = ft_strlen(s1);
+	dup = (char *) malloc((len + 1) * sizeof(char));
+	if (!dup)
+		return (NULL);
+	while (*s1)
+		*dup++ = *s1++;
+	*dup = '\0';
+	return (dup - len);
+}

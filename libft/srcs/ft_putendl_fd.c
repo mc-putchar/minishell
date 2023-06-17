@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/17 11:50:17 by dlu              ###   ########.fr       */
+/*   Created: 2023/05/23 11:35:12 by dlu               #+#    #+#             */
+/*   Updated: 2023/05/23 11:35:18 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <errno.h>
-
-# define PROMPT	"Minishell > "
-
-typedef struct s_cmd
+void	ft_putendl_fd(char *s, int fd)
 {
-	char	**args;
-}	t_cmd;
-
-#endif
+	if (!s || fd < 0)
+		return ;
+	ft_putstr_fd(s, fd);
+	ft_putstr_fd("\n", fd);
+}

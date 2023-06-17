@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/17 11:50:17 by dlu              ###   ########.fr       */
+/*   Created: 2023/05/23 11:21:21 by dlu               #+#    #+#             */
+/*   Updated: 2023/05/23 11:21:28 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <errno.h>
-
-# define PROMPT	"Minishell > "
-
-typedef struct s_cmd
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	char	**args;
-}	t_cmd;
+	t_list	*ret;
+	t_list	*tmp;
 
-#endif
+	if (!lst || !f)
+		return (NULL);
+	ret = NULL;
+	while (lst)
+	{
+		tmp = ft_lstnew((*f)(lst -> content));
+		if (!tmp)
+		{
+			ft_lstclear(&ret, del);
+			return (NULL);
+		}
+		ft_lstadd_back(&ret, tmp);
+		lst = lst -> next;
+	}
+	return (ret);
+}

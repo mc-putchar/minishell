@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/17 11:50:17 by dlu              ###   ########.fr       */
+/*   Created: 2023/05/23 11:20:44 by dlu               #+#    #+#             */
+/*   Updated: 2023/05/23 11:20:50 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <errno.h>
-
-# define PROMPT	"Minishell > "
-
-typedef struct s_cmd
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
-	char	**args;
-}	t_cmd;
-
-#endif
+	if (!lst || !del)
+		return ;
+	del(lst->content);
+	free(lst);
+}

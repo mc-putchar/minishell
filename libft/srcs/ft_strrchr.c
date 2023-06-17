@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: dlu<dlu@student.42berlin.de>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/17 11:50:17 by dlu              ###   ########.fr       */
+/*   Created: 2023/04/16 03:53:50 by dlu               #+#    #+#             */
+/*   Updated: 2023/05/23 11:50:26 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <errno.h>
-
-# define PROMPT	"Minishell > "
-
-typedef struct s_cmd
+char	*ft_strrchr(const char *s, int c)
 {
-	char	**args;
-}	t_cmd;
+	int	i;
 
-#endif
+	i = (int) ft_strlen(s) + 1;
+	while (--i >= 0)
+		if (s[i] == (char) c)
+			return ((char *) &s[i]);
+	return (NULL);
+}
