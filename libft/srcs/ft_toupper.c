@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: dlu<dlu@student.42berlin.de>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/17 11:38:33 by dlu              ###   ########.fr       */
+/*   Created: 2023/04/16 02:13:44 by dlu               #+#    #+#             */
+/*   Updated: 2023/05/23 11:51:08 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include "libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <errno.h>
-
-# define PROMPT	"Minishell > "
-
-typedef struct s_cmd
+int	ft_toupper(int c)
 {
-	char	**args;
+	if (c >= 'a' && c <= 'z')
+		return (c - 32);
+	return (c);
 }
-
-#endif
