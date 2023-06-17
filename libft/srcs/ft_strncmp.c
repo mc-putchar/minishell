@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: dlu<dlu@student.42berlin.de>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/17 11:38:33 by dlu              ###   ########.fr       */
+/*   Created: 2023/04/16 12:11:21 by dlu               #+#    #+#             */
+/*   Updated: 2023/05/23 11:50:16 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <errno.h>
-
-# define PROMPT	"Minishell > "
-
-typedef struct s_cmd
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	char	**args;
+	while (n > 0 && *s1 && *s2 && n--)
+		if (*s1++ != *s2++)
+			return (*(t_uc *)(s1 - 1) - *(t_uc *)(s2 - 1));
+	if (n == 0)
+		return (0);
+	return (*(t_uc *)s1 - *(t_uc *)s2);
 }
-
-#endif
