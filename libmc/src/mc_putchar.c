@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   mc_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 11:12:06 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/18 22:36:14 by mcutura          ###   ########.fr       */
+/*   Created: 2023/06/18 06:40:00 by mcutura           #+#    #+#             */
+/*   Updated: 2023/06/18 07:50:43 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libmc.h"
 
-int	main(int ac, char **av, char **ev)
+void	mc_putchar(char c)
 {
-	while (ac && av && ev)
-		if (director(ac, av, ev))
-			return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	write(1, &c, 1);
 }

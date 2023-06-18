@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   mc_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 11:12:06 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/18 22:36:14 by mcutura          ###   ########.fr       */
+/*   Created: 2023/03/17 22:14:02 by mcutura           #+#    #+#             */
+/*   Updated: 2023/06/18 06:18:29 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libmc.h"
 
-int	main(int ac, char **av, char **ev)
+void	*mc_memccpy(void *dest, const void *src, int c, size_t n)
 {
-	while (ac && av && ev)
-		if (director(ac, av, ev))
-			return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	while (n--)
+	{
+		*(unsigned char *)dest = *(unsigned char *)src++;
+		if (*(unsigned char *)dest++ == c)
+			return (dest);
+	}
+	return (NULL);
 }
