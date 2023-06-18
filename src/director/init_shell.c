@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:53:13 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/18 22:48:57 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/19 01:31:00 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,16 @@ int	init_history(void)
 
 	home = getenv("HOME");
 	if (!home)
-		return (mc_dprintf(STDERR_FILENO, "Error: getenv\n"));
+		return (ft_dprintf(STDERR_FILENO, "Error: getenv\n"));
 	path = ft_strjoin(home, HIST_FILE);
 	if (!path)
-		return (mc_dprintf(STDERR_FILENO, "Error: ft_strjoin\n"));
+		return (ft_dprintf(STDERR_FILENO, "Error: ft_strjoin\n"));
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-		return (mc_dprintf(STDERR_FILENO, "Error: open: %s\n", path));
+		return (ft_dprintf(STDERR_FILENO, "Error: open: %s\n", path));
 	free(path);
 	if (read_hist(fd))
-		return (mc_dprintf(STDERR_FILENO, "Error: read_history\n"));
+		return (ft_dprintf(STDERR_FILENO, "Error: read_history\n"));
 	close(fd);
 	return (EXIT_SUCCESS);
 }
@@ -66,7 +66,7 @@ int	read_rc(int fd)
 		// else if (ft_strncmp(line, "cd ", 3) == 0)
 		// 	ft_cd(line + 3);
 		// else
-		// 	mc_dprintf(STDERR_FILENO, "Error: unknown command: %s\n", line);
+		// 	ft_dprintf(STDERR_FILENO, "Error: unknown command: %s\n", line);
 		free(line);
 		line = get_delim(fd, '\n');
 	}
@@ -82,18 +82,18 @@ int	init_shell(void)
 
 	home = getenv("HOME");
 	if (!home)
-		return (mc_dprintf(STDERR_FILENO, "Error: getenv\n"));
+		return (ft_dprintf(STDERR_FILENO, "Error: getenv\n"));
 	path = ft_strjoin(home, RC_FILE);
 	if (!path)
-		return (mc_dprintf(STDERR_FILENO, "Error: ft_strjoin\n"));
+		return (ft_dprintf(STDERR_FILENO, "Error: ft_strjoin\n"));
 	if (access(path, F_OK))
 		return (EXIT_SUCCESS);
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-		return (mc_dprintf(STDERR_FILENO, "Error: open: %s\n", path));
+		return (ft_dprintf(STDERR_FILENO, "Error: open: %s\n", path));
 	free(path);
 	if (read_rc(fd))
-		return (mc_dprintf(STDERR_FILENO, "Error: read_rc\n"));
+		return (ft_dprintf(STDERR_FILENO, "Error: read_rc\n"));
 	close(fd);
 	(void)init_history();
 	return (EXIT_SUCCESS);

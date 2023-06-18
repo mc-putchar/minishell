@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/18 22:52:14 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/19 01:29:11 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ void	handle_esc(char *prompt, char *buff, int *i)
 	{
 		ft_bzero(buff, BUFSIZ);
 		// *hist = (*hist)->prev;
-		// mc_printf("%s", (*hist)->line);
+		// ft_printf("%s", (*hist)->line);
 		*i = 0;
 	}
 	else if (!ft_strncmp(buff + *i, DOWN_ARROW, 3))
 	{
 		ft_bzero(buff, BUFSIZ);
 		// *hist = (*hist)->next;
-		// mc_printf("%s", (*hist)->line);
+		// ft_printf("%s", (*hist)->line);
 		*i = 0;
 	}
 	else if (!ft_strncmp(buff + *i, LEFT_ARROW, 3) && *i > 0)
@@ -43,7 +43,7 @@ void	handle_esc(char *prompt, char *buff, int *i)
 	}
 	else if (!ft_strncmp(buff + *i, CTRL_DEL, 4))
 	{
-		mc_dprintf(STDOUT_FILENO, "\r\n%s :delete:", prompt);
+		ft_dprintf(STDOUT_FILENO, "\r\n%s :delete:", prompt);
 		ft_bzero(buff, BUFSIZ);
 		*i = 0;
 	}
@@ -93,7 +93,7 @@ int	do_stuff(struct termios *term_backup)
 
 	prompt = build_prompt();
 	if (!prompt)
-		return (mc_dprintf(STDERR_FILENO, "Error: build_prompt\n"));
+		return (ft_dprintf(STDERR_FILENO, "Error: build_prompt\n"));
 	line = read_line(term_backup, prompt);
 	while (1)
 	{

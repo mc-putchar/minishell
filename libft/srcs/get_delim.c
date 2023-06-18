@@ -6,11 +6,11 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 01:00:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/19 00:05:49 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/19 01:32:29 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libmc.h"
+#include "libft.h"
 
 static int	init_buffer(t_stream *stream, unsigned char **re, ssize_t *rs)
 {
@@ -50,10 +50,10 @@ static unsigned char	*getl(t_stream *s, size_t *n, int delim)
 	line = NULL;
 	while (s->len > 0)
 	{
-		line = mc_memgrow(line, *n, *n + s->len + 1);
+		line = ft_memgrow(line, *n, *n + s->len + 1);
 		if (!line)
 			return (NULL);
-		tmp = mc_memccpy(line + *n, s->buff, delim, s->len);
+		tmp = ft_memccpy(line + *n, s->buff, delim, s->len);
 		if (tmp)
 		{
 			s->off = (size_t)(tmp - line - *n);

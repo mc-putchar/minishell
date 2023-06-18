@@ -6,23 +6,21 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/06/19 00:53:01 by dlu              ###   ########.fr        #
+#    Updated: 2023/06/19 01:40:47 by dlu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	:=	minishell
 
 #--- DIRECTORIES ---
-SRCDIR		:=	src
-INCDIR		:=	inc
-OBJDIR		:=	obj
-SUBDIR		:=	director lexer parser xecutor
-LIBFTDIR	:=	libft
-LIBMCDIR	:=	libmc
+SRCDIR	:=	src
+INCDIR	:=	inc
+OBJDIR	:=	obj
+SUBDIR	:=	director lexer parser xecutor
+LIBDIR	:=	libft
 
 #--- LIBRARIES ---
-LIBFT	:= $(LIBFTDIR)/libft.a
-LIBMC	:= $(LIBMCDIR)/libmc.a
+LIBFT	:=	$(LIBDIR)/libft.a
 
 #--- SOURCES ---
 
@@ -40,13 +38,11 @@ OBJS	:=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 #--- HEADERS ---
 HEADER	:=	minishell.h cmd_table.h control_sequences.h format_output.h
 HEADERS	:=	$(addprefix $(INCDIR)/, $(HEADER))
-LIBFTHEADER	:=	$(addprefix $(LIBFTDIR)/, libft.h)
-LIBMCHEADER	:=	$(addprefix $(LIBMCDIR)/, libmc.h)
+LIBFTH	:=	$(addprefix $(LIBDIR)/, libft.h)
 
 #--- FLAGS ---
-CFLAGS	:=	-Wall -Wextra -Werror -I$(INCDIR) -I$(LIBMCDIR) -I$(LIBFTDIR)
-LDFLAGS	:=	-L$(LIBMCDIR) -L$(LIBFTDIR)
-LDLIBS	:=	-lmc -lft
+CFLAGS	:=	-Wall -Wextra -Werror -I$(INCDIR) -I$(LIBDIR)
+LDLIBS	:=	-L$(LIBDIR) -lft
 
 #--- CMDS ---
 CC		:=	cc
@@ -58,14 +54,11 @@ MUTE	:=	>/dev/null
 
 all: $(NAME)
 
-$(NAME): $(HEADERS) $(LIBMC) $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS) $(LDLIBS)
+$(NAME): $(HEADERS) $(LIBFT) $(OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDLIBS)
 
-$(LIBFT): $(LIBFTHEADER)
-	@$(MAKE) -C $(LIBFTDIR) $(MUTE)
-
-$(LIBMC): $(LIBMCHEADER)
-	@$(MAKE) -C $(LIBMCDIR) $(MUTE)
+$(LIBFT): $(LIBFTH)
+	$(MAKE) -C $(LIBDIR) all $(MUTE)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(OBJDIR) && cd $(OBJDIR) && mkdir -p $(SUBDIR)
@@ -73,12 +66,10 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 clean:
 	$(RM) $(OBJS)
-	@$(MAKE) -C $(LIBFTDIR) $@ $(MUTE)
-	@$(MAKE) -C $(LIBMCDIR) $@ $(MUTE)
+	@$(MAKE) -C $(LIBDIR) $@ $(MUTE)
 
 fclean: clean
-	@$(MAKE) -C $(LIBFTDIR) $@ $(MUTE)
-	@$(MAKE) -C $(LIBMCDIR) $@ $(MUTE)
+	@$(MAKE) -C $(LIBDIR) $@ $(MUTE)
 	$(RM) $(OBJDIR)
 	$(RM) $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 10:58:18 by dlu               #+#    #+#             */
-/*   Updated: 2023/05/23 12:10:25 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/19 01:22:45 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	parse(char *s, va_list *args, t_format *format)
 		}
 		else
 		{
-			write(1, s++, 1);
+			write(format->fd, s++, 1);
 			++count;
 		}
 	}
@@ -63,6 +63,22 @@ int	ft_printf(const char *s, ...)
 	t_format	format;
 
 	reset_format(&format);
+	format.fd = 1;
+	va_start(args, s);
+	count = parse((char *) s, &args, &format);
+	va_end(args);
+	return (count);
+}
+
+/* Mimic the system dprintf function. */
+int	ft_dprintf(int fd, const char *s, ...)
+{
+	int			count;
+	va_list		args;
+	t_format	format;
+
+	reset_format(&format);
+	format.fd = fd;
 	va_start(args, s);
 	count = parse((char *) s, &args, &format);
 	va_end(args);
