@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/06/19 17:20:49 by dlu              ###   ########.fr        #
+#    Updated: 2023/06/19 20:21:47 by dlu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ LIBFT	:=	$(LIBDIR)/libft.a
 SRC		:=	main.c \
 			director/build_prompt.c director/director.c director/init_shell.c \
 			director/read_line.c director/setup_terminal.c \
-			lexer/lexer.c \
+			lexer/lexer.c lexer/validator.c \
 			parser/parser.c \
 			xecutor/builtin.c xecutor/redirect.c xecutor/xecutor.c
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRC))
