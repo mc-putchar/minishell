@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/19 17:20:31 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/19 20:21:30 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # define MAX_PATH_SIZE	1024
 # define MAX_CMD_SIZE	1024
 # define MAX_ARGS		10
+# define TRUE			1
+# define FALSE			0
 
 /* Commands. */
 # define EMPTY			0
@@ -63,6 +65,7 @@ typedef struct s_cmd
 /* Functions. */
 
 int		lexer(char *line);
+int		validate_input(const char *str);
 
 t_cmd	*parser(char **tokens);
 
