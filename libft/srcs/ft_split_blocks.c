@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mc_split_blocks.c                                  :+:      :+:    :+:   */
+/*   ft_split_blocks.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 15:56:47 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/18 16:39:11 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/19 01:32:22 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libmc.h"
+#include "libft.h"
 
 static char	*get_next_block(const char *s, char c, int i, const char *blockers)
 {
@@ -62,7 +62,7 @@ static int	ft_count_blocks(const char *s, char c, const char *blockers)
 	return (count);
 }
 
-char	**mc_split_blocks(const char *s, char c, const char *blockers)
+char	**ft_split_blocks(const char *s, char c, const char *blockers)
 {
 	char	**spl;
 	int		count;

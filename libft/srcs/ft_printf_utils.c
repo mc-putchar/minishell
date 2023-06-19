@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 06:14:33 by dlu               #+#    #+#             */
-/*   Updated: 2023/05/23 11:34:08 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/19 01:16:13 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_strlenf(char *s, t_format format)
 }
 
 /* Print the padding and return the length of the padding printed. */
-int	print_padding(char c, int len)
+int	print_padding(char c, int len, int fd)
 {
 	int	i;
 
@@ -35,6 +35,6 @@ int	print_padding(char c, int len)
 		return (0);
 	i = -1;
 	while (++i < len)
-		write(1, &c, 1);
+		write(fd, &c, 1);
 	return (len);
 }

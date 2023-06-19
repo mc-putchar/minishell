@@ -6,75 +6,71 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/06/18 22:35:43 by mcutura          ###   ########.fr        #
+#    Updated: 2023/06/19 01:40:47 by dlu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME := minishell
+NAME	:=	minishell
+
 #--- DIRECTORIES ---
-SRCDIR :=		src
-DIRECTORDIR :=	director
-LEXERDIR :=		lexer
-PARSERDIR :=	parser
-XECUTORDIR :=	xecutor
-INCDIR :=		inc
-OBJDIR :=		obj
-LIBFTDIR :=		libft
-LIBMCDIR :=		libmc
+SRCDIR	:=	src
+INCDIR	:=	inc
+OBJDIR	:=	obj
+SUBDIR	:=	director lexer parser xecutor
+LIBDIR	:=	libft
+
 #--- LIBRARIES ---
-LIBFT := $(LIBFTDIR)/libft.a
-LIBMC := $(LIBMCDIR)/libmc.a
+LIBFT	:=	$(LIBDIR)/libft.a
+
 #--- SOURCES ---
-SRCDIRECTOR := $(addprefix $(DIRECTORDIR)/, director.c build_prompt.c \
-	setup_terminal.c init_shell.c read_line.c)
-SRCLEXER := $(addprefix $(LEXERDIR)/, lexer.c)
-SRCPARSER := $(addprefix $(PARSERDIR)/, parser.c)
-SRCXECUTOR := $(addprefix $(XECUTORDIR)/, xecutor.c redirect.c builtin.c)
-SRCS := $(addprefix $(SRCDIR)/, main.c $(SRCDIRECTOR) $(SRCLEXER) \
-	$(SRCPARSER) $(SRCXECUTOR))
+
+SRC		:=	main.c \
+			director/build_prompt.c director/director.c director/init_shell.c \
+			director/read_line.c director/setup_terminal.c \
+			lexer/lexer.c \
+			parser/parser.c \
+			xecutor/builtin.c xecutor/redirect.c xecutor/xecutor.c
+SRCS	:=	$(addprefix $(SRCDIR)/, $(SRC))
+
 #--- OBJECTS ---
-OBJS := $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
-#OBJS := $(patsubst %.c, $(OBJDIR)/%.o, $(notdir $(SRCS)))
+OBJS	:=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
+
 #--- HEADERS ---
-HEADERS := $(addprefix $(INCDIR)/, minishell.h cmd_table.h \
-	control_sequences.h format_output.h)
-LIBFTHEADER := $(addprefix $(LIBFTDIR)/, libft.h)
-LIBMCHEADER := $(addprefix $(LIBMCDIR)/, libmc.h)
+HEADER	:=	minishell.h cmd_table.h control_sequences.h format_output.h
+HEADERS	:=	$(addprefix $(INCDIR)/, $(HEADER))
+LIBFTH	:=	$(addprefix $(LIBDIR)/, libft.h)
+
 #--- FLAGS ---
-CFLAGS := -Wall -Wextra -Werror -I$(INCDIR) -I$(LIBMCDIR) -I$(LIBFTDIR)
-LDFLAGS := -L$(LIBMCDIR) -L$(LIBFTDIR)
-LDLIBS := -lmc -lft
+CFLAGS	:=	-Wall -Wextra -Werror -I$(INCDIR) -I$(LIBDIR)
+LDLIBS	:=	-L$(LIBDIR) -lft
+
+#--- CMDS ---
+CC		:=	cc
+RM		:=	/bin/rm -rf
+MUTE	:=	>/dev/null
 
 #--- RULES ---
 .PHONY: all clean fclean re
 
 all: $(NAME)
 
-$(NAME): $(HEADERS) $(LIBMC) $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS) $(LDLIBS)
+$(NAME): $(HEADERS) $(LIBFT) $(OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDLIBS)
 
-$(LIBFT): $(LIBFTHEADER)
-	$(MAKE) -C $(LIBFTDIR)
+$(LIBFT): $(LIBFTH)
+	$(MAKE) -C $(LIBDIR) all $(MUTE)
 
-$(LIBMC): $(LIBMCHEADER)
-	$(MAKE) -C $(LIBMCDIR)
-
-$(OBJS): $(SRCS) | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $(SRCS)
-	mv *.o $(OBJDIR)
-
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(OBJDIR) && cd $(OBJDIR) && mkdir -p $(SUBDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJS)
-	$(RM) -r $(OBJDIR)
-	$(MAKE) -C $(LIBFTDIR) clean
-	$(MAKE) -C $(LIBMCDIR) clean
+	@$(MAKE) -C $(LIBDIR) $@ $(MUTE)
 
 fclean: clean
-	$(MAKE) -C $(LIBFTDIR) fclean
-	$(MAKE) -C $(LIBMCDIR) fclean
+	@$(MAKE) -C $(LIBDIR) $@ $(MUTE)
+	$(RM) $(OBJDIR)
 	$(RM) $(NAME)
 
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: dlu<dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 22:28:32 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/08 09:34:24 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/19 01:39:47 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,13 @@ typedef struct s_format
 	int		precision;
 	int		base;
 	int		signed_nbr;
+	int		fd;
 }	t_format;
 
 int		ft_printf(const char *s, ...);
+int		ft_dprintf(int fd, const char *s, ...);
 int		ft_strlenf(char *s, t_format format);
-int		print_padding(char c, int len);
+int		print_padding(char c, int len, int fd);
 int		print_str(char *s, int *count, t_format format);
 void	print_char(char c, int *count, t_format format);
 void	print_ptr(void *p, int *count, t_format format);
@@ -126,5 +128,21 @@ void	parse_format(char **s, va_list *args, t_format *format);
 char	*get_next_line(int fd);
 int		nl_index(char *prev, int end);
 int		append_buffer(char **prev, char *buffer, ssize_t n);
+
+/* Get delim. */
+
+typedef struct s_stream
+{
+	int		fd;
+	ssize_t	len;
+	size_t	off;
+	t_uc	buff[BUFFER_SIZE];
+}	t_stream;
+
+char	*get_delim(int fd, int delim);
+void	*ft_memgrow(void *ptr, size_t old_size, size_t new_size);
+void	*ft_memccpy(void *dest, const void *src, int c, size_t n);
+
+char	**ft_split_blocks(const char *s, char c, const char *blockers);
 
 #endif

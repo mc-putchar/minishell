@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mc_putchar.c                                       :+:      :+:    :+:   */
+/*   ft_memgrow.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/18 06:40:00 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/18 07:50:43 by mcutura          ###   ########.fr       */
+/*   Created: 2023/05/09 03:45:34 by mcutura           #+#    #+#             */
+/*   Updated: 2023/06/19 01:32:08 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libmc.h"
+#include "libft.h"
 
-void	mc_putchar(char c)
+void	*ft_memgrow(void *ptr, size_t old_size, size_t new_size)
 {
-	write(1, &c, 1);
+	void	*new;
+
+	new = malloc(new_size);
+	if (!new)
+		return (NULL);
+	if (ptr && new_size > old_size)
+		new = ft_memcpy(new, ptr, old_size);
+	return (free(ptr), new);
 }

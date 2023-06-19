@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 10:58:18 by dlu               #+#    #+#             */
-/*   Updated: 2023/05/23 11:32:38 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/19 01:17:31 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 void	print_char(char c, int *count, t_format format)
 {
 	if (!format.minus)
-		*count += print_padding(format.padding, format.width - 1);
-	write(1, &c, 1);
+		*count += print_padding(format.padding, format.width - 1, format.fd);
+	write(format.fd, &c, 1);
 	(*count)++;
 	if (format.minus)
-		*count += print_padding(format.padding, format.width - 1);
+		*count += print_padding(format.padding, format.width - 1, format.fd);
 }
 
 /* Handle the specifier 's', and the number portion of 'diuxX'. */
@@ -35,13 +35,13 @@ int	print_str(char *s, int *count, t_format format)
 		return (0);
 	len = ft_strlenf(s, format);
 	if (!format.minus)
-		*count += print_padding(format.padding, format.width - len);
+		*count += print_padding(format.padding, format.width - len, format.fd);
 	i = -1;
 	while (++i < len)
-		write(1, &s[i], 1);
+		write(format.fd, &s[i], 1);
 	*count += len;
 	if (format.minus)
-		*count += print_padding(format.padding, format.width - len);
+		*count += print_padding(format.padding, format.width - len, format.fd);
 	return (1);
 }
 
