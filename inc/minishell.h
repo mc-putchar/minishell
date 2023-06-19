@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/19 01:41:03 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/19 17:20:31 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 
 # include "libft.h"
-# include "cmd_table.h"
 # include "control_sequences.h"
 # include "format_output.h"
 # include <errno.h>
@@ -27,40 +26,68 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
-# define PROMPT				" $> "
-# define RC_FILE			"/.minishellrc"
-# define HIST_FILE			"/.minishell_hist"
-# define MAX_HIST_SIZE		1000
-# define MAX_PATH_SIZE		1024
-# define MAX_CMD_SIZE		1024
-# define MAX_ARGS			10
+# define PROMPT			" $> "
+# define RC_FILE		"/.minishellrc"
+# define HIST_FILE		"/.minishell_hist"
+# define MAX_HIST_SIZE	1000
+# define MAX_PATH_SIZE	1024
+# define MAX_CMD_SIZE	1024
+# define MAX_ARGS		10
 
-int			lexer(char *line);
+/* Commands. */
+# define EMPTY			0
+# define PIPE			1
+# define REDIR_IN		2
+# define REDIR_OUT		3
+# define REDIR_APPEND	4
+# define REDIR_HERE		5
+# define AND			6
+# define OR				7
+# define BUILTIN		8
+# define CMD			9
 
-t_cmd_table	*parser(char **tokens);
+typedef struct s_cmd	t_cmd;
 
-int			executor(t_cmd_table *cmd, char * const envp[]);
-int			redir_in(t_cmd_table *cmd, char * const envp[]);
-int			redir_out(t_cmd_table *cmd, char * const envp[]);
-int			redir_append(t_cmd_table *cmd, char * const envp[]);
-int			redir_here(t_cmd_table *cmd, char * const envp[]);
-int			builtin(t_cmd_table *cmd, char * const envp[]);
+typedef struct s_cmd
+{
+	char	**args;
+	int		type;
+	t_cmd	*root;
+	t_cmd	*left;
+	t_cmd	*right;
+	char	*i_file;
+	char	*o_file;
+	int		o_type;
+}	t_cmd;
 
-int			ft_echo(t_cmd_table *cmd, char * const envp[]);
-int			ft_cd(t_cmd_table *cmd, char * const envp[]);
-int			ft_pwd(t_cmd_table *cmd, char * const envp[]);
-int			ft_export(t_cmd_table *cmd, char * const envp[]);
-int			ft_unset(t_cmd_table *cmd, char * const envp[]);
-int			ft_env(t_cmd_table *cmd, char * const envp[]);
-int			exit_shell(t_cmd_table *cmd, char * const envp[]);
+/* Functions. */
 
-int			director(int ac, char **av, char **envp);
-int			init_shell(void);
-int			setup_terminal(struct termios *term_backup);
-void		reset_terminal(struct termios *term_backup);
-char		*build_prompt(void);
-int			do_stuff(struct termios *term_backup);
-void		gtfo(struct termios *term_backup, char *prompt);
-void		reset_cmd_line(char *prompt, char *buff, int *i);
+int		lexer(char *line);
+
+t_cmd	*parser(char **tokens);
+
+int		executor(t_cmd *cmd, char * const envp[]);
+int		redir_in(t_cmd *cmd, char * const envp[]);
+int		redir_out(t_cmd *cmd, char * const envp[]);
+int		redir_append(t_cmd *cmd, char * const envp[]);
+int		redir_here(t_cmd *cmd, char * const envp[]);
+int		builtin(t_cmd *cmd, char * const envp[]);
+
+int		ft_echo(t_cmd *cmd, char * const envp[]);
+int		ft_cd(t_cmd *cmd, char * const envp[]);
+int		ft_pwd(t_cmd *cmd, char * const envp[]);
+int		ft_export(t_cmd *cmd, char * const envp[]);
+int		ft_unset(t_cmd *cmd, char * const envp[]);
+int		ft_env(t_cmd *cmd, char * const envp[]);
+int		exit_shell(t_cmd *cmd, char * const envp[]);
+
+int		director(int ac, char **av, char **envp);
+int		init_shell(void);
+int		setup_terminal(struct termios *term_backup);
+void	reset_terminal(struct termios *term_backup);
+char	*build_prompt(void);
+int		do_stuff(struct termios *term_backup);
+void	gtfo(struct termios *term_backup, char *prompt);
+void	reset_cmd_line(char *prompt, char *buff, int *i);
 
 #endif

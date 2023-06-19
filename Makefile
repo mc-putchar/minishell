@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/06/19 01:40:47 by dlu              ###   ########.fr        #
+#    Updated: 2023/06/19 17:20:49 by dlu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ SRCS	:=	$(addprefix $(SRCDIR)/, $(SRC))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
 #--- HEADERS ---
-HEADER	:=	minishell.h cmd_table.h control_sequences.h format_output.h
+HEADER	:=	minishell.h control_sequences.h format_output.h
 HEADERS	:=	$(addprefix $(INCDIR)/, $(HEADER))
 LIBFTH	:=	$(addprefix $(LIBDIR)/, libft.h)
 

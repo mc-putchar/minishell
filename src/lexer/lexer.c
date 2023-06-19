@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 10:28:59 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/19 01:33:07 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/19 17:00:58 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int		lexer(char *line)
 {
-	char		**tokens;
-	int			i;
-	t_cmd_table	*cmd;
+	char	**tokens;
+	int		i;
+	t_cmd	*cmd;
 
 	i = 0;
 	tokens = ft_split_blocks(line, ' ', "\'\"");
@@ -33,9 +33,9 @@ int		lexer(char *line)
 	while (cmd)
 	{
 		i = 0;
-		while (cmd->cmd->args[i])
+		while (cmd->args[i])
 		{
-			ft_printf("\r\nArg %d: %s\n\r", i, cmd->cmd->args[i]);
+			ft_printf("\r\nArg %d: %s\n\r", i, cmd->args[i]);
 			++i;
 		}
 		ft_printf("\r\nType: %d\n\r", cmd->type);

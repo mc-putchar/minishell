@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 10:29:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/18 22:55:59 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/19 17:09:25 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ static t_cmd	*new_cmd(char **tokens, int *i)
 	return (cmd);
 }
 
-t_cmd_table	*new_cmd_table(t_cmd *cmd, int type, t_cmd_table *left, \
-			t_cmd_table *right)
+t_cmd	*new_cmd_table(t_cmd *cmd, int type, t_cmd *left, t_cmd *right)
 {
-	t_cmd_table	*new;
+	t_cmd	*new;
 
-	new = malloc(sizeof(t_cmd_table));
+	new = malloc(sizeof(t_cmd));
 	if (!new)
 		return (NULL);
-	new->cmd = cmd;
+	(void) cmd;
+	//new->cmd = cmd;
 	new->type = type;
 	new->left = left;
 	new->right = right;
@@ -75,13 +75,13 @@ int	get_cmd_type(t_cmd *cmd)
 }
 
 // TODO: implement free function
-t_cmd_table	*parser(char **tokens)
+t_cmd	*parser(char **tokens)
 {
-	t_cmd_table	*cmd_tab;
-	t_cmd_table	*prev;
-	t_cmd		*cmd;
-	int			i;
-	int			type;
+	t_cmd	*cmd_tab;
+	t_cmd	*prev;
+	t_cmd	*cmd;
+	int		i;
+	int		type;
 
 	i = 0;
 	prev = NULL;

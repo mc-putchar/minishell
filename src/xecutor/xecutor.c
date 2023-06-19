@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/18 23:01:33 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/19 17:12:50 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	simple(char **args, char * const envp[])
 	return (EXIT_SUCCESS);
 }
 
-static int	pipex(t_cmd_table *cmd, char * const envp[])
+static int	pipex(t_cmd *cmd, char * const envp[])
 {
 	int		fd[2];
 	pid_t	pid;
@@ -47,7 +47,7 @@ static int	pipex(t_cmd_table *cmd, char * const envp[])
 		close(fd[0]);
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
 			return (EXIT_FAILURE);
-		if (execve(cmd->left->cmd->args[0], cmd->left->cmd->args, envp) == -1)
+		if (execve(cmd->left->args[0], cmd->left->args, envp) == -1)
 			return (EXIT_FAILURE);
 	}
 	close(fd[1]);
@@ -58,7 +58,7 @@ static int	pipex(t_cmd_table *cmd, char * const envp[])
 	{
 		if (dup2(fd[0], STDIN_FILENO) == -1)
 			return (EXIT_FAILURE);
-		if (execve(cmd->right->cmd->args[0], cmd->right->cmd->args, envp) == -1)
+		if (execve(cmd->right->args[0], cmd->right->args, envp) == -1)
 			return (EXIT_FAILURE);
 	}
 	close(fd[0]);
@@ -71,7 +71,7 @@ static int	pipex(t_cmd_table *cmd, char * const envp[])
 	return (EXIT_SUCCESS);
 }
 
-static int	and(t_cmd_table *cmd, char * const envp[])
+static int	and(t_cmd *cmd, char * const envp[])
 {
 	int		status;
 
@@ -82,7 +82,7 @@ static int	and(t_cmd_table *cmd, char * const envp[])
 	return (status);
 }
 
-static int	or(t_cmd_table *cmd, char * const envp[])
+static int	or(t_cmd *cmd, char * const envp[])
 {
 	int		status;
 
@@ -93,10 +93,10 @@ static int	or(t_cmd_table *cmd, char * const envp[])
 	return (status);
 }
 
-int	executor(t_cmd_table *cmd, char * const envp[])
+int	executor(t_cmd *cmd, char * const envp[])
 {
 	if (cmd->type == CMD)
-		return (simple(cmd->cmd->args, envp));
+		return (simple(cmd->args, envp));
 	else if (cmd->type == PIPE)
 		return (pipex(cmd, envp));
 	else if (cmd->type == REDIR_IN)
