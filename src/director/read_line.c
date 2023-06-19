@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/19 01:29:11 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/19 17:17:58 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ int	do_stuff(struct termios *term_backup)
 	line = read_line(term_backup, prompt);
 	while (1)
 	{
-		if (line[0])
-			lexer(line);
+		//if (line[0])
+		//	lexer(line);
 		free(line);
 		line = read_line(term_backup, prompt);
 	}

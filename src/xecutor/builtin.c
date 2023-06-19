@@ -6,34 +6,34 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 22:05:50 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/18 22:50:42 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/19 17:10:06 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_export(t_cmd_table *cmd, char * const envp[])
+int	ft_export(t_cmd *cmd, char * const envp[])
 {
 	(void)cmd;
 	(void)envp;
 	return (EXIT_SUCCESS);
 }
 
-int	ft_unset(t_cmd_table *cmd, char * const envp[])
+int	ft_unset(t_cmd *cmd, char * const envp[])
 {
 	(void)cmd;
 	(void)envp;
 	return (EXIT_SUCCESS);
 }
 
-int	ft_cd(t_cmd_table *cmd, char * const envp[])
+int	ft_cd(t_cmd *cmd, char * const envp[])
 {
 	(void)cmd;
 	(void)envp;
 	return (EXIT_SUCCESS);
 }
 
-int	builtin(t_cmd_table *cmd, char * const envp[])
+int	builtin(t_cmd *cmd, char * const envp[])
 {
 	(void)cmd;
 	(void)envp;
