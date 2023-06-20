@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/20 16:18:18 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/20 18:38:36 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,14 @@ typedef struct s_cmd
 	int		o_type;
 }	t_cmd;
 
+typedef struct	s_cmdline
+{
+	char		buff[BUFSIZ];
+	char		*prompt;
+	int			i;
+	int			size;
+}	t_cmdline;
+
 /* Functions. */
 
 int		input_validator(const char *str);
@@ -75,6 +83,7 @@ int		redir_out(t_cmd *cmd, char * const envp[]);
 int		redir_append(t_cmd *cmd, char * const envp[]);
 int		redir_here(t_cmd *cmd, char * const envp[]);
 int		builtin(t_cmd *cmd, char * const envp[]);
+char	*cmd_validator(t_cmd *cmd);
 
 int		ft_echo(t_cmd *cmd, char * const envp[]);
 int		ft_cd(t_cmd *cmd, char * const envp[]);
@@ -89,8 +98,8 @@ int		init_shell(void);
 int		setup_terminal(struct termios *term_backup);
 void	reset_terminal(struct termios *term_backup);
 char	*build_prompt(void);
-int		do_stuff(struct termios *term_backup);
-void	gtfo(struct termios *term_backup, char *prompt);
-void	reset_cmd_line(char *prompt, char *buff, int *i);
+int		do_stuff(void);
+void	gtfo(char *prompt);
+void	reset_cmd_line(t_cmdline *cmdl);
 
 #endif
