@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/19 20:21:30 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/20 16:18:18 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ typedef struct s_cmd
 
 /* Functions. */
 
-int		lexer(char *line);
-int		validate_input(const char *str);
+int		input_validator(const char *str);
+t_cmd	*input_lexer(char *line);
 
 t_cmd	*parser(char **tokens);
 
