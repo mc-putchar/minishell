@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/20 17:49:53 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/20 21:14:44 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,15 +122,15 @@ int	do_stuff(void)
 	ft_bzero(&term_backup, sizeof(term_backup));
 	prompt = build_prompt();
 	if (!prompt)
-		return (ft_dprintf(STDERR_FILENO, "Error: build_prompt\n"));
+		return (ft_perror("build_prompt"));
 	while (1)
 	{	
 		if (setup_terminal(&term_backup))
-			return (ft_dprintf(STDERR_FILENO, "Error: setup_terminal\n"));
+			return (ft_perror("setup_terminal"));
 		line = read_line(prompt);
 		reset_terminal(&term_backup);
 		if (!line)
-			return (ft_dprintf(STDERR_FILENO, "Error: read_line\n"));
+			return (ft_perror("read_line"));
 		if (!ft_strncmp(line, "exit\n", 5))
 			gtfo(prompt);
 		// TODO: replace this printing with parsing and executing

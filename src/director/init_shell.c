@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:53:13 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/19 17:14:10 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/20 21:13:46 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,17 @@ int	init_history(void)
 
 	home = getenv("HOME");
 	if (!home)
-		return (ft_dprintf(STDERR_FILENO, "Error: getenv\n"));
+		return (ft_perror("getenv"));
 	path = ft_strjoin(home, HIST_FILE);
 	if (!path)
-		return (ft_dprintf(STDERR_FILENO, "Error: ft_strjoin\n"));
+		return (ft_perror("ft_strjoin"));
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 		return (ft_dprintf(STDERR_FILENO, "Error: open: %s\n", path));
+		// probably should replace with system perror
 	free(path);
 	if (read_hist(fd))
-		return (ft_dprintf(STDERR_FILENO, "Error: read_history\n"));
+		return (ft_perror("read_history"));
 	close(fd);
 	return (EXIT_SUCCESS);
 }
@@ -82,18 +83,19 @@ int	init_shell(void)
 
 	home = getenv("HOME");
 	if (!home)
-		return (ft_dprintf(STDERR_FILENO, "Error: getenv\n"));
+		return (ft_perror("getenv"));
 	path = ft_strjoin(home, RC_FILE);
 	if (!path)
-		return (ft_dprintf(STDERR_FILENO, "Error: ft_strjoin\n"));
+		return (ft_perror("ft_strjoin"));
 	if (access(path, F_OK))
 		return (EXIT_SUCCESS);
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 		return (ft_dprintf(STDERR_FILENO, "Error: open: %s\n", path));
+		// probably replace with system perror
 	free(path);
 	if (read_rc(fd))
-		return (ft_dprintf(STDERR_FILENO, "Error: read_rc\n"));
+		return (ft_perror("read_rc"));
 	close(fd);
 	(void)init_history();
 	return (EXIT_SUCCESS);

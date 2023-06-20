@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/20 17:22:04 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/20 21:10:48 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ int	director(int ac, char **av, char **envp)
 	if (init_shell())
 		return (EXIT_FAILURE);
 	if (do_stuff())
-		ft_dprintf(STDERR_FILENO, "Error: do_stuff\n");
+		ft_perror("do_stuff");
 	return (EXIT_SUCCESS);
 }
