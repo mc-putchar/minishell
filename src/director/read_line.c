@@ -6,98 +6,98 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/20 17:02:59 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/20 17:27:55 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	delete(char *buff, int *i, int *size)
+void	delete(t_cmdline *cmdl)
 {
 	CLEAR_REST;
-	ft_memcpy(&buff[*i], &buff[*i + 1], *size - *i);
-	buff[*size] = 0;
-	write(1, &buff[*i], *size - *i);
-	(*size)--;
-	if (*size > *i)
-		MOVE_LEFT(*size - *i);
+	ft_memcpy(&cmdl->buff[cmdl->i], &cmdl->buff[cmdl->i + 1], \
+		cmdl->size - cmdl->i);
+	cmdl->buff[cmdl->size] = 0;
+	write(1, &cmdl->buff[cmdl->i], cmdl->size - cmdl->i);
+	(cmdl->size)--;
+	if (cmdl->size > cmdl->i)
+		MOVE_LEFT(cmdl->size - cmdl->i);
 }
 
-void	csi_handler(int ret, char *buff, int *i, int *size)
+void	csi_handler(int ret, t_cmdline *cmdl)
 {
 	if (ret == ARROW_UP)
 		ft_printf("UP");
 	else if (ret == ARROW_DOWN)
 		ft_printf("DOWN");
-	else if (ret == ARROW_RIGHT && *i < *size && ++(*i))
+	else if (ret == ARROW_RIGHT && cmdl->i < cmdl->size && ++(cmdl->i))
 		MOVE_RIGHT(1);
-	else if (ret == ARROW_LEFT && *i > 0 && (*i)--)
+	else if (ret == ARROW_LEFT && cmdl->i > 0 && (cmdl->i)--)
 		MOVE_LEFT(1);
-	else if (ret == DELETE && *i < *size)
-		delete(buff, i, size);
+	else if (ret == DELETE && cmdl->i < cmdl->size)
+		delete(cmdl);
 }
 
-void	check_control(int ret, char *prompt, char *buff, int *i)
+void	check_control(int ret, t_cmdline *cmdl)
 {
 	if (ret == CTRL_D)
-		gtfo(prompt);
+		gtfo(cmdl->prompt);
 	else if (ret == CTRL_C)
 	{
 		ft_printf("^C");
-		reset_cmd_line(prompt, buff, i);
+		reset_cmd_line(cmdl);
 	}
 	else if (ret == CTRL_L)
 	{
 		CLEAR_SCREEN;
 		MOVE_HOME;
-		ft_printf("%s%s", prompt, buff);
-		MOVE_HOME;
-		MOVE_RIGHT(ft_strlen(prompt) + *i);
+		ft_printf("%s%s", cmdl->prompt, cmdl->buff);
+		MOVE_LEFT(cmdl->size - cmdl->i);
 	}
 }
 
-void	insert_input(int ret, char *buff, int *i, int *size)
+void	insert_input(int ret, t_cmdline *cmdl)
 {
-	if (*i == *size)
+	if (cmdl->i == cmdl->size)
 	{
-		buff[(*i)++] = ret;
-		write(1, &buff[*i - 1], 1);
-		(*size)++;
+		cmdl->buff[(cmdl->i)++] = ret;
+		write(1, &cmdl->buff[cmdl->i - 1], 1);
+		(cmdl->size)++;
 	}
 	else
 	{
-		(*size)++;
-		ft_memmove(&buff[*i + 1], &buff[*i], *size - *i);
-		buff[(*i)++] = ret;
-		write(1, &buff[*i - 1], *size + 1 - *i);
-		MOVE_LEFT(*size - *i + 1);
+		(cmdl->size)++;
+		ft_memmove(&cmdl->buff[cmdl->i + 1], &cmdl->buff[cmdl->i], \
+			cmdl->size - cmdl->i);
+		cmdl->buff[(cmdl->i)++] = ret;
+		write(1, &cmdl->buff[cmdl->i - 1], cmdl->size + 1 - cmdl->i);
+		MOVE_LEFT(cmdl->size - cmdl->i + 1);
 	}
 }
 
 char	*read_line(char *prompt)
 {
-	char	buff[BUFSIZ];
-	int		i;
-	int		size;
-	int		ret;
-	ssize_t	read_ret;
+	t_cmdline	cmdl;
+	int			ret;
+	ssize_t		read_ret;
 
-	i = 0;
-	size = 0;
-	reset_cmd_line(prompt, buff, &i);
+	cmdl.i = 0;
+	cmdl.size = 0;
+	cmdl.prompt = prompt;
+	reset_cmd_line(&cmdl);
 	while (1)
 	{
 		read_ret = read(STDIN_FILENO, &ret, 4);
 		if (read_ret == -1)
 			return (NULL);
 		if (ft_isprint(ret))
-			insert_input(ret, buff, &i, &size);
+			insert_input(ret, &cmdl);
 		else if ((ret & 0xff) == ESCAPE)
-			csi_handler(ret, &buff[0], &i, &size);
+			csi_handler(ret, &cmdl);
 		else if ((ret == '\n' || ret == '\r') && ft_printf("\n"))
-			return (ft_strdup(ft_memcpy(&buff[i], "\0", 2)));
+			return (ft_strdup(ft_memcpy(&cmdl.buff[cmdl.i], "\0", 2)));
 		else if (ft_isascii(ret))
-			check_control(ret, prompt, buff, &i);
+			check_control(ret, &cmdl);
 		ret = 0;
 	}
 }

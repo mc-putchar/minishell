@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/20 16:50:24 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/20 17:22:04 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ void	gtfo(char *prompt)
 	exit(EXIT_SUCCESS);
 }
 
-void	reset_cmd_line(char *prompt, char *buff, int *i)
+void	reset_cmd_line(t_cmdline *cmdl)
 {
-	*i = 0;
-	ft_bzero(buff, BUFSIZ);
-	ft_dprintf(STDOUT_FILENO, "\r\n%s", prompt);
+	cmdl->i = 0;
+	cmdl->size = 0;
+	ft_bzero(cmdl->buff, BUFSIZ);
+	ft_dprintf(STDOUT_FILENO, "\r\n%s", cmdl->prompt);
 }
 
 int	director(int ac, char **av, char **envp)

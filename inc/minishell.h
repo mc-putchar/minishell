@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/20 12:37:20 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/20 17:22:00 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,14 @@ typedef struct s_cmd
 	int		o_type;
 }	t_cmd;
 
+typedef struct	s_cmdline
+{
+	char		buff[BUFSIZ];
+	char		*prompt;
+	int			i;
+	int			size;
+}	t_cmdline;
+
 /* Functions. */
 
 int		lexer(char *line);
@@ -91,6 +99,6 @@ void	reset_terminal(struct termios *term_backup);
 char	*build_prompt(void);
 int		do_stuff(void);
 void	gtfo(char *prompt);
-void	reset_cmd_line(char *prompt, char *buff, int *i);
+void	reset_cmd_line(t_cmdline *cmdl);
 
 #endif
