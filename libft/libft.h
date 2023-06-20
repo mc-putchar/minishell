@@ -6,7 +6,7 @@
 /*   By: dlu<dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 22:28:32 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/19 01:39:47 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/20 17:14:09 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,8 @@ char	*get_delim(int fd, int delim);
 void	*ft_memgrow(void *ptr, size_t old_size, size_t new_size);
 void	*ft_memccpy(void *dest, const void *src, int c, size_t n);
 
+/* Additional functions for minishell. */
 char	**ft_split_blocks(const char *s, char c, const char *blockers);
+char	*ft_replace_quotes(const char *str, char replace);
 
 #endif
