@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/20 17:22:00 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/20 18:18:46 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int		redir_out(t_cmd *cmd, char * const envp[]);
 int		redir_append(t_cmd *cmd, char * const envp[]);
 int		redir_here(t_cmd *cmd, char * const envp[]);
 int		builtin(t_cmd *cmd, char * const envp[]);
+char	*cmd_validator(t_cmd *cmd);
 
 int		ft_echo(t_cmd *cmd, char * const envp[]);
 int		ft_cd(t_cmd *cmd, char * const envp[]);
