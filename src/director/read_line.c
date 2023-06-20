@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/20 17:27:55 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/20 17:42:32 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,10 @@ void	check_control(int ret, t_cmdline *cmdl)
 		MOVE_HOME;
 		ft_printf("%s%s", cmdl->prompt, cmdl->buff);
 		MOVE_LEFT(cmdl->size - cmdl->i);
+		if (!cmdl->size)
+			ft_printf(" ");
+		else if (cmdl->i == cmdl->size)
+			MOVE_RIGHT(1);
 	}
 }
 
