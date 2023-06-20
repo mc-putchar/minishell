@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:19:39 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/19 12:46:35 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/20 17:32:39 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*build_prompt(void)
 	if (!cwd)
 		return (NULL);
 	cwd = compact_cwd(cwd, getenv("HOME"));
-	tmp = ft_strjoin(BGMAGENTA, cwd);
+	tmp = ft_strjoin(BGCYAN MAGENTA, cwd);
 	free(cwd);
 	prompt = ft_strjoin(tmp, RESET PROMPT);
 	free(tmp);
