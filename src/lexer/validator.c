@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:18:58 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/20 16:16:33 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/20 18:22:33 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,29 @@ static int	valid_quotes(const char *str)
 /* Check string has the correct syntax, namely any cmd to start with | or &.
  * Some other invalid tokens: |* (anything other than | following antoher |)
  * &&* or ||* (anything other than space following || or &&). */
-// This needs to be validatated for each command, essentially need other chars
-// in between logical operators (|| && or |) other than whitespaces.
-// CAVEAT: they can also be in quotes and those are ignored (anything in quotes is fine)
+// This is working in progress. *** Parenthese suppport not yet implemented.
+// TODO: cleanup the logic, maybe split into smaller functions.
 static int	valid_syntax(const char *str)
 {
-	char	*trimmed;
+	char	*s;
+	int		has_char;
+	int		i;
 	
-	trimmed = ft_strtrim(str, " \v\n\r\t\f");
-	if (trimmed[0] && (trimmed[0] == '|' || trimmed[0] == '&'))
-		return (free(trimmed), FALSE);
-	return (free(trimmed), TRUE);
+	s = ft_replace_quotes(str, '_');
+	has_char = 0;
+	i = -1;
+	while (s[++i])
+	{
+		//ft_printf("%s, has_char: %d\n", &s[i], has_char);
+		if (!has_char && ((s[i] == '|' && (s[i + 1] == '|'
+			|| s[i + 1] == ' ') || s[i] == '&')))
+			return (free(s), FALSE);
+		if (ft_isprint(s[i]) && s[i] != ' ' && s[i] != '|' && s[i] != '&')
+			has_char = 1;
+		else if ((s[i] == '|' && s[i] != '|') || (s[i] == '&' && s[i - 1] == '&'))
+			has_char = 0;
+	}
+	return (free(s), TRUE);
 }
 
 /* Check input string is valid before proceeding, print error otherwise. */
@@ -80,7 +92,6 @@ int	input_validator(const char *str)
 		return (FALSE);
 	return (TRUE);
 }
-
 /*
 int	main(void)
 {
@@ -98,5 +109,11 @@ int	main(void)
 	printf("1: %d\n", valid_quotes(str5));
 	printf("0: %d\n", valid_quotes(str6));
 	printf("1: %d\n", valid_quotes(str7));
+	const char *s1 = "    | \"'test''\"";
+	const char *s2 = "'ls' '-la' || ab && ab || ac";
+	const char *s3 = "    'test' | \"abc\" ";
+	printf("0: %d\n", valid_syntax(s1));
+	printf("1: %d\n", valid_syntax(s2));
+	printf("1: %d\n", valid_syntax(s3));
 	return (0);
 }*/
