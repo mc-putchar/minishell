@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/20 17:42:32 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/20 17:49:53 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,13 @@ void	delete(t_cmdline *cmdl)
 void	csi_handler(int ret, t_cmdline *cmdl)
 {
 	if (ret == ARROW_UP)
-		ft_printf("UP");
+	{
+		// ft_printf("UP");
+	}
 	else if (ret == ARROW_DOWN)
-		ft_printf("DOWN");
+	{
+		// ft_printf("DOWN");
+	}
 	else if (ret == ARROW_RIGHT && cmdl->i < cmdl->size && ++(cmdl->i))
 		MOVE_RIGHT(1);
 	else if (ret == ARROW_LEFT && cmdl->i > 0 && (cmdl->i)--)
@@ -75,7 +79,7 @@ void	insert_input(int ret, t_cmdline *cmdl)
 			cmdl->size - cmdl->i);
 		cmdl->buff[(cmdl->i)++] = ret;
 		write(1, &cmdl->buff[cmdl->i - 1], cmdl->size + 1 - cmdl->i);
-		MOVE_LEFT(cmdl->size - cmdl->i + 1);
+		MOVE_LEFT(cmdl->size - cmdl->i);
 	}
 }
 
@@ -99,7 +103,10 @@ char	*read_line(char *prompt)
 		else if ((ret & 0xff) == ESCAPE)
 			csi_handler(ret, &cmdl);
 		else if ((ret == '\n' || ret == '\r') && ft_printf("\n"))
-			return (ft_strdup(ft_memcpy(&cmdl.buff[cmdl.i], "\0", 2)));
+		{
+			cmdl.buff[cmdl.size] = 0;
+			return (ft_strdup(cmdl.buff));
+		}
 		else if (ft_isascii(ret))
 			check_control(ret, &cmdl);
 		ret = 0;
@@ -127,7 +134,7 @@ int	do_stuff(void)
 		if (!ft_strncmp(line, "exit\n", 5))
 			gtfo(prompt);
 		// TODO: replace this printing with parsing and executing
-		if (ft_strchr(line, '\n') && ft_strlen(line) > 1)
+		if (ft_strlen(line) > 1)
 			ft_dprintf(STDOUT_FILENO, "%s", line);
 		free(line);
 	}
