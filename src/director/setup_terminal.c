@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:22:49 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/19 01:31:13 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/20 13:52:17 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@ int	setup_terminal(struct termios *term_backup)
 	if (!name_term || tcgetattr(STDIN_FILENO, term_backup) == -1)
 		return (ENOTTY);
 	term = *term_backup;
-	term.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP
-		| INLCR | IGNCR | ICRNL | IXON);
-	//term.c_oflag &= ~OPOST;
+	term.c_iflag &= ~(IGNBRK | BRKINT | INLCR | IGNCR | ICRNL | IXON);
 	term.c_lflag &= ~(ICANON | ECHO | ECHONL | ISIG | IEXTEN);
 	// term.c_cflag &= ~(CSIZE | PARENB);
 	// term.c_cflag |= CS8;

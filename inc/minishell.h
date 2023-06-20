@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/19 20:21:30 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/20 12:37:20 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ int		init_shell(void);
 int		setup_terminal(struct termios *term_backup);
 void	reset_terminal(struct termios *term_backup);
 char	*build_prompt(void);
-int		do_stuff(struct termios *term_backup);
-void	gtfo(struct termios *term_backup, char *prompt);
+int		do_stuff(void);
+void	gtfo(char *prompt);
 void	reset_cmd_line(char *prompt, char *buff, int *i);
 
 #endif
