@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:18:58 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/20 18:22:33 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/20 18:51:20 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ static int	valid_syntax(const char *str)
 	while (s[++i])
 	{
 		//ft_printf("%s, has_char: %d\n", &s[i], has_char);
-		if (!has_char && ((s[i] == '|' && (s[i + 1] == '|'
-			|| s[i + 1] == ' ') || s[i] == '&')))
+		if (!has_char && (((s[i] == '|' && (s[i + 1] == '|'
+			|| s[i + 1] == ' ')) || s[i] == '&')))
 			return (free(s), FALSE);
 		if (ft_isprint(s[i]) && s[i] != ' ' && s[i] != '|' && s[i] != '&')
 			has_char = 1;
