@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:39:23 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/21 02:18:20 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/21 15:59:46 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ctrl_down_history(t_cmdline *cmdl)
 	t_list	*tmp;
 	char	*line;
 
-	if (!g_shell.hist)
+	if (!g_shell.hist || !g_shell.hist_i)
 		return ;
 	if (g_shell.hist_i-- == 1)
 	{
@@ -31,17 +31,19 @@ void	ctrl_down_history(t_cmdline *cmdl)
 		else
 			cmdl->size = 0;
 		CLEAR_LINE;
+		MOVE_COL(0);
 		(void)ft_printf("%s%s", cmdl->prompt, cmdl->buff);
 		cmdl->i = cmdl->size;
 		return ;
 	}
-	tmp = ft_lstget_atindex(g_shell.hist, g_shell.hist_i);
+	tmp = ft_lstget_atindex(g_shell.hist, g_shell.hist_i - 1);
 	if (!tmp)
 		return ;
 	line = tmp->content;
 	cmdl->buff[cmdl->size] = 0;
 	(void)ft_memcpy(cmdl->buff, line, ft_strlen(line));
 	CLEAR_LINE;
+	MOVE_COL(0);
 	(void)ft_printf("%s%s", cmdl->prompt, line);
 	cmdl->i = cmdl->size;
 }
@@ -57,13 +59,15 @@ void	ctrl_up_history(t_cmdline *cmdl)
 		tmp = ft_lstget_atindex(g_shell.hist, g_shell.hist_i);
 		if (!tmp)
 			return ;
-		if (g_shell.hist_i++ == 0)
+		if (!g_shell.hist_i++)
 		{
+			cmdl->buff[cmdl->size] = 0;
 			cmdl->hist = ft_strdup(cmdl->buff);
 			if (!cmdl->hist)
 				return ;
 		}
 		CLEAR_LINE;
+		MOVE_COL(0);
 		(void)ft_printf("%s%s", cmdl->prompt, tmp->content);
 		cmdl->size = ft_strlen(tmp->content);
 		(void)ft_memcpy(cmdl->buff, tmp->content, cmdl->size);
@@ -81,6 +85,7 @@ int	read_history(int fd)
 	line = get_delim(fd, '\n');
 	while (line)
 	{
+		line[ft_strlen(line) - 1] = 0;
 		tmp = ft_lstnew(line);
 		if (!tmp)
 		{
@@ -101,7 +106,6 @@ int	write_history(void)
 {
 	t_list	*tmp;
 	t_list	*rev;
-	char	*line;
 	int		fd;
 
 	if (!g_shell.hist)
@@ -118,8 +122,7 @@ int	write_history(void)
 	}
 	while (rev)
 	{
-		line = rev->content;
-		(void)ft_dprintf(fd, "%s\n", line);
+		(void)ft_dprintf(fd, "%s\n", rev->content);
 		rev = rev->next;
 	}
 	close(fd);
@@ -133,7 +136,7 @@ int	flush_history(t_cmdline *cmdl)
 
 	if (!cmdl->buff[0])
 		return (EXIT_SUCCESS);
-	line = ft_strjoin(cmdl->buff, "\n");
+	line = ft_strdup(cmdl->buff);
 	if (!line)
 		return (ft_dprintf(STDERR_FILENO, "Error: ft_strjoin\n"));
 	tmp = ft_lstnew(line);
