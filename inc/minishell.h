@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/20 18:38:36 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/21 01:55:49 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # include <sys/wait.h>
 
 # define PROMPT			" $> "
-# define RC_FILE		"/.minishellrc"
-# define HIST_FILE		"/.minishell_hist"
+# define RC_FILE		"/.mshrc"
+# define HIST_FILE		"/.msh_hist"
 # define MAX_HIST_SIZE	1000
 # define MAX_PATH_SIZE	1024
 # define MAX_CMD_SIZE	1024
@@ -48,7 +48,9 @@
 # define BUILTIN		8
 # define CMD			9
 
-typedef struct s_cmd	t_cmd;
+typedef struct s_cmd		t_cmd;
+typedef struct s_cmdline	t_cmdline;
+typedef struct s_shell		t_shell;
 
 typedef struct s_cmd
 {
@@ -68,7 +70,19 @@ typedef struct	s_cmdline
 	char		*prompt;
 	int			i;
 	int			size;
+	char		*hist;
 }	t_cmdline;
+
+typedef struct	s_shell
+{
+	char		**envp;
+	t_list		*hist;
+	int			hist_i;
+	int			status;
+}	t_shell;
+
+/* Global variable */
+extern t_shell	g_shell;
 
 /* Functions. */
 
@@ -95,6 +109,10 @@ int		exit_shell(t_cmd *cmd, char * const envp[]);
 
 int		director(int ac, char **av, char **envp);
 int		init_shell(void);
+int		init_history(void);
+int		flush_history(t_cmdline *cmdl);
+void	ctrl_up_history(t_cmdline *cmdl);
+void	ctrl_down_history(t_cmdline *cmdl);
 int		setup_terminal(struct termios *term_backup);
 void	reset_terminal(struct termios *term_backup);
 char	*build_prompt(void);
