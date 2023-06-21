@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:39:23 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/21 02:03:10 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/21 02:18:20 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ int	init_history(void)
 	char	*path;
 	int		fd;
 
+	g_shell.hist = NULL;
+	g_shell.hist_i = 0;
 	home = getenv("HOME");
 	if (!home)
 		return (ft_dprintf(STDERR_FILENO, "Error: getenv\n"));
