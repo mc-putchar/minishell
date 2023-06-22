@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/21 01:55:49 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/22 11:10:03 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,14 @@ int		director(int ac, char **av, char **envp);
 int		init_shell(void);
 int		init_history(void);
 int		flush_history(t_cmdline *cmdl);
+int		write_history(int fd);
 void	ctrl_up_history(t_cmdline *cmdl);
 void	ctrl_down_history(t_cmdline *cmdl);
 int		setup_terminal(struct termios *term_backup);
 void	reset_terminal(struct termios *term_backup);
 char	*build_prompt(void);
 int		do_stuff(void);
-void	gtfo(char *prompt);
+void	gtfo(t_cmdline *cmdl);
 void	reset_cmd_line(t_cmdline *cmdl);
 
 #endif

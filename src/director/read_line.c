@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/21 01:47:05 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/22 11:58:02 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	csi_handler(int ret, t_cmdline *cmdl)
 void	check_control(int ret, t_cmdline *cmdl)
 {
 	if (ret == CTRL_D)
-		gtfo(cmdl->prompt);
+		gtfo(cmdl);
 	else if (ret == CTRL_C)
 	{
 		ft_printf("^C");
@@ -57,6 +57,12 @@ void	check_control(int ret, t_cmdline *cmdl)
 			ft_printf(" ");
 		else if (cmdl->i == cmdl->size)
 			MOVE_RIGHT(1);
+	}
+	else if (ret == BACKSPACE && cmdl->i > 0)
+	{
+		(cmdl->i)--;
+		MOVE_LEFT(1);
+		delete(cmdl);
 	}
 }
 
@@ -126,8 +132,6 @@ int	do_stuff(void)
 		reset_terminal(&term_backup);
 		if (!line)
 			return (ft_dprintf(STDERR_FILENO, "Error: read_line\n"));
-		if (!ft_strncmp(line, "exit\n", 5))
-			gtfo(prompt);
 		// TODO: replace this printing with parsing and executing
 		if (ft_strlen(line) > 1)
 			ft_dprintf(STDOUT_FILENO, "%s", line);
