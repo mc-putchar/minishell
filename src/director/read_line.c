@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/22 11:58:02 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/22 13:01:09 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	check_control(int ret, t_cmdline *cmdl)
 	{
 		ft_printf("^C");
 		reset_cmd_line(cmdl);
+		flush_history(cmdl);
 	}
 	else if (ret == CTRL_L)
 	{
@@ -103,7 +104,7 @@ char	*read_line(char *prompt)
 			insert_input(ret, &cmdl);
 		else if ((ret & 0xff) == ESCAPE)
 			csi_handler(ret, &cmdl);
-		else if ((ret == '\n' || ret == '\r') && ft_printf("\n"))
+		else if ((ret == '\n' || ret == '\r'))
 		{
 			cmdl.buff[cmdl.size] = 0;
 			flush_history(&cmdl);
@@ -133,9 +134,8 @@ int	do_stuff(void)
 		if (!line)
 			return (ft_dprintf(STDERR_FILENO, "Error: read_line\n"));
 		// TODO: replace this printing with parsing and executing
-		if (ft_strlen(line) > 1)
-			ft_dprintf(STDOUT_FILENO, "%s", line);
+		if (line[0])
+			ft_dprintf(STDOUT_FILENO, "\nLen: %4d | Line:%s", ft_strlen(line), line);
 		free(line);
 	}
 }
-

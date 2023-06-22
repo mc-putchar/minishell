@@ -6,76 +6,12 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:39:23 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/22 11:35:41 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/22 12:56:52 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ctrl_down_history(t_cmdline *cmdl)
-{
-	t_list	*tmp;
-	char	*line;
-
-	if (!g_shell.hist || !g_shell.hist_i)
-		return ;
-	if (g_shell.hist_i-- == 1)
-	{
-		if (cmdl->hist)
-		{
-			cmdl->size = ft_strlen(cmdl->hist);
-			(void)ft_memcpy(cmdl->buff, cmdl->hist, cmdl->size);
-			cmdl->buff[cmdl->size] = 0;
-			free(cmdl->hist);
-			cmdl->hist = NULL;
-		}
-		else
-			cmdl->size = 0;
-		CLEAR_LINE;
-		MOVE_COL(0);
-		(void)ft_printf("%s%s", cmdl->prompt, cmdl->buff);
-		cmdl->i = cmdl->size;
-		return ;
-	}
-	tmp = ft_lstget_atindex(g_shell.hist, g_shell.hist_i - 1);
-	if (!tmp)
-		return ;
-	line = tmp->content;
-	cmdl->buff[cmdl->size] = 0;
-	(void)ft_memcpy(cmdl->buff, line, ft_strlen(line));
-	CLEAR_LINE;
-	MOVE_COL(0);
-	(void)ft_printf("%s%s", cmdl->prompt, line);
-	cmdl->i = cmdl->size;
-}
-
-void	ctrl_up_history(t_cmdline *cmdl)
-{
-	t_list	*tmp;
-
-	if (!g_shell.hist)
-		return ;
-	if (ft_lstsize(g_shell.hist) > g_shell.hist_i)
-	{
-		tmp = ft_lstget_atindex(g_shell.hist, g_shell.hist_i);
-		if (!tmp)
-			return ;
-		if (!g_shell.hist_i++)
-		{
-			cmdl->buff[cmdl->size] = 0;
-			cmdl->hist = ft_strdup(cmdl->buff);
-			if (!cmdl->hist)
-				return ;
-		}
-		CLEAR_LINE;
-		MOVE_COL(0);
-		(void)ft_printf("%s%s", cmdl->prompt, tmp->content);
-		cmdl->size = ft_strlen(tmp->content);
-		(void)ft_memcpy(cmdl->buff, tmp->content, cmdl->size);
-		cmdl->i = cmdl->size;
-	}
-}
-		
 int	read_history(int fd)
 {
 	t_list	*hist;
@@ -130,6 +66,7 @@ int	flush_history(t_cmdline *cmdl)
 	t_list	*tmp;
 	char	*line;
 
+	g_shell.hist_i = 0;
 	if (cmdl->hist)
 		free(cmdl->hist);
 	if (!cmdl->buff[0])
