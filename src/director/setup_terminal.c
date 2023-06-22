@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:22:49 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/20 13:52:17 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/20 21:15:07 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ int	setup_terminal(struct termios *term_backup)
 void	reset_terminal(struct termios *term_backup)
 {
 	if (tcsetattr(STDIN_FILENO, TCSANOW, term_backup) == -1)
-		ft_dprintf(STDERR_FILENO, "Error: tcsetattr\n");
+		ft_perror("tcsetattr");
 }
