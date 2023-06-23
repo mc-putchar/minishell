@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 16:05:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/23 19:02:17 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/23 19:34:13 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@
  * <command>		::=
  *						<word>
  *					|	<word> <command>
- *					|	<redirection>
- *					|	<redirection> <command>
+ *					|	<redirection>			// to implement
+ *					|	<redirection> <command> // to implement
+ *					|	<command> <redirection> // to implement
  *					|	'(' <conditional> ')'
  */
 
@@ -72,12 +73,4 @@ t_node	*build_pipeline(void)
 		node = temp;
 	}
 	return (node);
-}
-
-t_node	*build_redirection(void)
-{
-}
-
-t_node	*build_command(void)
-{
 }
