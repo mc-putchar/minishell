@@ -28,8 +28,8 @@ SRC		:=	main.c \
 			director/build_prompt.c director/director.c director/init_shell.c \
 			director/read_line.c director/setup_terminal.c director/history.c \
 			director/history_ctrl.c \
-			lexer/lexer.c lexer/validator.c \
-			parser/parser.c \
+			lexer/token.c lexer/lexer.c lexer/validator.c \
+			#parser/parser.c \
 			xecutor/builtin.c xecutor/redirect.c xecutor/xecutor.c \
 			xecutor/cmd_validator.c
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRC))

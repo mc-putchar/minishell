@@ -6,13 +6,13 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 10:28:59 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/20 16:21:32 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/23 19:04:58 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Check if the input line contains only white characters. */
+/* Check if the input line contains only white characters. 
 static int	cmd_empty(const char *line)
 {
 	char *trimmed;
@@ -21,92 +21,93 @@ static int	cmd_empty(const char *line)
 	if (!trimmed[0])
 		return (free(trimmed), TRUE);
 	return (free(trimmed), FALSE);
-}
+}*/
 
-/* Count the number of commands in an input line.*/
-// i.e. bash (ls -la) -> runs the cmd; bash ((ls -la)) doesn't
-// Also will be parsing errors: "| ls -la" (command start logical opeartor |, &&, ||)
-// "syntax error near unexpected token" => check in validator
-static int	cmd_count(const char *line)
+// Proof of concept, to rewrite
+int	ft_next_len(char *input, char c)
 {
-	int	count;
+	int	i;
 
-	if (cmd_empty(line))
-		return (0);
-	count = 1;
-	while (*line)
+	if (!c)
 	{
-		if (*line == '|' && *(line + 1) == ' ')
-			++count;
-		if (*line == '&' && *(line + 1) == '&' && ++line)
-			++count;
-		if (*line == '|' && *(line + 1) == '|' && ++line)
-			++count;
-		++line;
+		i = -1;
+		while (input[++i] && !ft_ismeta(input[i]))
+			;
+		return (i);
 	}
-	return (count);
-}
-
-/* Count the number of arguments from input, start at index i until the end of cmd. 
- * Based on |, ||, &&. */
-//TODO: parentheses
-//static int	arg_count(const char *line, int i)
-//{
-//}
-
-
-/* */
-// Free the line here?
-// Return an array of commands, should never fail, any fail cases move to validator
-
-// allocate cmd + 1 t_cmd, last one NULL?
-// for each cmd, allocate arg_count + 1, NULL terminated, load the arguments and expand $
-// parse all the redirections into the cmd as it reads
-t_cmd	*input_lexer(char *line)
-{
-	const int	cmds = cmd_count((const char *) line);
-	t_cmd		*ret;
-
-	ret = (t_cmd *) malloc((cmds + 1) * sizeof (t_cmd));
-	if (!ret)
-		return (NULL);
-	return (ret);
-	//int	i;
-
-	//tokens = ft_split_blocks(line, ' ', "\'\"");
-	//if (!tokens)
-	// while (tokens[i])
-	// {
-	// 	ft_printf("\r\nToken %d: %s\n\r", i, tokens[i]);
-	// 	++i;
-	// }
-	/*
-	cmd = parser(tokens);
-	if (!cmd)
-	while (cmd)
+	else
 	{
 		i = 0;
-		while (cmd->args[i])
-		{
-			ft_printf("\r\nArg %d: %s\n\r", i, cmd->args[i]);
-			++i;
-		}
-		ft_printf("\r\nType: %d\n\r", cmd->type);
-		cmd = cmd->right;
-	}*/
+		while (input[++i] && input[i] != c)
+			;
+		return (i + 1);
+	}
 }
 
+/* Generate a doubly linked list of tokens. */
+// Proof of concept, to refractor
+// Doubly linked because I might want to try to parse from the right in the parser,
+// and might be easier to free
+t_token* input_lexer(char* input)
+{
+	t_token* start;
+	t_token* last;
+	char	quote;
+
+	start = NULL;
+	last = NULL;
+	quote = 0;
+	while (*input)
+	{
+		while (*input == ' ' || *input == '\t')
+			++input;
+		if (!*input)
+			break ;
+		if (ft_strncmp(input, "||", 2) == 0 && ++input && ++input)
+			last = new_token(OR, NULL, last);
+		else if (ft_strncmp(input, "&&", 2) == 0 && ++input && ++input)
+			last = new_token(AND, NULL, last);
+		else if (ft_strncmp(input, ">>", 2) == 0 && ++input && ++input)
+			last = new_token(APPEND, NULL, last);
+		else if (ft_strncmp(input, "<<", 2) == 0 && ++input && ++input)
+			last = new_token(HERE_DOC, NULL, last);
+		else if (*input == '<' && ++input)
+			last = new_token(REDIR_IN, NULL, last);
+		else if (*input == '>' && ++input)
+			last = new_token(REDIR_OUT, NULL, last);
+		else if (*input == '|' && ++input)
+			last = new_token(PIPE, NULL, last);
+		else if (*input == '(' && ++input)
+			last = new_token(LPARENT, NULL, last);
+		else if (*input == ')' && ++input)
+			last = new_token(RPARENT, NULL, last);
+		else if (*input == '\'')
+		{
+			last = new_token(WORD, ft_substr((const char *) input, 0, ft_next_len(input, '\'')), last);
+			input += ft_next_len(input, '\'');
+		}
+		else if (*input == '"')
+		{
+			last = new_token(WORD, ft_substr((const char *) input, 0, ft_next_len(input, '"')), last);
+			input += ft_next_len(input, '"');
+		}
+		else
+		{
+			last = new_token(WORD, ft_substr((const char *) input, 0, ft_next_len(input, 0)), last);
+			input += ft_next_len(input, 0);
+		}
+		if (!start)
+			start = last;
+	}
+	return (start);
+}
 /*
-#include <stdio.h>
 int	main(void)
 {
-	const char *s1 = "abcd && acde && acd || ac | ads";
-	const char *s2 = "			   ";
-	const char *s3 = "abcd | abcd";
-	const char *s4 = "abcd";
-	printf("5: %d\n", cmd_count(s1));
-	printf("0: %d\n", cmd_count(s2));
-	printf("2: %d\n", cmd_count(s3));
-	printf("1: %d\n", cmd_count(s4));
-	return (0);
+	t_token *start = input_lexer(" ( ls |   \" cat  asdv\") && exit ");
+	while (start)
+	{
+		ft_printf("%d %s\n", start->type, start->value);
+		start = start->next;
+	}
 }*/

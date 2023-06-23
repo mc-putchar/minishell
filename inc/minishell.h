@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/22 11:10:03 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/23 18:10:36 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "libft.h"
 # include "control_sequences.h"
 # include "format_output.h"
+# include "lexer.h"
+# include <stdbool.h>
 # include <errno.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -37,16 +39,6 @@
 # define FALSE			0
 
 /* Commands. */
-# define EMPTY			0
-# define PIPE			1
-# define REDIR_IN		2
-# define REDIR_OUT		3
-# define REDIR_APPEND	4
-# define REDIR_HERE		5
-# define AND			6
-# define OR				7
-# define BUILTIN		8
-# define CMD			9
 
 typedef struct s_cmd		t_cmd;
 typedef struct s_cmdline	t_cmdline;
@@ -54,14 +46,14 @@ typedef struct s_shell		t_shell;
 
 typedef struct s_cmd
 {
-	char	**args;
+	char	*args[MAX_ARGS]; // statically defined for now, may change to dynamic resize later
 	int		type;
-	t_cmd	*root;
-	t_cmd	*left;
-	t_cmd	*right;
+	t_cmd	*pipe;	// PIPE node will point to a cmd, each command will point to the next pipe
+					// if NULL, standalone
 	char	*i_file;
 	char	*o_file;
-	int		o_type;
+	t_type	o_type; // APPEND / REDIR_OUT
+	t_type	i_type; // HERE_DOC / REDIR_IN; seems like they can work simultaneously
 }	t_cmd;
 
 typedef struct	s_cmdline
@@ -79,6 +71,8 @@ typedef struct	s_shell
 	t_list		*hist;
 	int			hist_i;
 	int			status;
+	bool		parse_error;
+	t_token		*parse_tok;
 }	t_shell;
 
 /* Global variable */
@@ -86,8 +80,16 @@ extern t_shell	g_shell;
 
 /* Functions. */
 
+/* Lexer / Parser. */
+
+t_node	*new_node(t_type type);
+t_token	*new_token(t_type type, char *value, t_token *prev);
+t_node	*accept(t_type type);
+bool	expect(t_type type);
+bool	ft_ismeta(char c);
+
 int		input_validator(const char *str);
-t_cmd	*input_lexer(char *line);
+t_token	*input_lexer(char *line);
 
 t_cmd	*parser(char **tokens);
 
