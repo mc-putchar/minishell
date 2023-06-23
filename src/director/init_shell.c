@@ -6,46 +6,11 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:53:13 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/20 21:13:46 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/22 13:33:49 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// TODO: implement history reading and writing to file
-int	read_hist(int fd)
-{
-	char	buff[BUFSIZ];
-	int		r;
-	int		i;
-
-	i = 0;
-	r = read(fd, buff, BUFSIZ);
-	return (EXIT_SUCCESS);
-}
-
-int	init_history(void)
-{
-	char	*home;
-	char	*path;
-	int		fd;
-
-	home = getenv("HOME");
-	if (!home)
-		return (ft_perror("getenv"));
-	path = ft_strjoin(home, HIST_FILE);
-	if (!path)
-		return (ft_perror("ft_strjoin"));
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		return (ft_dprintf(STDERR_FILENO, "Error: open: %s\n", path));
-		// probably should replace with system perror
-	free(path);
-	if (read_hist(fd))
-		return (ft_perror("read_history"));
-	close(fd);
-	return (EXIT_SUCCESS);
-}
 
 int	read_rc(int fd)
 {
@@ -74,29 +39,29 @@ int	read_rc(int fd)
 	return (0);
 }
 
-// initialize from .minishellrc and .minishellhist files
+// initialize from .mshrc and .msh_hist files
 int	init_shell(void)
 {
-	char	*home;
-	char	*path;
-	int		fd;
+	// char	*home;
+	// char	*path;
+	// int		fd;
 
-	home = getenv("HOME");
-	if (!home)
-		return (ft_perror("getenv"));
-	path = ft_strjoin(home, RC_FILE);
-	if (!path)
-		return (ft_perror("ft_strjoin"));
-	if (access(path, F_OK))
-		return (EXIT_SUCCESS);
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		return (ft_dprintf(STDERR_FILENO, "Error: open: %s\n", path));
-		// probably replace with system perror
-	free(path);
-	if (read_rc(fd))
-		return (ft_perror("read_rc"));
-	close(fd);
+	// home = getenv("HOME");
+	// if (!home)
+	// 	return (ft_perror("getenv"));
+	// path = ft_strjoin(home, RC_FILE);
+	// if (!path)
+	// 	return (ft_perror("ft_strjoin"));
+	// if (access(path, F_OK))
+	// 	return (EXIT_SUCCESS);
+	// fd = open(path, O_RDONLY);
+	// if (fd == -1)
+	// 	return (ft_dprintf(STDERR_FILENO, "Error: open: %s\n", path));
+	// 	// probably replace with system perror
+	// free(path);
+	// if (read_rc(fd))
+	// 	return (ft_perror("read_rc"));
+	// close(fd);
 	(void)init_history();
 	return (EXIT_SUCCESS);
 }

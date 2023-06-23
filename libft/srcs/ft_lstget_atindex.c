@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstget_atindex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 11:12:06 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/20 20:43:04 by mcutura          ###   ########.fr       */
+/*   Created: 2023/06/20 20:49:33 by mcutura           #+#    #+#             */
+/*   Updated: 2023/06/20 20:51:10 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_shell	g_shell;
-
-int	main(int ac, char **av, char **ev)
+t_list	*ft_lstget_atindex(t_list *lst, int index)
 {
-	while (ac && av && ev)
-		if (director(ac, av, ev))
-			return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	int		i;
+	t_list	*tmp;
+
+	i = 0;
+	tmp = lst;
+	while (tmp && i < index)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	if (i != index)
+		return (NULL);
+	return (tmp);
 }

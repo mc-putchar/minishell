@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+         #
+#    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 12:01:08 by dlu               #+#    #+#              #
-#    Updated: 2023/06/20 21:03:35 by dlu              ###   ########.fr        #
+#    Updated: 2023/06/22 13:31:00 by mcutura          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ _SRC	:=	ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 			ft_printf.c ft_printf_parse_format.c ft_printf_parse_nbr.c \
 			ft_printf_print.c ft_printf_utils.c ft_gnl.c ft_gnl_utils.c \
 			ft_memgrow.c ft_memccpy.c ft_split_blocks.c get_delim.c \
-			ft_replace_quotes.c ft_perror.c
+			ft_replace_quotes.c ft_perror.c ft_lstget_atindex.c
 SRC		:=	$(addprefix, $(SRCDIR)/, $(_SRC))
 
 OBJDIR	:=	objs
