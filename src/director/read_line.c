@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/22 13:32:02 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/23 19:09:53 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,11 +133,17 @@ int	do_stuff(void)
 		reset_terminal(&term_backup);
 		if (!line)
 			return (ft_perror("read_line"));
-		if (!ft_strncmp(line, "exit\n", 5))
-			gtfo(prompt);
+		//if (!ft_strncmp(line, "exit\n", 5))
+		//	gtfo(prompt);
 		// TODO: replace this printing with parsing and executing
 		if (line[0])
-			ft_dprintf(STDOUT_FILENO, "\nLen: %4d | Line:%s", ft_strlen(line), line);
+			ft_dprintf(STDOUT_FILENO, "\nLen: %4d | Line:%s\n", ft_strlen(line), line);
+		t_token *token = input_lexer(line);
+		while (token)
+		{
+			ft_printf("type: %d, value: %s\n", token->type, token->value);
+			token = token->next;
+		}
 		free(line);
 	}
 }

@@ -1,27 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   lexer_BNF.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/18 10:28:59 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/23 19:04:58 by dlu              ###   ########.fr       */
+/*   Created: 2023/06/23 18:17:44 by dlu               #+#    #+#             */
+/*   Updated: 2023/06/23 19:01:29 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Check if the input line contains only white characters. 
-static int	cmd_empty(const char *line)
-{
-	char *trimmed;
-
-	trimmed = ft_strtrim(line, " \n\t\r\f\v");
-	if (!trimmed[0])
-		return (free(trimmed), TRUE);
-	return (free(trimmed), FALSE);
-}*/
 
 // Proof of concept, to rewrite
 int	ft_next_len(char *input, char c)
