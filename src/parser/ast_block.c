@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 16:05:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/23 19:34:13 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/24 09:03:00 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,18 @@
  *					|	'(' <conditional> ')'
  */
 
-t_node	*build_conditional(void)
+t_cmd	*build_conditional(void)
 {
-	t_node	*node;
-	t_node	*temp;
+	t_cmd	*node;
+	t_cmd	*temp;
 
-	if (g_shell.parse_error)
-		return (NULL);
 	node = build_pipeline();
 	while (expect(AND) || expect(OR))
 	{
 		if (expect(AND))
-			temp = accept(AND);
+			temp = new_cmd(AND);
 		else
-			temp = accept(OR);
+			temp = new_cmd(OR);
 		temp->left = node;
 		temp->right = build_pipeline();
 		node = temp;
@@ -57,20 +55,12 @@ t_node	*build_conditional(void)
 	return (node);
 }
 
-t_node	*build_pipeline(void)
+t_cmd	*build_pipeline(void)
 {
-	t_node	*node;
-	t_node	*temp;
+	t_cmd	*node;
 
-	if (g_shell.parse_error)
-		return (NULL);
 	node = build_command();
-	while (expect(PIPE))
-	{
-		temp = accept(PIPE);
-		temp->left = node;
-		temp->right = build_command();
-		node = temp;
-	}
+	while (accept(PIPE))
+		node->pipe = build_command();
 	return (node);
 }

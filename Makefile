@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/06/22 13:35:45 by mcutura          ###   ########.fr        #
+#    Updated: 2023/06/24 08:04:51 by dlu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,8 @@ SRC		:=	main.c \
 			director/read_line.c director/setup_terminal.c director/history.c \
 			director/history_ctrl.c \
 			lexer/token.c lexer/lexer.c lexer/validator.c \
-			#parser/parser.c \
-			xecutor/builtin.c xecutor/redirect.c xecutor/xecutor.c \
+			parser/ast_basic.c parser/ast_block.c parser/ast_command.c
+			#xecutor/builtin.c xecutor/redirect.c xecutor/xecutor.c \
 			xecutor/cmd_validator.c
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRC))
 
