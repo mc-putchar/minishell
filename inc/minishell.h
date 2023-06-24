@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/23 18:10:36 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/24 09:53:50 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@
 # define MAX_HIST_SIZE	1000
 # define MAX_PATH_SIZE	1024
 # define MAX_CMD_SIZE	1024
-# define MAX_ARGS		10
 # define TRUE			1
 # define FALSE			0
 
@@ -43,18 +42,6 @@
 typedef struct s_cmd		t_cmd;
 typedef struct s_cmdline	t_cmdline;
 typedef struct s_shell		t_shell;
-
-typedef struct s_cmd
-{
-	char	*args[MAX_ARGS]; // statically defined for now, may change to dynamic resize later
-	int		type;
-	t_cmd	*pipe;	// PIPE node will point to a cmd, each command will point to the next pipe
-					// if NULL, standalone
-	char	*i_file;
-	char	*o_file;
-	t_type	o_type; // APPEND / REDIR_OUT
-	t_type	i_type; // HERE_DOC / REDIR_IN; seems like they can work simultaneously
-}	t_cmd;
 
 typedef struct	s_cmdline
 {
@@ -72,7 +59,7 @@ typedef struct	s_shell
 	int			hist_i;
 	int			status;
 	bool		parse_error;
-	t_token		*parse_tok;
+	t_token		*tok;
 }	t_shell;
 
 /* Global variable */
@@ -83,15 +70,22 @@ extern t_shell	g_shell;
 /* Lexer / Parser. */
 
 t_node	*new_node(t_type type);
+t_cmd	*new_cmd(t_type type);
 t_token	*new_token(t_type type, char *value, t_token *prev);
-t_node	*accept(t_type type);
+bool	accept(t_type type);
 bool	expect(t_type type);
 bool	ft_ismeta(char c);
+bool	load_redir(t_cmd *node);
+bool	expect_redir(void);
 
 int		input_validator(const char *str);
 t_token	*input_lexer(char *line);
 
 t_cmd	*parser(char **tokens);
+
+t_cmd	*build_conditional(void);
+t_cmd	*build_pipeline(void);
+t_cmd	*build_command(void);
 
 int		executor(t_cmd *cmd, char * const envp[]);
 int		redir_in(t_cmd *cmd, char * const envp[]);
@@ -122,5 +116,8 @@ char	*build_prompt(void);
 int		do_stuff(void);
 void	gtfo(t_cmdline *cmdl);
 void	reset_cmd_line(t_cmdline *cmdl);
+
+/* Debug */
+void	ast_display(t_cmd *node, int level);
 
 #endif

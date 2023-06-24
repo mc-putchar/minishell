@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 16:05:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/23 19:02:17 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/24 11:36:53 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,25 +30,26 @@
  * <command>		::=
  *						<word>
  *					|	<word> <command>
- *					|	<redirection>
- *					|	<redirection> <command>
+ *					|	<redirection>			// to implement
+ *					|	<redirection> <command> // to implement
+ *					|	<command> <redirection> // to implement
  *					|	'(' <conditional> ')'
  */
 
-t_node	*build_conditional(void)
+t_cmd	*build_conditional(void)
 {
-	t_node	*node;
-	t_node	*temp;
+	t_cmd	*node;
+	t_cmd	*temp;
 
-	if (g_shell.parse_error)
-		return (NULL);
 	node = build_pipeline();
+	if (!node)
+		return (ft_perror("building pipeline"), NULL);
 	while (expect(AND) || expect(OR))
 	{
-		if (expect(AND))
-			temp = accept(AND);
-		else
-			temp = accept(OR);
+		if (accept(AND))
+			temp = new_cmd(AND);
+		else if (accept(OR))
+			temp = new_cmd(OR);
 		temp->left = node;
 		temp->right = build_pipeline();
 		node = temp;
@@ -56,28 +57,20 @@ t_node	*build_conditional(void)
 	return (node);
 }
 
-t_node	*build_pipeline(void)
+t_cmd	*build_pipeline(void)
 {
-	t_node	*node;
-	t_node	*temp;
+	t_cmd	*node;
+	t_cmd	*temp;
 
-	if (g_shell.parse_error)
-		return (NULL);
 	node = build_command();
-	while (expect(PIPE))
+	if (!node)
+		return (ft_perror("building command"), NULL);
+	temp = node;
+	while (accept(PIPE))
 	{
-		temp = accept(PIPE);
-		temp->left = node;
-		temp->right = build_command();
-		node = temp;
+		while (temp->pipe)
+			temp = temp->pipe;
+		temp->pipe = build_command();
 	}
 	return (node);
-}
-
-t_node	*build_redirection(void)
-{
-}
-
-t_node	*build_command(void)
-{
 }
