@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 19:34:30 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/24 09:48:01 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/24 11:36:04 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,20 @@ t_cmd	*build_command(void)
 		node = new_cmd(COMMAND);
 		if (!node)
 			return (ft_perror("malloc"), NULL);
-		while (expect(WORD))
-			if (!append_arg_to_cmd(node))
+		while (expect(WORD) || expect_redir())
+		{
+			if (expect(WORD) && !append_arg_to_cmd(node))
 				return (ft_perror("building command: too many args"), NULL);
-	}
+			else
+				load_redir(node);
+		}
+	}/*
+	else if (expect_redir())
+	{
+		node = new_cmd(EMPTY); // redirection without command, probably shouldn't do anything?
+		if (!node)
+			return (ft_perror("malloc"), NULL);
+	}*/
 	else
 		return (ft_perror("building command"), NULL);
 	return (node);

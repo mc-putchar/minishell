@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 09:15:17 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/24 09:42:59 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/24 11:37:51 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ void ast_display(t_cmd *node, int level)
 		while (node->args[++i] && i < MAX_ARGS)
 			ft_printf("%s ", node->args[i]);
 		ft_printf("\n");
+		if (node->i_file)
+			ft_printf("i_file: %s, type: %d\n", node->i_file, node->i_type);
+		if (node->o_file)
+			ft_printf("o_file: %s, type: %d\n", node->o_file, node->o_type);
 		while (node->pipe)
 		{
 			ft_printf("	Pipe; Args: ");
@@ -32,6 +36,10 @@ void ast_display(t_cmd *node, int level)
 			while (node->args[++i] && i < MAX_ARGS)
 				ft_printf("%s ", node->args[i]);
 			ft_printf("\n");
+			if (node->i_file)
+				ft_printf("i_file: %s, type: %d\n", node->i_file, node->i_type);
+			if (node->o_file)
+				ft_printf("o_file: %s, type: %d\n", node->o_file, node->o_type);
 		}
 	} else {
 		ft_printf("Type: %d\n", node->type);

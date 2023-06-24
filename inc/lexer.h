@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:29:45 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/24 10:01:04 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/24 11:39:17 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ struct s_cmd
 	t_type	type;
 	t_cmd	*left;
 	t_cmd	*right;
-	t_cmd	*pipe;	PIPE node will point to a cmd, each command will point to the next pipe
+	t_cmd	*pipe;	//PIPE node will point to a cmd, each command will point to the next pipe
 					//if NULL, standalone
 	char	*i_file;
 	char	*o_file;

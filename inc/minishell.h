@@ -75,6 +75,8 @@ t_token	*new_token(t_type type, char *value, t_token *prev);
 bool	accept(t_type type);
 bool	expect(t_type type);
 bool	ft_ismeta(char c);
+bool	load_redir(t_cmd *node);
+bool	expect_redir(void);
 
 int		input_validator(const char *str);
 t_token	*input_lexer(char *line);

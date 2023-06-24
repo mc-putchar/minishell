@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/06/24 09:17:50 by dlu              ###   ########.fr        #
+#    Updated: 2023/06/24 11:22:23 by dlu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC		:=	main.c \
 			director/history_ctrl.c \
 			lexer/token.c lexer/lexer.c lexer/validator.c \
 			parser/ast_basic.c parser/ast_block.c parser/ast_command.c \
+			parser/ast_redir.c \
 			debug/ast_display.c
 			#xecutor/builtin.c xecutor/redirect.c xecutor/xecutor.c \
 			xecutor/cmd_validator.c \
