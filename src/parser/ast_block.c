@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 16:05:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/24 09:03:00 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/24 09:44:10 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,13 @@ t_cmd	*build_conditional(void)
 	t_cmd	*temp;
 
 	node = build_pipeline();
+	if (!node)
+		return (ft_perror("building pipeline"), NULL);
 	while (expect(AND) || expect(OR))
 	{
-		if (expect(AND))
+		if (accept(AND))
 			temp = new_cmd(AND);
-		else
+		else if (accept(OR))
 			temp = new_cmd(OR);
 		temp->left = node;
 		temp->right = build_pipeline();
@@ -58,9 +60,17 @@ t_cmd	*build_conditional(void)
 t_cmd	*build_pipeline(void)
 {
 	t_cmd	*node;
+	t_cmd	*temp;
 
 	node = build_command();
+	if (!node)
+		return (ft_perror("building command"), NULL);
+	temp = node;
 	while (accept(PIPE))
-		node->pipe = build_command();
+	{
+		while (temp->pipe)
+			temp = temp->pipe;
+		temp->pipe = build_command();
+	}
 	return (node);
 }

@@ -6,21 +6,24 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 19:34:30 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/24 09:02:20 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/24 09:48:01 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	append_arg_to_cmd(char *arg, t_cmd *cmd)
+/* Accept next word as argument. Move token forward. */
+bool	append_arg_to_cmd(t_cmd *cmd)
 {
 	int	i;
 
 	i = -1;
 	while (cmd->args[++i] && i < MAX_ARGS)
 		;
-	if (i < MAX_ARGS)
-		cmd->args[i] = arg;
+	if (i >= MAX_ARGS)
+		return (false);
+	cmd->args[i] = g_shell.tok->value;
+	return (accept(WORD));
 }
 
 t_cmd	*build_command(void)
@@ -30,22 +33,21 @@ t_cmd	*build_command(void)
 
 	node = NULL;
 	temp = NULL;
-	if (g_shell.parse_error)
-		return (NULL);
 	if (accept(LPARENT))
 	{
 		node = build_conditional();
-		if (!accept(RPARENT))
-			return (free(node), ft_perror("Parser: parentheses"), NULL);
+		accept(RPARENT); //validate parentheses before hand?
 	}
 	else if (expect(WORD))
 	{
 		node = new_cmd(COMMAND);
+		if (!node)
+			return (ft_perror("malloc"), NULL);
 		while (expect(WORD))
-		{
-			append_arg_to_cmd(g_shell.tok->value, node);
-			accept(WORD);
-		}
+			if (!append_arg_to_cmd(node))
+				return (ft_perror("building command: too many args"), NULL);
 	}
+	else
+		return (ft_perror("building command"), NULL);
 	return (node);
 }

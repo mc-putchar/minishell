@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/24 08:00:59 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/24 09:53:50 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,8 @@ char	*build_prompt(void);
 int		do_stuff(void);
 void	gtfo(t_cmdline *cmdl);
 void	reset_cmd_line(t_cmdline *cmdl);
+
+/* Debug */
+void	ast_display(t_cmd *node, int level);
 
 #endif

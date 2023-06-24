@@ -146,9 +146,7 @@ int	do_stuff(void)
 			token = token->next;
 		}
 		t_cmd	*ast = build_conditional();
-		ft_printf("ast: %d\n", ast->type);
-		for (int i = 0; ast->args[i]; i++)
-			ft_printf("arg i: %d, %s\n", i, ast->args[i]);
+		ast_display(ast, 0);
 		free(line);
 	}
 }
