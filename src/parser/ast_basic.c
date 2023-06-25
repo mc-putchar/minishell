@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:48:28 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/24 11:31:55 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/25 17:10:58 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,24 @@ bool	expect(t_type type)
 	if (g_shell.tok && g_shell.tok->type == type)
 		return (true);
 	return (false);
+}
+
+/* Free the entire AST tree. */
+void	free_cmd_ast(t_cmd *root)
+{
+	t_cmd	*temp;
+	t_cmd	*tofree;
+
+	if (!root)
+		return ;
+	free_cmd_ast(root->left);
+	free_cmd_ast(root->right);
+	temp = root->pipe;
+	while (temp)
+	{
+		tofree = temp;
+		temp = temp->pipe;
+		free(tofree);
+	}
+	free(root);
 }

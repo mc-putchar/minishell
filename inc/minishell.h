@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/24 09:53:50 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/25 16:12:15 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,17 @@ extern t_shell	g_shell;
 
 /* Lexer / Parser. */
 
+bool	ft_ismeta(char c);
+bool	ft_isop(char *s);
+
+void	free_token(t_token *token);
+void	free_cmd_ast(t_cmd *root);
+
 t_node	*new_node(t_type type);
 t_cmd	*new_cmd(t_type type);
 t_token	*new_token(t_type type, char *value, t_token *prev);
 bool	accept(t_type type);
 bool	expect(t_type type);
-bool	ft_ismeta(char c);
 bool	load_redir(t_cmd *node);
 bool	expect_redir(void);
 

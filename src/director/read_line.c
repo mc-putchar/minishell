@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/24 11:33:15 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/25 17:10:55 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,13 +140,15 @@ int	do_stuff(void)
 			ft_dprintf(STDOUT_FILENO, "\nLen: %4d | Line:%s\n", ft_strlen(line), line);
 		t_token	*token = input_lexer(line);
 		g_shell.tok = token;
-		while (token)
-		{
-			ft_printf("type: %d, value: %s\n", token->type, token->value);
-			token = token->next;
-		}
+		//while (token)
+		//{
+		//	ft_printf("type: %d, value: %s\n", token->type, token->value);
+		//	token = token->next;
+		//}
 		t_cmd	*ast = build_conditional();
-		ast_display(ast, 0);
+		//ast_display(ast, 0);
+		free_token(token);
+		free_cmd_ast(ast);
 		free(line);
 	}
 }
