@@ -6,12 +6,13 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:48:28 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/25 17:10:58 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/25 19:16:38 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* Create a new command node of a given type. */
 t_cmd	*new_cmd(t_type type)
 {
 	t_cmd	*cmd;
@@ -34,26 +35,12 @@ t_cmd	*new_cmd(t_type type)
 	return (cmd);
 }
 
-/* Create a new node of a given type.
- * Handles pipe, and, or.
-t_node	*new_node(t_type type)
-{
-	t_node	*node;
-
-	node = (t_node *) malloc(sizeof(t_node));
-	node->type = type;
-	init_cmd(&(node->cmd));
-	return (node);
-}*/
-
-/* Accept the next token only when:
- * 1. there was no prior error.
- * 2. it's the correct type. 
- * Otherwise it returns NULL. */
+/* Accept the next token only when it's the correct type. 
+ * Will set parser error to true. */
 bool	accept(t_type type)
 {
 	if (!expect(type))
-		return (false);
+		return (g_shell.parse_error = true, false);
 	g_shell.tok = g_shell.tok->next;
 	return (true);
 }

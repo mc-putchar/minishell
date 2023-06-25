@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/25 16:12:15 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/25 17:36:25 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,15 @@ extern t_shell	g_shell;
 
 bool	ft_ismeta(char c);
 bool	ft_isop(char *s);
-
+bool	accept(t_type type);
+bool	expect(t_type type);
+bool	expect_redir(void);
+bool	load_redir(t_cmd *node);
 void	free_token(t_token *token);
 void	free_cmd_ast(t_cmd *root);
 
-t_node	*new_node(t_type type);
 t_cmd	*new_cmd(t_type type);
 t_token	*new_token(t_type type, char *value, t_token *prev);
-bool	accept(t_type type);
-bool	expect(t_type type);
-bool	load_redir(t_cmd *node);
-bool	expect_redir(void);
 
 int		input_validator(const char *str);
 t_token	*input_lexer(char *line);
