@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 16:05:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/25 17:41:09 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/26 13:07:11 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
  *					|	'(' <conditional> ')'
  */
 
-/* Top level entry point. */
+/* Top level entry point to build an AST. */
 t_cmd	*build_conditional(void)
 {
 	t_cmd	*node;
@@ -58,6 +58,7 @@ t_cmd	*build_conditional(void)
 	return (node);
 }
 
+/* Attempt to build a pipeline. */
 t_cmd	*build_pipeline(void)
 {
 	t_cmd	*node;

@@ -26,6 +26,7 @@ _SRC	:=	ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 			ft_printf.c ft_printf_parse_format.c ft_printf_parse_nbr.c \
 			ft_printf_print.c ft_printf_utils.c ft_gnl.c ft_gnl_utils.c \
 			ft_memgrow.c ft_memccpy.c ft_split_blocks.c get_delim.c \
+			ft_strarrcpy.c ft_strarrlen.c \
 			ft_replace_quotes.c ft_perror.c ft_lstget_atindex.c
 SRC		:=	$(addprefix, $(SRCDIR)/, $(_SRC))
 

@@ -6,14 +6,14 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:18:58 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/25 17:50:16 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/26 18:46:12 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* Check string has right sequence for open and close parentheses. */
-static int	valid_parentheses(const char *str)
+static bool	valid_parentheses(const char *str)
 {
 	int	count;
 
@@ -28,12 +28,12 @@ static int	valid_parentheses(const char *str)
 		++str;	
 	}
 	if (count)
-		return (FALSE);
-	return (TRUE);
+		return (false);
+	return (true);
 }
 
 /* Check string has the right sequence for single and double quotes. */
-static int	valid_quotes(const char *str)
+static bool	valid_quotes(const char *str)
 {
 	int	quote_s;
 	int	quote_d;
@@ -49,8 +49,8 @@ static int	valid_quotes(const char *str)
 		++str;
 	}
 	if (quote_d % 2 || quote_s % 2)
-		return (FALSE);
-	return (TRUE);
+		return (false);
+	return (true);
 }
 
 /* Check string has the correct syntax, namely any cmd to start with | or &.
@@ -58,6 +58,7 @@ static int	valid_quotes(const char *str)
  * &&* or ||* (anything other than space following || or &&). */
 // This is working in progress. *** Parenthese suppport not yet implemented.
 // TODO: cleanup the logic, maybe split into smaller functions.
+// TODO: maybe make most of these be caught by the parser
 static int	valid_syntax(const char *str)
 {
 	char	*s;
@@ -82,16 +83,23 @@ static int	valid_syntax(const char *str)
 }
 
 /* Check input string is valid before proceeding, print error otherwise. */
-int	input_validator(const char *str)
+bool	input_validator(const char *str)
 {
+	char *trimmed;
+
+	trimmed = ft_strtrim(str, " \t\v\n\f\r");
+	if (!trimmed || !trimmed[0])
+		return (free(trimmed), false);
+	free(trimmed);
 	if (!valid_quotes(str))
-		return (FALSE);
+		return (ft_perror("unmatched quotes"), false);
 	if (!valid_parentheses(str))
-		return (FALSE);
+		return (ft_perror("unmatched parentheses"), false);
 	if (!valid_syntax(str))
-		return (FALSE);
-	return (TRUE);
+		return (ft_perror("invalid syntax"), false);
+	return (true);
 }
+
 /*
 int	main(void)
 {

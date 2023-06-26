@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 19:34:30 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/25 17:47:24 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/26 13:10:34 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	append_arg_to_cmd(t_cmd *cmd)
 	while (cmd->args[++i] && i < MAX_ARGS)
 		;
 	if (i >= MAX_ARGS)
-		return (false);
+		return (g_shell.parse_error = true, false);
 	cmd->args[i] = g_shell.tok->value;
 	return (accept(WORD));
 }
@@ -36,7 +36,7 @@ t_cmd	*build_command(void)
 	if (accept(LPARENT))
 	{
 		node = build_conditional();
-		accept(RPARENT); //validate parentheses before hand?
+		accept(RPARENT);
 	}
 	else if (expect(WORD))
 	{
@@ -46,7 +46,7 @@ t_cmd	*build_command(void)
 		while (expect(WORD) || expect_redir())
 		{
 			if (expect(WORD) && !append_arg_to_cmd(node))
-				return (ft_perror("building command: too many args"), NULL);
+				return (ft_perror("building command: too many args"), node);
 			else
 				load_redir(node);
 		}

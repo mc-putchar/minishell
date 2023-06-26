@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/25 17:10:55 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/26 19:01:08 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	*read_line(char *prompt)
 
 	cmdl.prompt = prompt;
 	reset_cmd_line(&cmdl);
-	while (1)
+	while (true)
 	{
 		ret = 0;
 		read_ret = read(STDIN_FILENO, &ret, 4);
@@ -125,7 +125,7 @@ int	do_stuff(void)
 	prompt = build_prompt();
 	if (!prompt)
 		return (ft_perror("build_prompt"));
-	while (1)
+	while (true)
 	{	
 		if (setup_terminal(&term_backup))
 			return (ft_perror("setup_terminal"));
@@ -138,17 +138,7 @@ int	do_stuff(void)
 		// TODO: replace this printing with parsing and executing
 		if (line[0])
 			ft_dprintf(STDOUT_FILENO, "\nLen: %4d | Line:%s\n", ft_strlen(line), line);
-		t_token	*token = input_lexer(line);
-		g_shell.tok = token;
-		//while (token)
-		//{
-		//	ft_printf("type: %d, value: %s\n", token->type, token->value);
-		//	token = token->next;
-		//}
-		t_cmd	*ast = build_conditional();
-		//ast_display(ast, 0);
-		free_token(token);
-		free_cmd_ast(ast);
+		parse_execute(line);
 		free(line);
 	}
 }
