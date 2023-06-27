@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:18:58 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/26 18:46:12 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/27 14:22:18 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static bool	valid_parentheses(const char *str)
 		if (*str == ')' && --count)
 			if (count < 0)
 				return (FALSE);
-		++str;	
+		++str;
 	}
 	if (count)
 		return (false);
@@ -37,7 +37,7 @@ static bool	valid_quotes(const char *str)
 {
 	int	quote_s;
 	int	quote_d;
-	
+
 	quote_d = 0;
 	quote_s = 0;
 	while (*str)
@@ -64,19 +64,19 @@ static int	valid_syntax(const char *str)
 	char	*s;
 	int		has_char;
 	int		i;
-	
+
 	s = ft_replace_quotes(str, '_');
 	has_char = 0;
 	i = -1;
 	while (s[++i])
 	{
-		//ft_printf("%s, has_char: %d\n", &s[i], has_char);
-		if (!has_char && (((s[i] == '|' && (s[i + 1] == '|'
-			|| s[i + 1] == ' ')) || s[i] == '&')))
+		if (!has_char && (((s[i] == '|' && (s[i + 1] == '|' || s[i + 1] == ' '))
+					|| s[i] == '&')))
 			return (free(s), FALSE);
 		if (ft_isprint(s[i]) && s[i] != ' ' && s[i] != '|' && s[i] != '&')
 			has_char = 1;
-		else if ((s[i] == '|' && s[i] != '|') || (s[i] == '&' && s[i - 1] == '&'))
+		else if ((s[i] == '|' && s[i] != '|')
+			|| (s[i] == '&' && s[i - 1] == '&'))
 			has_char = 0;
 	}
 	return (free(s), TRUE);
@@ -85,7 +85,7 @@ static int	valid_syntax(const char *str)
 /* Check input string is valid before proceeding, print error otherwise. */
 bool	input_validator(const char *str)
 {
-	char *trimmed;
+	char	*trimmed;
 
 	trimmed = ft_strtrim(str, " \t\v\n\f\r");
 	if (!trimmed || !trimmed[0])

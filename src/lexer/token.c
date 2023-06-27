@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 11:50:38 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/26 17:58:56 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/27 14:22:30 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool	ft_isop(char *s)
 t_token	*new_token(t_type type, char *value, t_token *prev)
 {
 	t_token	*token;
-	
+
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
