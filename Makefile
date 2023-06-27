@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/06/24 11:22:23 by dlu              ###   ########.fr        #
+#    Updated: 2023/06/27 14:04:46 by dlu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME	:=	minishell
 SRCDIR	:=	src
 INCDIR	:=	inc
 OBJDIR	:=	obj
-SUBDIR	:=	director lexer parser xecutor debug
+SUBDIR	:=	director lexer parser xecutor builtin debug
 LIBDIR	:=	libft
 
 #--- LIBRARIES ---
@@ -27,13 +27,15 @@ LIBFT	:=	$(LIBDIR)/libft.a
 SRC		:=	main.c \
 			director/build_prompt.c director/director.c director/init_shell.c \
 			director/read_line.c director/setup_terminal.c director/history.c \
-			director/history_ctrl.c \
+			director/history_ctrl.c director/parse_execute.c \
 			lexer/token.c lexer/lexer.c lexer/validator.c \
 			parser/ast_basic.c parser/ast_block.c parser/ast_command.c \
 			parser/ast_redir.c \
+			builtin/builtin.c builtin/builtin_echo.c builtin/builtin_dir.c \
+			builtin/builtin_environ.c builtin/builtin_exit.c \
+			xecutor/xecutor.c xecutor/cmd_validator.c xecutor/cmd_expansion.c \
 			debug/ast_display.c
 			#xecutor/builtin.c xecutor/redirect.c xecutor/xecutor.c \
-			xecutor/cmd_validator.c \
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRC))
 
 #--- OBJECTS ---

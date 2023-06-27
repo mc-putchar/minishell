@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strarrlen.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 11:12:06 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/26 19:05:43 by dlu              ###   ########.fr       */
+/*   Created: 2023/06/08 15:08:56 by dlu               #+#    #+#             */
+/*   Updated: 2023/06/09 09:29:42 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-t_shell	g_shell;
-
-int	main(int ac, char **av, char **ev)
+int	ft_strarrlen(char **arr)
 {
-	while (ac && av && ev)
-		if (director(ac, av, ev))
-			return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	int	i;
+
+	if (!arr)
+		return (0);
+	i = -1;
+	while (arr[++i])
+		;
+	return (i);
 }

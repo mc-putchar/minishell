@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/24 09:53:50 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/27 14:07:21 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <errno.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <string.h>
 # include <term.h>
 # include <termios.h>
 # include <stdio.h>
@@ -60,6 +61,7 @@ typedef struct	s_shell
 	int			status;
 	bool		parse_error;
 	t_token		*tok;
+	t_token		*tok_head;
 }	t_shell;
 
 /* Global variable */
@@ -67,41 +69,43 @@ extern t_shell	g_shell;
 
 /* Functions. */
 
-/* Lexer / Parser. */
+/* Lexer & Parser. */
 
-t_node	*new_node(t_type type);
-t_cmd	*new_cmd(t_type type);
-t_token	*new_token(t_type type, char *value, t_token *prev);
+bool	ft_ismeta(char c);
+bool	ft_isop(char *s);
 bool	accept(t_type type);
 bool	expect(t_type type);
-bool	ft_ismeta(char c);
-bool	load_redir(t_cmd *node);
 bool	expect_redir(void);
-
-int		input_validator(const char *str);
+bool	load_redir(t_cmd *node);
+bool	input_validator(const char *str);
+void	free_token(t_token *token);
+void	free_cmd_ast(t_cmd *root);
+t_cmd	*new_cmd(t_type type);
+t_token	*new_token(t_type type, char *value, t_token *prev);
 t_token	*input_lexer(char *line);
-
-t_cmd	*parser(char **tokens);
-
 t_cmd	*build_conditional(void);
 t_cmd	*build_pipeline(void);
 t_cmd	*build_command(void);
 
-int		executor(t_cmd *cmd, char * const envp[]);
+int		executor(t_cmd *cmd);
 int		redir_in(t_cmd *cmd, char * const envp[]);
 int		redir_out(t_cmd *cmd, char * const envp[]);
 int		redir_append(t_cmd *cmd, char * const envp[]);
 int		redir_here(t_cmd *cmd, char * const envp[]);
-int		builtin(t_cmd *cmd, char * const envp[]);
-char	*cmd_validator(t_cmd *cmd);
+bool	cmd_validator(t_cmd *cmd);
+char	*cmd_path(t_cmd *cmd);
+int		parse_execute(char *line);
 
-int		ft_echo(t_cmd *cmd, char * const envp[]);
-int		ft_cd(t_cmd *cmd, char * const envp[]);
-int		ft_pwd(t_cmd *cmd, char * const envp[]);
-int		ft_export(t_cmd *cmd, char * const envp[]);
-int		ft_unset(t_cmd *cmd, char * const envp[]);
-int		ft_env(t_cmd *cmd, char * const envp[]);
-int		exit_shell(t_cmd *cmd, char * const envp[]);
+/* Builtins. */
+int		builtin_echo(t_cmd *cmd);
+int		builtin_cd(t_cmd *cmd);
+int		builtin_pwd(t_cmd *cmd);
+int		builtin_export(t_cmd *cmd);
+int		builtin_unset(t_cmd *cmd);
+int		builtin_env(t_cmd *cmd);
+int		builtin_exit(t_cmd *cmd);
+int		execute_builtin(t_cmd *cmd);
+bool	is_builtin(t_cmd *cmd);
 
 int		director(int ac, char **av, char **envp);
 int		init_shell(void);
@@ -117,7 +121,7 @@ int		do_stuff(void);
 void	gtfo(t_cmdline *cmdl);
 void	reset_cmd_line(t_cmdline *cmdl);
 
-/* Debug */
+/* Debugging tools. */
 void	ast_display(t_cmd *node, int level);
 
 #endif

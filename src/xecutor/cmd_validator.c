@@ -6,12 +6,13 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 18:02:34 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/20 18:19:24 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/06/26 19:03:49 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* Free the path pointers. */
 static void	free_paths(char **paths)
 {
 	int	i;
@@ -22,29 +23,34 @@ static void	free_paths(char **paths)
 	free(paths);
 }
 
+/* Search the executable path in order, NULL if not found. */
 static char	*find_path(char *cmdname)
 {
+	char	*subpath;
 	char	*path;
 	char	**paths;
+	int		i;
 
 	paths = ft_split(getenv("PATH"), ':');
 	if (!paths)
 		return (NULL);
-	while (*paths)
+	i = -1;
+	while (paths[++i])
 	{
-		path = ft_strjoin(*paths, cmdname);
+		subpath = ft_strjoin("/", cmdname);
+		path = ft_strjoin(paths[i], subpath);
 		if (!path)
-			return (free_paths(paths), NULL);
+			return (free_paths(paths), free(subpath), NULL);
 		if (!access(path, X_OK))
-			return (free_paths(paths), path);
+			return (free_paths(paths), free(subpath), path);
+		free(subpath);
 		free(path);
-		paths++;
 	}
-	free_paths(paths);
-	return (NULL);
+	return (free_paths(paths), NULL);
 }
 
-char	*cmd_validator(t_cmd *cmd)
+/* Get actual command path, validated first so it should never fail. */
+char	*cmd_path(t_cmd *cmd)
 {
 	char	*path;
 
@@ -58,7 +64,23 @@ char	*cmd_validator(t_cmd *cmd)
 	}
 	if (ft_strchr(cmd->args[0], '/') && !access(cmd->args[0], X_OK))
 		return (cmd->args[0]);
-	ft_dprintf(STDERR_FILENO, "minishell: %s: command not found\n", \
-		cmd->args[0]);
+	return (NULL);
+}
+
+/* Check if a command can be found. */
+bool cmd_validator(t_cmd *cmd)
+{
+	char	*path;
+
+	path = find_path(cmd->args[0]);
+	if (path)
+		return (free(path), true);
+	if (cmd->args[0][0] == '.' || cmd->args[0][0] == '/')
+	{
+		if (!access(cmd->args[0], X_OK))
+			return (cmd->args[0]);
+	}
+	if (ft_strchr(cmd->args[0], '/') && !access(cmd->args[0], X_OK))
+		return (cmd->args[0]);
 	return (NULL);
 }

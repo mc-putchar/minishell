@@ -6,12 +6,13 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:48:28 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/24 11:31:55 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/27 14:05:38 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* Create a new command node of a given type. */
 t_cmd	*new_cmd(t_type type)
 {
 	t_cmd	*cmd;
@@ -34,22 +35,8 @@ t_cmd	*new_cmd(t_type type)
 	return (cmd);
 }
 
-/* Create a new node of a given type.
- * Handles pipe, and, or.
-t_node	*new_node(t_type type)
-{
-	t_node	*node;
-
-	node = (t_node *) malloc(sizeof(t_node));
-	node->type = type;
-	init_cmd(&(node->cmd));
-	return (node);
-}*/
-
-/* Accept the next token only when:
- * 1. there was no prior error.
- * 2. it's the correct type. 
- * Otherwise it returns NULL. */
+/* Accept the next token only when it's the correct type. 
+ * Will set parser error to true. */
 bool	accept(t_type type)
 {
 	if (!expect(type))
@@ -64,4 +51,24 @@ bool	expect(t_type type)
 	if (g_shell.tok && g_shell.tok->type == type)
 		return (true);
 	return (false);
+}
+
+/* Free the entire AST tree. */
+void	free_cmd_ast(t_cmd *root)
+{
+	t_cmd	*temp;
+	t_cmd	*tofree;
+
+	if (!root)
+		return ;
+	free_cmd_ast(root->left);
+	free_cmd_ast(root->right);
+	temp = root->pipe;
+	while (temp)
+	{
+		tofree = temp;
+		temp = temp->pipe;
+		free(tofree);
+	}
+	free(root);
 }

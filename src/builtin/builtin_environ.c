@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   builtin_environ.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 11:12:06 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/26 19:05:43 by dlu              ###   ########.fr       */
+/*   Created: 2023/06/26 14:09:02 by dlu               #+#    #+#             */
+/*   Updated: 2023/06/26 14:23:19 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_shell	g_shell;
-
-int	main(int ac, char **av, char **ev)
+int	builtin_export(t_cmd *cmd)
 {
-	while (ac && av && ev)
-		if (director(ac, av, ev))
-			return (EXIT_FAILURE);
+	(void) cmd;
+	return (EXIT_SUCCESS);
+}
+
+int	builtin_unset(t_cmd *cmd)
+{
+	(void) cmd;
+	return (EXIT_SUCCESS);
+}
+
+int	builtin_env(t_cmd *cmd)
+{
+	(void) cmd;
 	return (EXIT_SUCCESS);
 }

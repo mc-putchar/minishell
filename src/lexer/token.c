@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 11:50:38 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/23 13:05:20 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/27 14:22:30 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,28 @@ bool	ft_ismeta(char c)
 		return (false);
 }
 
+/* Check if a the string is at an operator.
+ * Handles '||', '&&', '<<', '>>', '<' '>', '|', '(', ')'. */
+bool	ft_isop(char *s)
+{
+	if (ft_strncmp(s, "||", 2) == 0)
+		return (true);
+	if (ft_strncmp(s, "&&", 2) == 0)
+		return (true);
+	if (ft_strncmp(s, ">>", 2) == 0)
+		return (true);
+	if (ft_strncmp(s, "<<", 2) == 0)
+		return (true);
+	if (*s == '<' || *s == '>' || *s == '|' || *s == '(' || *s == ')')
+		return (true);
+	return (false);
+}
+
+/* Generate a new token. */
 t_token	*new_token(t_type type, char *value, t_token *prev)
 {
 	t_token	*token;
-	
+
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
@@ -35,4 +53,19 @@ t_token	*new_token(t_type type, char *value, t_token *prev)
 	if (prev)
 		prev->next = token;
 	return (token);
+}
+
+/* Free the token list from the head. */
+void	free_token(t_token *token)
+{
+	t_token	*temp;
+
+	while (token)
+	{
+		temp = token;
+		token = token->next;
+		if (temp->type == WORD && temp->value)
+			free(temp->value);
+		free(temp);
+	}
 }

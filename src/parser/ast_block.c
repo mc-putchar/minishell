@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 16:05:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/24 11:36:53 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/27 13:29:49 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
  *
  * <conditional>	::= 
  *						<pipeline>
- *					|	<pipeline> '&&' <conditional> 
- *					|	<pipeline> '||' <conditional>
+ *					|	<pipeline> { '&&' <pipeline> }
+ *					|	<pipeline> { '||' <pipeline> }
  * <pipeline>		::= 
  *						<command>
- *					|	<command> '|' <pipeline>
+ *					|	<command> { '|' <command> }
  * <redirection>	::=
  *						'>' <word>
  *					|	'<' <word>
@@ -29,13 +29,12 @@
  *					|	'<<' <word>
  * <command>		::=
  *						<word>
- *					|	<word> <command>
- *					|	<redirection>			// to implement
- *					|	<redirection> <command> // to implement
- *					|	<command> <redirection> // to implement
+ *					|	<word> { <word> | <redirection> }
+ *					|	<redirection> | { <word> | <redirection> }
  *					|	'(' <conditional> ')'
  */
 
+/* Top level entry point to build an AST. */
 t_cmd	*build_conditional(void)
 {
 	t_cmd	*node;
@@ -43,7 +42,7 @@ t_cmd	*build_conditional(void)
 
 	node = build_pipeline();
 	if (!node)
-		return (ft_perror("building pipeline"), NULL);
+		return (NULL);
 	while (expect(AND) || expect(OR))
 	{
 		if (accept(AND))
@@ -52,11 +51,14 @@ t_cmd	*build_conditional(void)
 			temp = new_cmd(OR);
 		temp->left = node;
 		temp->right = build_pipeline();
+		if (!temp->right)
+			g_shell.parse_error = true;
 		node = temp;
 	}
 	return (node);
 }
 
+/* Attempt to build a pipeline. */
 t_cmd	*build_pipeline(void)
 {
 	t_cmd	*node;
@@ -64,13 +66,15 @@ t_cmd	*build_pipeline(void)
 
 	node = build_command();
 	if (!node)
-		return (ft_perror("building command"), NULL);
+		return (NULL);
 	temp = node;
 	while (accept(PIPE))
 	{
 		while (temp->pipe)
 			temp = temp->pipe;
 		temp->pipe = build_command();
+		if (!temp->pipe)
+			g_shell.parse_error = true;
 	}
 	return (node);
 }
