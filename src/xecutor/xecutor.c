@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   xecutor.c                                          :+:      :+:    :+:   */
+/*   xecutor2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/26 19:04:06 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/27 14:03:37 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	simple(char **args, char * const envp[])
+extern char **environ; // change to the global struct later on
+					   // or edit __environ directly
+
+static int	simple(t_cmd *cmd)
 {
 	pid_t	pid;
 	int		status;
@@ -21,14 +24,19 @@ static int	simple(char **args, char * const envp[])
 	if (pid < 0)
 		return (EXIT_FAILURE);
 	if (!pid)
-		if (execve(args[0], args, envp) == -1)
+	{
+		cmd->args[0] = cmd_path(cmd);
+		// argument expansion here?
+		if (execve(cmd->args[0], cmd->args, environ) == -1)
 			return (EXIT_FAILURE);
+	}
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (EXIT_SUCCESS);
 }
 
+/*
 static int	pipex(t_cmd *cmd, char * const envp[])
 {
 	int		fd[2];
@@ -70,48 +78,52 @@ static int	pipex(t_cmd *cmd, char * const envp[])
 		return (WEXITSTATUS(status2));
 	return (EXIT_SUCCESS);
 }
+*/
 
-static int	and(t_cmd *cmd, char * const envp[])
+/* Evalute left node first, only evalute right node if succeeds. */
+static int	and(t_cmd *cmd)
 {
-	int		status;
+	int	status;
 
-	if (executor(cmd->left, envp) == EXIT_SUCCESS)
-		status = executor(cmd->right, envp);
+	if (executor(cmd->left) == EXIT_SUCCESS)
+		status = executor(cmd->right);
 	else
 		status = EXIT_FAILURE;
 	return (status);
 }
 
-static int	or(t_cmd *cmd, char * const envp[])
+/* Evaluate left node first, only evalute right node if fails. */
+static int	or(t_cmd *cmd)
 {
-	int		status;
+	int	status;
 
-	if (executor(cmd->left, envp) == EXIT_SUCCESS)
+	if (executor(cmd->left) == EXIT_SUCCESS)
 		status = EXIT_SUCCESS;
 	else
-		status = executor(cmd->right, envp);
+		status = executor(cmd->right);
 	return (status);
 }
 
-int	executor(t_cmd *cmd, char * const envp[])
+/* Couldn't find the command, print error message. */
+static int	invalid_command(t_cmd *cmd)
 {
-	if (cmd->type == CMD)
-		return (simple(cmd->args, envp));
-	else if (cmd->type == PIPE)
-		return (pipex(cmd, envp));
-	else if (cmd->type == REDIR_IN)
-		return (redir_in(cmd, envp));
-	else if (cmd->type == REDIR_OUT)
-		return (redir_out(cmd, envp));
-	else if (cmd->type == REDIR_APPEND)
-		return (redir_append(cmd, envp));
-	else if (cmd->type == REDIR_HERE)
-		return (redir_here(cmd, envp));
-	else if (cmd->type == AND)
-		return (and(cmd, envp));
+	ft_dprintf(STDERR_FILENO, "minishell: %s: command not found\n",
+		cmd->args[0]);
+	return (EXIT_FAILURE);
+}
+
+/* Execute a command node, possible types are AND, OR, or COMMAND. */
+int	executor(t_cmd *cmd)
+{
+	if (cmd->type == AND)
+		return (and(cmd));
 	else if (cmd->type == OR)
-		return (or(cmd, envp));
-	else if (cmd->type == BUILTIN)
-		return (builtin(cmd, envp));
-	return (0);
+		return (or(cmd));
+	else if (is_builtin(cmd))
+		return (execute_builtin(cmd));
+	else if (cmd_validator(cmd))
+		return (simple(cmd));
+	else
+		return (invalid_command(cmd));
+	return (EXIT_FAILURE);
 }

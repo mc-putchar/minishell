@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/26 18:51:10 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/27 14:07:21 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ extern t_shell	g_shell;
 
 /* Functions. */
 
-/* Lexer / Parser. */
+/* Lexer & Parser. */
 
 bool	ft_ismeta(char c);
 bool	ft_isop(char *s);
@@ -77,17 +77,12 @@ bool	accept(t_type type);
 bool	expect(t_type type);
 bool	expect_redir(void);
 bool	load_redir(t_cmd *node);
+bool	input_validator(const char *str);
 void	free_token(t_token *token);
 void	free_cmd_ast(t_cmd *root);
-
 t_cmd	*new_cmd(t_type type);
 t_token	*new_token(t_type type, char *value, t_token *prev);
-
-bool	input_validator(const char *str);
 t_token	*input_lexer(char *line);
-
-t_cmd	*parser(char **tokens);
-
 t_cmd	*build_conditional(void);
 t_cmd	*build_pipeline(void);
 t_cmd	*build_command(void);
@@ -101,7 +96,7 @@ bool	cmd_validator(t_cmd *cmd);
 char	*cmd_path(t_cmd *cmd);
 int		parse_execute(char *line);
 
-/* Builtins.*/
+/* Builtins. */
 int		builtin_echo(t_cmd *cmd);
 int		builtin_cd(t_cmd *cmd);
 int		builtin_pwd(t_cmd *cmd);
@@ -126,7 +121,7 @@ int		do_stuff(void);
 void	gtfo(t_cmdline *cmdl);
 void	reset_cmd_line(t_cmdline *cmdl);
 
-/* Debug */
+/* Debugging tools. */
 void	ast_display(t_cmd *node, int level);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/06/26 18:13:28 by dlu              ###   ########.fr        #
+#    Updated: 2023/06/27 14:04:46 by dlu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,10 +33,9 @@ SRC		:=	main.c \
 			parser/ast_redir.c \
 			builtin/builtin.c builtin/builtin_echo.c builtin/builtin_dir.c \
 			builtin/builtin_environ.c builtin/builtin_exit.c \
-			xecutor/xecutor2.c xecutor/cmd_validator.c xecutor/cmd_expansion.c \
+			xecutor/xecutor.c xecutor/cmd_validator.c xecutor/cmd_expansion.c \
 			debug/ast_display.c
 			#xecutor/builtin.c xecutor/redirect.c xecutor/xecutor.c \
-			xecutor/cmd_validator.c \
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRC))
 
 #--- OBJECTS ---

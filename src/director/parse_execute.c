@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 18:00:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/26 19:00:12 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/27 13:32:11 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,12 @@ int	parse_execute(char *line)
 		return (EXIT_FAILURE);
 	g_shell.tok_head = input_lexer(line);
 	g_shell.tok = g_shell.tok_head;
+	g_shell.parse_error = false;
 	ast = build_conditional();
-	executor(ast);
+	if (!g_shell.parse_error)
+		executor(ast);
+	else
+		ft_perror("parser error");
 	free_cmd_ast(ast); // everything needs freeing needs to be in the global struct
 					   // so that it can be freed when exit is being executed
 	free_token(g_shell.tok_head);

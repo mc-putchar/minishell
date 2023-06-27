@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 16:05:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/26 13:07:11 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/27 13:29:49 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_cmd	*build_conditional(void)
 
 	node = build_pipeline();
 	if (!node)
-		return (g_shell.parse_error = true, new_cmd(EMPTY));
+		return (NULL);
 	while (expect(AND) || expect(OR))
 	{
 		if (accept(AND))
@@ -66,7 +66,7 @@ t_cmd	*build_pipeline(void)
 
 	node = build_command();
 	if (!node)
-		return (g_shell.parse_error = true, new_cmd(EMPTY));
+		return (NULL);
 	temp = node;
 	while (accept(PIPE))
 	{

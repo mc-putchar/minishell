@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:48:28 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/26 18:59:41 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/27 14:05:38 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_cmd	*new_cmd(t_type type)
 bool	accept(t_type type)
 {
 	if (!expect(type))
-		return (g_shell.parse_error = true, false);
+		return (false);
 	g_shell.tok = g_shell.tok->next;
 	return (true);
 }

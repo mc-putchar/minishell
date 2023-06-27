@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 19:34:30 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/26 13:10:34 by dlu              ###   ########.fr       */
+/*   Updated: 2023/06/27 13:43:16 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,14 @@ bool	append_arg_to_cmd(t_cmd *cmd)
 t_cmd	*build_command(void)
 {
 	t_cmd	*node;
-	t_cmd	*temp;
 
 	node = NULL;
-	temp = NULL;
 	if (accept(LPARENT))
 	{
 		node = build_conditional();
 		accept(RPARENT);
 	}
-	else if (expect(WORD))
+	else if (expect(WORD) || expect_redir())
 	{
 		node = new_cmd(COMMAND);
 		if (!node)
@@ -50,14 +48,8 @@ t_cmd	*build_command(void)
 			else
 				load_redir(node);
 		}
-	}/*
-	else if (expect_redir())
-	{
-		node = new_cmd(EMPTY); // redirection without command, probably shouldn't do anything?
-		if (!node)
-			return (ft_perror("malloc"), NULL);
-	}*/
+	}
 	else
-		return (ft_perror("building command"), NULL);
+		return (g_shell.parse_error = true, new_cmd(EMPTY));
 	return (node);
 }
