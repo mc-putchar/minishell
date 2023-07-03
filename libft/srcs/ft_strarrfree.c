@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 20:02:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/03 20:09:47 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/03 22:45:43 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	ft_strarrfree(char **arr)
 {
-	char	*temp;
-	int		i;
+	int	i;
 
 	i = -1;
 	while (arr[++i])
-		free();
+		free(arr[i]);
+	free(arr);
 }

@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:48:57 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/03 20:01:34 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/03 22:47:18 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ int	builtin_echo(t_cmd *cmd)
 		else
 			write(fd, av[i], ft_strlen(av[i]));
 	}
-	return (EXIT_SUCCESS);
+	return (ft_strarrfree((char **) av), EXIT_SUCCESS);
 }
