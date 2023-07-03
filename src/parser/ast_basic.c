@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:48:28 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/27 14:05:38 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/03 22:37:26 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,11 @@ void	free_cmd_ast(t_cmd *root)
 		free(tofree);
 	}
 	free(root);
+}
+
+/* Check if the current token is the redirection token. */
+bool	expect_redir(void)
+{
+	return (expect(REDIR_IN) || expect(REDIR_OUT)
+		|| expect(APPEND) || expect(HERE_DOC));
 }

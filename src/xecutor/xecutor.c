@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   xecutor2.c                                         :+:      :+:    :+:   */
+/*   xecutor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/27 14:03:37 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/03 17:38:24 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,16 @@ static int	simple(t_cmd *cmd)
 {
 	pid_t	pid;
 	int		status;
+	char	**args;
 
 	pid = fork();
 	if (pid < 0)
 		return (EXIT_FAILURE);
 	if (!pid)
 	{
-		cmd->args[0] = cmd_path(cmd);
-		// argument expansion here?
-		if (execve(cmd->args[0], cmd->args, environ) == -1)
+		args = cmd_expansion(cmd->args);
+		args[0] = cmd_path(cmd);
+		if (execve(args[0], args, environ) == -1)
 			return (EXIT_FAILURE);
 	}
 	waitpid(pid, &status, 0);
