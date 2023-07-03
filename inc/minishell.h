@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/27 14:07:21 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/03 17:33:23 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,9 @@ bool	cmd_validator(t_cmd *cmd);
 char	*cmd_path(t_cmd *cmd);
 int		parse_execute(char *line);
 
+char	**cmd_expansion(char **args);
+char	*arg_expansion(char *arg);
+
 /* Builtins. */
 int		builtin_echo(t_cmd *cmd);
 int		builtin_cd(t_cmd *cmd);
@@ -123,5 +126,6 @@ void	reset_cmd_line(t_cmdline *cmdl);
 
 /* Debugging tools. */
 void	ast_display(t_cmd *node, int level);
+void	tokens_print(t_token *start);
 
 #endif
