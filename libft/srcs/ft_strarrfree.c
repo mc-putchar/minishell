@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens_print.c                                     :+:      :+:    :+:   */
+/*   ft_strarrfree.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/03 16:00:49 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/03 22:39:48 by dlu              ###   ########.fr       */
+/*   Created: 2023/07/03 20:02:35 by dlu               #+#    #+#             */
+/*   Updated: 2023/07/03 20:09:47 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	tokens_print(t_token *start)
+void	ft_strarrfree(char **arr)
 {
-	int	i;
+	char	*temp;
+	int		i;
 
-	i = 0;
-	while (start && ++i)
-	{
-		ft_printf("token %d: %s\n", i, start->value);
-		start = start->next;
-	}
+	i = -1;
+	while (arr[++i])
+		free();
 }

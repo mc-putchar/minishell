@@ -6,13 +6,13 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:13:47 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/03 17:34:37 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/03 22:29:12 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#define ENVNAME_MAX	100
+#define ENVNAME_MAX	64
 
 /* Get the next environment variable name and return how many characters
  * the pointer should be moved, excluding the increment in the loop. */
@@ -22,6 +22,12 @@ static int	get_envname(char *s, char *name)
 
 	if (!s || *s != '$')
 		return (0);
+	if (s[1] == '?')
+	{
+		name[0] = '?';
+		name[1] = '\0';
+		return (2);
+	}
 	i = 0;
 	while (s[++i] && (ft_isalnum(s[i]) || s[i] == '_') && i < ENVNAME_MAX)
 		name[i - 1] = s[i];
@@ -32,10 +38,17 @@ static int	get_envname(char *s, char *name)
 /* Put the value of environment varibale and increment the pointers. */
 static void	put_envvalue(char *arg, char *ret, int *i, int *j)
 {
+	char	*temp;
 	char	env_name[ENVNAME_MAX];
 
 	*i += get_envname(&arg[*i], env_name) - 1;
-	if (getenv(env_name))
+	if (ft_strncmp(env_name, "?", 1) == 0)
+	{
+		temp = ft_itoa(g_shell.status);
+		*j = ft_strlcat(ret, temp, BUFFER_SIZE);
+		free(temp);
+	}
+	else if (getenv(env_name))
 		*j = ft_strlcat(ret, getenv(env_name), BUFFER_SIZE);
 }
 
@@ -70,7 +83,6 @@ char	*arg_expansion(char *arg)
 
 /* Expand the arguments for $. */
 // This ideally would be after forking?
-// Dynamic memory allocation would be a pain...
 char	**cmd_expansion(char **args)
 {
 	char	**ret;
@@ -93,6 +105,7 @@ char	**cmd_expansion(char **args)
 	}
 	return (ret);
 }
+
 /*
 int	main(void)
 {

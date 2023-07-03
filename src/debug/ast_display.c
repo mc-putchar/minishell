@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 09:15:17 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/26 14:47:10 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/03 22:42:17 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void ast_display(t_cmd *node, int level)
 {
 	if (node == NULL)
-		return;
+		return ;
 	for (int i = 0; i < level; i++)
-		printf("\t");
+		ft_printf("\t");
 	if (node->type == COMMAND) {
 		ft_printf("Type: %d, Args: ", node->type);
 		int	i = -1;

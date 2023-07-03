@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:48:57 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/03 17:42:16 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/03 20:01:34 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@
 // Permission, error message, input redirection has no effect */
 int	builtin_echo(t_cmd *cmd)
 {
-	const char	**av = (const char **) cmd->args;
+	const char	**av = (const char **) cmd_expansion(cmd->args);
 	const int	fd = 1; // Need to get the correct redirection
-	int			n_flag;
+	bool		n_flag;
 	int			i;
 
-	n_flag = 0;
+	n_flag = false;
 	i = 0;
 	while (av[++i])
 	{
 		if (i == 1 && ft_strlen(av[i]) == 2 && ft_strncmp("-n", av[1], 2) == 0)
-			n_flag = 1;
+			n_flag = true;
 		else if (av[i + 1])
 		{
 			write(fd, av[i], ft_strlen(av[i]));

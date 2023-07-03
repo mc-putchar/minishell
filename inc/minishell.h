@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/03 17:33:23 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/03 22:38:19 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,10 @@ t_cmd	*build_pipeline(void);
 t_cmd	*build_command(void);
 
 int		executor(t_cmd *cmd);
-int		redir_in(t_cmd *cmd, char * const envp[]);
-int		redir_out(t_cmd *cmd, char * const envp[]);
-int		redir_append(t_cmd *cmd, char * const envp[]);
-int		redir_here(t_cmd *cmd, char * const envp[]);
+//int		redir_in(t_cmd *cmd, char * const envp[]);
+//int		redir_out(t_cmd *cmd, char * const envp[]);
+//int		redir_append(t_cmd *cmd, char * const envp[]);
+//int		redir_here(t_cmd *cmd, char * const envp[]);
 bool	cmd_validator(t_cmd *cmd);
 char	*cmd_path(t_cmd *cmd);
 int		parse_execute(char *line);

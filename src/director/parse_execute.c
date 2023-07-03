@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 18:00:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/03 16:13:37 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/03 22:39:30 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	parse_execute(char *line)
 	g_shell.parse_error = false;
 	tokens_print(g_shell.tok_head);
 	ast = build_conditional();
+	ast_display(ast, 0);
 	if (!g_shell.parse_error)
 		executor(ast);
 	else
