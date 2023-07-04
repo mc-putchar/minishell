@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/26 19:01:08 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/04 11:09:24 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	csi_handler(int ret, t_cmdline *cmdl)
 
 void	check_control(int ret, t_cmdline *cmdl)
 {
-	if (ret == CTRL_D)
+	if (ret == CTRL_D && !cmdl->size)
 		gtfo(cmdl);
 	else if (ret == CTRL_C)
 	{
@@ -52,7 +52,9 @@ void	check_control(int ret, t_cmdline *cmdl)
 	{
 		CLEAR_SCREEN;
 		MOVE_HOME;
-		ft_printf("%s%s", cmdl->prompt, cmdl->buff);
+		if (print_prompt())
+			ft_perror("print_prompt");
+		ft_printf("%s", cmdl->buff);
 		MOVE_LEFT(cmdl->size - cmdl->i);
 		if (!cmdl->size)
 			ft_printf(" ");
@@ -92,7 +94,7 @@ char	*read_line(char *prompt)
 	int			ret;
 	ssize_t		read_ret;
 
-	cmdl.prompt = prompt;
+	(void)prompt;
 	reset_cmd_line(&cmdl);
 	while (true)
 	{
@@ -108,6 +110,7 @@ char	*read_line(char *prompt)
 		{
 			cmdl.buff[cmdl.size] = 0;
 			flush_history(&cmdl);
+			ft_printf("\n");
 			return (ft_strdup(cmdl.buff));
 		}
 		else if (ft_isascii(ret))
@@ -118,26 +121,17 @@ char	*read_line(char *prompt)
 int	do_stuff(void)
 {
 	char			*line;
-	char			*prompt;
 	struct termios	term_backup;
 
 	ft_bzero(&term_backup, sizeof(term_backup));
-	prompt = build_prompt();
-	if (!prompt)
-		return (ft_perror("build_prompt"));
 	while (true)
 	{	
 		if (setup_terminal(&term_backup))
 			return (ft_perror("setup_terminal"));
-		line = read_line(prompt);
+		line = read_line(NULL);
 		reset_terminal(&term_backup);
 		if (!line)
 			return (ft_perror("read_line"));
-		//if (!ft_strncmp(line, "exit\n", 5))
-		//	gtfo(prompt);
-		// TODO: replace this printing with parsing and executing
-		if (line[0])
-			ft_dprintf(STDOUT_FILENO, "\nLen: %4d | Line:%s\n", ft_strlen(line), line);
 		parse_execute(line);
 		free(line);
 	}

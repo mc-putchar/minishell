@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:19:39 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/23 17:51:22 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/04 11:07:13 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,27 @@ char	*compact_cwd(char *cwd, char *home)
 	return (cwd);
 }
 
-//TODO: maybe add user@host to prompt
-char	*build_prompt(void)
+// TODO: switch to local env once implemented
+int	print_prompt(void)
 {
+	char	*user;
+	char	*host;
 	char	*cwd;
-	char	*prompt;
-	char	*tmp;
 
+	user = getenv("USER");
+	host = getenv("HOST");
 	cwd = malloc(BUFFER_SIZE);
 	if (!cwd)
-		return (NULL);
+		return (EXIT_FAILURE);
 	cwd = getcwd(cwd, BUFFER_SIZE);
 	if (!cwd)
-		return (NULL);
+		return (EXIT_FAILURE);
 	cwd = compact_cwd(cwd, getenv("HOME"));
-	tmp = ft_strjoin(BGCYAN MAGENTA, cwd);
+	if (!host)
+		host = "localhost";
+	if (ft_printf("\r%s%s🐭%s:%s%s$ ", \
+		BGCYAN MAGENTA, user, host, cwd, RESET) < 0)
+		return (free(cwd), EXIT_FAILURE);
 	free(cwd);
-	prompt = ft_strjoin(tmp, RESET PROMPT);
-	free(tmp);
-	return (prompt);
+	return (EXIT_SUCCESS);
 }
