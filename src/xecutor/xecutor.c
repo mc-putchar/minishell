@@ -6,14 +6,11 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/03 17:38:24 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/04 15:55:23 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern char **environ; // change to the global struct later on
-					   // or edit __environ directly
 
 static int	simple(t_cmd *cmd)
 {
@@ -28,7 +25,7 @@ static int	simple(t_cmd *cmd)
 	{
 		args = cmd_expansion(cmd->args);
 		args[0] = cmd_path(cmd);
-		if (execve(args[0], args, environ) == -1)
+		if (execve(args[0], args, g_shell.envp) == -1)
 			return (EXIT_FAILURE);
 	}
 	waitpid(pid, &status, 0);

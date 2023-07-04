@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/03 22:38:19 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/04 17:03:10 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define MAX_HIST_SIZE	1000
 # define MAX_PATH_SIZE	1024
 # define MAX_CMD_SIZE	1024
+# define MAX_ENV		4096
 # define TRUE			1
 # define FALSE			0
 
@@ -98,6 +99,7 @@ int		parse_execute(char *line);
 
 char	**cmd_expansion(char **args);
 char	*arg_expansion(char *arg);
+void	replace_env(char *key, char *replace);
 
 /* Builtins. */
 int		builtin_echo(t_cmd *cmd);

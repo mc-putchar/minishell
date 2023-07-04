@@ -6,22 +6,32 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:05:42 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/27 14:05:17 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/04 17:07:04 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// TODO: have to handle expansion; i.e. export TEST=.. && cd $TEST
+/* Change current directory to the first argument. */
 int	builtin_cd(t_cmd *cmd)
 {
-	int	status;
+	char	buffer[BUFFER_SIZE];
+	char	*temp;
+	int		status;
 
-	status = chdir(cmd->args[1]);
+	temp = arg_expansion(cmd->args[1]);
+	status = chdir(temp);
 	if (status < 0)
-		ft_dprintf(STDERR_FILENO, "minishell: cd: %s: %s\n", cmd->args[1],
+		ft_dprintf(STDERR_FILENO, "minishell: cd: %s: %s\n", temp,
 			strerror(errno));
-	return (status);
+	else
+	{
+		getcwd(buffer, BUFFER_SIZE);
+		free(temp);
+		temp = ft_strjoin("PWD=", buffer);
+		replace_env("PWD", temp);
+	}
+	return (free(temp), status);
 }
 
 // TODO: redirection
