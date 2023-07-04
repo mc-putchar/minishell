@@ -6,13 +6,14 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:09:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/04 17:03:12 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/04 17:20:38 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 #define ERR_KEY	"minishell: export: '%s': not a valid identifier\n"
+#define ERR_MAX	"environment variable over limit"
 
 /* Check if the env key is valid. */
 static bool	envkey_valid(char *key)
@@ -50,7 +51,7 @@ void	replace_env(char *key, char *replace)
 			g_shell.envp[i] = g_shell.envp[i + 1];
 			++i;
 		}
-		g_shell.envp[i] = NULL; 
+		g_shell.envp[i] = NULL;
 	}
 }
 
@@ -74,6 +75,8 @@ int	builtin_export(t_cmd *cmd)
 			status = EXIT_FAILURE;
 			continue ;
 		}
+		if (ft_strarrlen(g_shell.envp) >= MAX_ENV)
+			return (ft_perror(ERR_MAX), EXIT_FAILURE);
 		replace_env(temp[0], (char *) av[i]);
 		ft_strarrfree(temp);
 	}
