@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 18:02:34 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/26 19:03:49 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/04 17:23:39 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*cmd_path(t_cmd *cmd)
 }
 
 /* Check if a command can be found. */
-bool cmd_validator(t_cmd *cmd)
+bool	cmd_validator(t_cmd *cmd)
 {
 	char	*path;
 

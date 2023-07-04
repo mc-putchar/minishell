@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/23 17:51:36 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/04 15:52:14 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	gtfo(t_cmdline *cmdl)
 	if (cmdl->hist)
 		free(cmdl->hist);
 	free(cmdl->prompt);
+	ft_strarrfree(g_shell.envp);
 	ft_dprintf(STDOUT_FILENO, "\r\nbyeee!\r\n");
 	exit(EXIT_SUCCESS);
 }
