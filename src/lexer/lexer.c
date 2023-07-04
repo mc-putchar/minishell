@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 10:28:59 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/26 17:58:47 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/03 22:05:42 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ static int	ft_next_len(char *input, char c)
 
 	i = -1;
 	if (!c)
+	{
 		while (input[++i] && !ft_ismeta(input[i]))
-			;
+			if (input[i] == '"' || input [i] == '\'')
+				i += ft_next_len(&input[i], input[i]) - 1;
+	}
 	else
 	{
 		++i;
@@ -54,16 +57,6 @@ static void	handle_op(char **s, t_token **last)
 		*last = new_token(RPARENT, ")", *last);
 }
 
-/* Handle the quotes for lexer. */
-static void	handle_quote(char **s, t_token **last)
-{
-	int	len;
-
-	len = ft_next_len(*s, **s);
-	*last = new_token(WORD, ft_substr((const char *) *s, 0, len), *last);
-	*s += len;
-}
-
 /* Handle the words for lexer, default option. */
 static void	handle_word(char **s, t_token **last)
 {
@@ -90,13 +83,10 @@ t_token	*input_lexer(char *input)
 			break ;
 		if (ft_isop(input))
 			handle_op(&input, &last);
-		else if (*input == '\'' || *input == '"')
-			handle_quote(&input, &last);
 		else
 			handle_word(&input, &last);
 		if (!start && last)
 			start = last;
 	}
-	last = new_token(EMPTY, NULL, last);
 	return (start);
 }
