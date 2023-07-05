@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/05 11:18:26 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/05 22:04:14 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	check_control(int ret, t_cmdline *cmdl)
 		gtfo(cmdl);
 	else if (ret == CTRL_C)
 	{
-		ft_printf("^C");
+		ft_printf("^C\n");
 		reset_cmd_line(cmdl);
 		flush_history(cmdl);
 	}
