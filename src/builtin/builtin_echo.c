@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:48:57 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/03 22:47:18 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/04 17:21:20 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 /* Execute the builtin command, all arguments should be expanded. 
 // Permission, error message, input redirection has no effect */
+// Redirection
 int	builtin_echo(t_cmd *cmd)
 {
 	const char	**av = (const char **) cmd_expansion(cmd->args);
-	const int	fd = 1; // Need to get the correct redirection
+	const int	fd = 1;
 	bool		n_flag;
 	int			i;
 

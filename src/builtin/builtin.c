@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 22:05:50 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/27 14:05:09 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/04 17:20:46 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	execute_builtin(t_cmd *cmd)
 /* Check if a command is a builtin. */
 bool	is_builtin(t_cmd *cmd)
 {
-	const char *c = cmd->args[0];
+	const char	*c = cmd->args[0];
 
 	if (ft_strlen(c) == 4 && ft_strncmp(c, "echo", 4) == 0)
 		return (true);
