@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/04 17:07:35 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/05 21:51:27 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 # include <sys/wait.h>
 
 # define PROMPT			" $> "
-# define RC_FILE		"/.mshrc"
-# define HIST_FILE		"/.msh_hist"
+# define RC_FILE		"/.mishrc"
+# define HIST_FILE		"/.mish_hist"
 # define MAX_HIST_SIZE	1000
 # define MAX_PATH_SIZE	1024
 # define MAX_CMD_SIZE	1024
@@ -48,7 +48,6 @@ typedef struct s_shell		t_shell;
 typedef struct	s_cmdline
 {
 	char		buff[BUFSIZ];
-	char		*prompt;
 	int			i;
 	int			size;
 	char		*hist;
@@ -89,6 +88,7 @@ t_cmd	*build_pipeline(void);
 t_cmd	*build_command(void);
 
 int		executor(t_cmd *cmd);
+int		pipex(t_cmd *cmd);
 //int		redir_in(t_cmd *cmd, char * const envp[]);
 //int		redir_out(t_cmd *cmd, char * const envp[]);
 //int		redir_append(t_cmd *cmd, char * const envp[]);
@@ -121,7 +121,7 @@ void	ctrl_up_history(t_cmdline *cmdl);
 void	ctrl_down_history(t_cmdline *cmdl);
 int		setup_terminal(struct termios *term_backup);
 void	reset_terminal(struct termios *term_backup);
-char	*build_prompt(void);
+int		print_prompt(void);
 int		do_stuff(void);
 void	gtfo(t_cmdline *cmdl);
 void	reset_cmd_line(t_cmdline *cmdl);

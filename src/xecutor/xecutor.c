@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/04 17:23:28 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/05 21:51:36 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,50 +33,6 @@ static int	simple(t_cmd *cmd)
 		return (WEXITSTATUS(status));
 	return (EXIT_SUCCESS);
 }
-
-/*
-static int	pipex(t_cmd *cmd, char * const envp[])
-{
-	int		fd[2];
-	pid_t	pid;
-	pid_t	pid2;
-	int		status;
-	int		status2;
-
-	if (pipe(fd) == -1)
-		return (EXIT_FAILURE);
-	pid = fork();
-	if (pid < 0)
-		return (EXIT_FAILURE);
-	if (!pid)
-	{
-		close(fd[0]);
-		if (dup2(fd[1], STDOUT_FILENO) == -1)
-			return (EXIT_FAILURE);
-		if (execve(cmd->left->args[0], cmd->left->args, envp) == -1)
-			return (EXIT_FAILURE);
-	}
-	close(fd[1]);
-	pid2 = fork();
-	if (pid2 < 0)
-		return (EXIT_FAILURE);
-	if (!pid2)
-	{
-		if (dup2(fd[0], STDIN_FILENO) == -1)
-			return (EXIT_FAILURE);
-		if (execve(cmd->right->args[0], cmd->right->args, envp) == -1)
-			return (EXIT_FAILURE);
-	}
-	close(fd[0]);
-	waitpid(pid, &status, 0);
-	waitpid(pid2, &status2, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	if (WIFEXITED(status2))
-		return (WEXITSTATUS(status2));
-	return (EXIT_SUCCESS);
-}
-*/
 
 /* Evalute left node first, only evalute right node if succeeds. */
 static int	and(t_cmd *cmd)
@@ -120,7 +76,12 @@ int	executor(t_cmd *cmd)
 	else if (is_builtin(cmd))
 		return (execute_builtin(cmd));
 	else if (cmd_validator(cmd))
-		return (simple(cmd));
+	{
+		if (cmd->pipe)
+			return (pipex(cmd));
+		else
+			return (simple(cmd));
+	}
 	else
 		return (invalid_command(cmd));
 	return (EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:39:23 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/23 17:52:11 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/04 11:19:36 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	write_history(int fd)
 	return (EXIT_SUCCESS);
 }
 
+//TODO: save changed entries
 int	flush_history(t_cmdline *cmdl)
 {
 	t_list	*tmp;
