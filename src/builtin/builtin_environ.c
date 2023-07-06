@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:09:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/04 17:20:38 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 00:45:22 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,12 @@ static bool	envkey_valid(char *key)
 	return (true);
 }
 
-/* Unset or replace a single environment variable. */
+/* Unset, add, or replace a single environment variable. */
 void	replace_env(char *key, char *replace)
 {
 	int		i;
 	char	*temp;
 
-	if (!getenv(key))
-		return ;
 	temp = ft_strjoin(key, "=");
 	i = -1;
 	while (g_shell.envp[++i])

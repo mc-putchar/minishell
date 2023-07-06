@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/07/05 18:43:29 by mcutura          ###   ########.fr        #
+#    Updated: 2023/07/06 05:03:25 by dlu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,9 +34,8 @@ SRC		:=	main.c \
 			builtin/builtin.c builtin/builtin_echo.c builtin/builtin_dir.c \
 			builtin/builtin_environ.c builtin/builtin_exit.c \
 			xecutor/xecutor.c xecutor/cmd_validator.c xecutor/cmd_expansion.c \
-			xecutor/pipex.c \
+			xecutor/pipex.c xecutor/wildcard.c \
 			debug/ast_display.c debug/tokens_print.c
-			#xecutor/builtin.c xecutor/redirect.c xecutor/xecutor.c \
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRC))
 
 #--- OBJECTS ---

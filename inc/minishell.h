@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/05 21:51:27 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 06:39:13 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdbool.h>
 # include <errno.h>
 # include <unistd.h>
+# include <dirent.h>
 # include <stdlib.h>
 # include <string.h>
 # include <term.h>
@@ -36,8 +37,8 @@
 # define MAX_PATH_SIZE	1024
 # define MAX_CMD_SIZE	1024
 # define MAX_ENV		4096
-# define TRUE			1
-# define FALSE			0
+# define MAX_ARG_E		8192
+# define WC_CHAR		128
 
 /* Commands. */
 
@@ -100,6 +101,8 @@ int		parse_execute(char *line);
 char	**cmd_expansion(char **args);
 char	*arg_expansion(char *arg);
 void	replace_env(char *key, char *replace);
+
+int		wildcard_expansion(char **args, char *format, int i);
 
 /* Builtins. */
 int		builtin_echo(t_cmd *cmd);

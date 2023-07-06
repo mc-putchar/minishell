@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:55:49 by dlu               #+#    #+#             */
-/*   Updated: 2023/06/20 17:13:15 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 04:35:08 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_replace_quotes(const char *str, char replace)
 		return (NULL);
 	i = 0;
 	quote = 0;
-	while(*str)
+	while (*str)
 	{
 		if (!quote && (*str == '\'' || *str == '"'))
 		{
