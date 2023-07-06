@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*   ft_wait.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/26 14:10:14 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 09:19:54 by dlu              ###   ########.fr       */
+/*   Created: 2023/07/06 10:45:50 by dlu               #+#    #+#             */
+/*   Updated: 2023/07/06 10:46:55 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	builtin_exit(t_cmd *cmd)
+void	ft_wait(int i)
 {
-	if (ft_strarrlen(cmd->args) > 2)
-	{
-		ft_dprintf(STDERR_FILENO, "minishell: exit: too many arguments\n");
-		return (EXIT_FAILURE);
-	}
-	if (cmd->args[1])
-		gtfo(g_shell.cmdl, ft_atoi(cmd->args[1]));
-	else
-		gtfo(g_shell.cmdl, EXIT_SUCCESS);
-	return (EXIT_SUCCESS);
+	int	j;
+
+	j = -1;
+	while (++j < 100000)
+		while (--i >= 0)
+			;
 }

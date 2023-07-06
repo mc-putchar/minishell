@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 08:31:46 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 09:50:38 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void	replace_env(char *key, char *replace);
 
 int		wildcard_expansion(char **args, char *format, int i);
 bool	redir_setup(t_cmd *cmd);
+int		invalid_command(t_cmd *cmd);
 
 /* Builtins. */
 int		builtin_echo(t_cmd *cmd);

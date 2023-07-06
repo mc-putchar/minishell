@@ -6,7 +6,7 @@
 /*   By: dlu<dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 22:28:32 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 04:25:52 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 10:47:11 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,5 +152,6 @@ void	ft_strarrfree(char **arr);
 char	**ft_split_blocks(const char *s, char c, const char *blockers);
 char	*ft_replace_quotes(const char *str, char replace);
 int		ft_perror(char *msg);
+void	ft_wait(int i);
 
 #endif

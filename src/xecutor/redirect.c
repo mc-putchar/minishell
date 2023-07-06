@@ -6,17 +6,19 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 20:14:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 07:34:37 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 10:47:43 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* Open file based on the redirection type. */
-int	open_file(char *path, t_type type)
+static int	open_file(char *path, t_type type, int fd_default)
 {
 	int	fd;
 
+	if (!path)
+		return (fd_default);
 	fd = 0;
 	if (type == APPEND)
 		fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -29,22 +31,36 @@ int	open_file(char *path, t_type type)
 	return (fd);
 }
 
+/* Close the open file descriptors, return if any is still open. */
+static bool	close_fd(t_cmd *cmd, int o_fd, int i_fd)
+{
+	if (o_fd < 0 && i_fd != STDIN_FILENO)
+		return (close(i_fd), false);
+	if (i_fd < 0 && o_fd != STDOUT_FILENO)
+		return (close(o_fd), false);
+	if (o_fd < 0 || i_fd < 0)
+		return (false);
+	if (!cmd->args[0])
+	{
+		if (o_fd != STDOUT_FILENO)
+			close(o_fd);
+		if (i_fd != STDIN_FILENO)
+			close(i_fd);
+		return (false);
+	}
+	return (true);
+}
+
 /* Setup redirection for each command. */
 bool	redir_setup(t_cmd *cmd)
 {
 	int	o_fd;
 	int	i_fd;
 
-	o_fd = STDOUT_FILENO;
-	i_fd = STDIN_FILENO;
-	if (cmd->o_file)
-		o_fd = open_file(cmd->o_file, cmd->o_type);
-	if (o_fd < 0)
-		return (false);
-	if (cmd->i_file)
-		i_fd = open_file(cmd->i_file, cmd->i_type);
-	if (i_fd < 0)
-		return (close(o_fd), false);
+	o_fd = open_file(cmd->o_file, cmd->o_type, STDOUT_FILENO);
+	i_fd = open_file(cmd->i_file, cmd->i_type, STDIN_FILENO);
+	if (!close_fd(cmd, o_fd, i_fd))
+		return (true);
 	if (dup2(o_fd, STDOUT_FILENO) == -1)
 		return (false);
 	if (dup2(i_fd, STDIN_FILENO) == -1)
