@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/05 21:51:36 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 10:49:19 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,14 @@ static int	simple(t_cmd *cmd)
 		return (EXIT_FAILURE);
 	if (!pid)
 	{
+		if (!redir_setup(cmd))
+			exit(EXIT_FAILURE);
+		if (!cmd->args[0])
+			exit(EXIT_SUCCESS);
 		args = cmd_expansion(cmd->args);
 		args[0] = cmd_path(cmd);
+		if (!args[0] && invalid_command(cmd))
+			exit(EXIT_FAILURE);
 		if (execve(args[0], args, g_shell.envp) == -1)
 			return (EXIT_FAILURE);
 	}
@@ -59,8 +65,9 @@ static int	or(t_cmd *cmd)
 }
 
 /* Couldn't find the command, print error message. */
-static int	invalid_command(t_cmd *cmd)
+int	invalid_command(t_cmd *cmd)
 {
+	ft_wait(100000);
 	ft_dprintf(STDERR_FILENO, "minishell: %s: command not found\n",
 		cmd->args[0]);
 	return (EXIT_FAILURE);
@@ -75,14 +82,12 @@ int	executor(t_cmd *cmd)
 		return (or(cmd));
 	else if (is_builtin(cmd))
 		return (execute_builtin(cmd));
-	else if (cmd_validator(cmd))
+	else
 	{
 		if (cmd->pipe)
 			return (pipex(cmd));
 		else
 			return (simple(cmd));
 	}
-	else
-		return (invalid_command(cmd));
 	return (EXIT_FAILURE);
 }

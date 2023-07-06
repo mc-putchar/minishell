@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:13:47 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/03 22:29:12 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 06:40:36 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static void	put_envvalue(char *arg, char *ret, int *i, int *j)
 }
 
 /* Expand a single token. */
-// Statically defined for now, maybe change to dynamic later on.
 char	*arg_expansion(char *arg)
 {
 	char	*ret;
@@ -75,44 +74,40 @@ char	*arg_expansion(char *arg)
 			quote = '\0';
 		else if ((!quote || quote == '"') && arg[i] == '$')
 			put_envvalue(arg, ret, &i, &j);
+		else if (!quote && arg[i] == '*')
+			ret[j++] = (char) WC_CHAR;
 		else
 			ret[j++] = arg[i];
 	}
 	return (ret);
 }
 
-/* Expand the arguments for $. */
-// This ideally would be after forking?
+/* Expand the arguments for environment variables and wildcards. */
 char	**cmd_expansion(char **args)
 {
 	char	**ret;
 	int		i;
+	int		j;
 
-	ret = (char **) malloc((ft_strarrlen(args) + 1) * sizeof(char *));
+	ret = (char **) malloc(MAX_ARG_E * sizeof(char *));
 	if (!ret)
 		return (NULL);
-	ret[ft_strarrlen(args)] = NULL;
 	i = -1;
+	j = 0;
 	while (args[++i])
 	{
-		ret[i] = arg_expansion(args[i]);
-		if (!ret[i])
+		ret[j] = arg_expansion(args[i]);
+		if (!ret[j])
 		{
-			while (--i >= 0)
+			while (--j >= 0)
 				free(ret[i]);
 			return (NULL);
 		}
+		if (ft_strchr(ret[j], WC_CHAR))
+			j = wildcard_expansion(ret, ret[j], j);
+		else
+			++j;
 	}
+	ret[j] = NULL;
 	return (ret);
 }
-
-/*
-int	main(void)
-{
-	char *test[] = {"askdf\'$HOME\'$MAIL", "test$HOME", NULL};
-	char **test2 = cmd_expansion(test);
-	int i = -1;
-	while (test2[++i])
-		ft_printf("%s\n", test2[i]);
-	return (0);
-}*/

@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 18:02:34 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/04 17:23:39 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 09:48:12 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ char	*cmd_path(t_cmd *cmd)
 {
 	char	*path;
 
+	if (!cmd->args[0])
+		return (NULL);
 	path = find_path(cmd->args[0]);
 	if (path)
 		return (path);
@@ -67,20 +69,22 @@ char	*cmd_path(t_cmd *cmd)
 	return (NULL);
 }
 
-/* Check if a command can be found. */
+/* Check if a command can be found.
 bool	cmd_validator(t_cmd *cmd)
 {
 	char	*path;
 
+	if (!cmd->args[])
+		;
 	path = find_path(cmd->args[0]);
 	if (path)
 		return (free(path), true);
 	if (cmd->args[0][0] == '.' || cmd->args[0][0] == '/')
 	{
 		if (!access(cmd->args[0], X_OK))
-			return (cmd->args[0]);
+			return (true);
 	}
 	if (ft_strchr(cmd->args[0], '/') && !access(cmd->args[0], X_OK))
-		return (cmd->args[0]);
-	return (NULL);
-}
+		return (true);
+	return (false);
+}*/

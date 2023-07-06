@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:05:42 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/04 17:07:04 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 09:16:08 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	builtin_cd(t_cmd *cmd)
 	{
 		getcwd(buffer, BUFFER_SIZE);
 		free(temp);
+		temp = ft_strjoin("OLDPWD=", getenv("PWD"));
+		replace_env("OLDPWD", temp);
 		temp = ft_strjoin("PWD=", buffer);
 		replace_env("PWD", temp);
 	}

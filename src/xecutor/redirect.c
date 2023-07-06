@@ -3,111 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/18 21:33:59 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/27 13:52:59 by dlu              ###   ########.fr       */
+/*   Created: 2023/07/05 20:14:35 by dlu               #+#    #+#             */
+/*   Updated: 2023/07/06 10:47:43 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	redir_in(t_cmd *cmd, char * const envp[])
+/* Open file based on the redirection type. */
+static int	open_file(char *path, t_type type, int fd_default)
 {
-	int		fd;
-	pid_t	pid;
-	int		status;
+	int	fd;
 
-	pid = fork();
-	if (pid < 0)
-		return (EXIT_FAILURE);
-	if (!pid)
-	{
-		fd = open(cmd->right->args[1], O_RDONLY);
-		if (fd == -1)
-			return (EXIT_FAILURE);
-		if (dup2(fd, STDIN_FILENO) == -1)
-			return (EXIT_FAILURE);
-		close(fd);
-		if (execve(cmd->left->args[0], cmd->left->args, envp) == -1)
-			return (EXIT_FAILURE);
-	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (EXIT_SUCCESS);
+	if (!path)
+		return (fd_default);
+	fd = 0;
+	if (type == APPEND)
+		fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (type == REDIR_OUT)
+		fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (type == REDIR_IN)
+		fd = open(path, O_RDONLY);
+	if (fd < 0)
+		ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", path, strerror(errno));
+	return (fd);
 }
 
-int	redir_out(t_cmd *cmd, char * const envp[])
+/* Close the open file descriptors, return if any is still open. */
+static bool	close_fd(t_cmd *cmd, int o_fd, int i_fd)
 {
-	int		fd;
-	pid_t	pid;
-	int		status;
-
-	pid = fork();
-	if (pid < 0)
-		return (EXIT_FAILURE);
-	if (!pid)
+	if (o_fd < 0 && i_fd != STDIN_FILENO)
+		return (close(i_fd), false);
+	if (i_fd < 0 && o_fd != STDOUT_FILENO)
+		return (close(o_fd), false);
+	if (o_fd < 0 || i_fd < 0)
+		return (false);
+	if (!cmd->args[0])
 	{
-		fd = open(cmd->right->args[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd == -1)
-			return (EXIT_FAILURE);
-		if (dup2(fd, STDOUT_FILENO) == -1)
-			return (EXIT_FAILURE);
-		close(fd);
-		if (execve(cmd->left->args[0], cmd->left->args, envp) == -1)
-			return (EXIT_FAILURE);
+		if (o_fd != STDOUT_FILENO)
+			close(o_fd);
+		if (i_fd != STDIN_FILENO)
+			close(i_fd);
+		return (false);
 	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (EXIT_SUCCESS);
+	return (true);
 }
 
-int	redir_append(t_cmd *cmd, char * const envp[])
+/* Setup redirection for each command. */
+bool	redir_setup(t_cmd *cmd)
 {
-	int		fd;
-	pid_t	pid;
-	int		status;
+	int	o_fd;
+	int	i_fd;
 
-	pid = fork();
-	if (pid < 0)
-		return (EXIT_FAILURE);
-	if (!pid)
-	{
-		fd = open(cmd->right->args[1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (fd == -1)
-			return (EXIT_FAILURE);
-		if (dup2(fd, STDOUT_FILENO) == -1)
-			return (EXIT_FAILURE);
-		close(fd);
-		if (execve(cmd->left->args[0], cmd->left->args, envp) == -1)
-			return (EXIT_FAILURE);
-	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (EXIT_SUCCESS);
-}
-
-int	redir_here(t_cmd *cmd, char * const envp[])
-{
-	int		fd;
-	pid_t	pid;
-	int		status;
-
-	pid = fork();
-	if (pid < 0)
-		return (EXIT_FAILURE);
-	if (!pid)
-	{
-		// TODO: HERE DOC
-		(void)cmd;
-		(void)envp;
-		(void)fd;
-	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (EXIT_SUCCESS);
+	o_fd = open_file(cmd->o_file, cmd->o_type, STDOUT_FILENO);
+	i_fd = open_file(cmd->i_file, cmd->i_type, STDIN_FILENO);
+	if (!close_fd(cmd, o_fd, i_fd))
+		return (true);
+	if (dup2(o_fd, STDOUT_FILENO) == -1)
+		return (false);
+	if (dup2(i_fd, STDIN_FILENO) == -1)
+		return (false);
+	return (true);
 }
