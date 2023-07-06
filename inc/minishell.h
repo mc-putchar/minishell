@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 00:51:19 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 04:51:27 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define PROMPT			" $> "
 # define RC_FILE		"/.mishrc"
 # define HIST_FILE		"/.mish_hist"
+# define HERE_DOC_FILE	"/tmp/.mish_here_doc"
 # define MAX_HIST_SIZE	1000
 # define MAX_PATH_SIZE	1024
 # define MAX_CMD_SIZE	1024
@@ -89,10 +90,9 @@ t_cmd	*build_command(void);
 
 int		executor(t_cmd *cmd);
 int		pipex(t_cmd *cmd);
-//int		redir_in(t_cmd *cmd, char * const envp[]);
-//int		redir_out(t_cmd *cmd, char * const envp[]);
-//int		redir_append(t_cmd *cmd, char * const envp[]);
-//int		redir_here(t_cmd *cmd, char * const envp[]);
+int		redirect_out(t_cmd *cmd);
+int		redirect_in(t_cmd *cmd);
+int		redirect_here(t_cmd *cmd);
 bool	cmd_validator(t_cmd *cmd);
 char	*cmd_path(t_cmd *cmd);
 int		parse_execute(char *line);

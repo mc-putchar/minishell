@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:34:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/05 21:54:04 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 04:28:27 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	pipeline_len(t_cmd *cmd)
 	return (len);
 }
 
-static int	close_fds(int fd[2][2])
+static int	close_pipes(int fd[2][2])
 {
 	return (close(fd[0][0]) || close(fd[0][1]) || \
 		close(fd[1][0]) || close(fd[1][1]));
@@ -54,7 +54,7 @@ static int	supermario(t_cmd *cmd, int i, int len, int fd[2][2])
 	if (i < len - 1)
 		if (dup2(fd[(i + 1) & 1][1], STDOUT_FILENO) == -1)
 			return (EXIT_FAILURE);
-	if (close_fds(fd))
+	if (close_pipes(fd))
 		return (EXIT_FAILURE);
 	args = cmd_expansion(cmd->args);
 	args[0] = cmd_path(cmd);
@@ -86,7 +86,7 @@ int	pipex(t_cmd *cmd)
 			return (free(pids), EXIT_FAILURE);
 		cmd = cmd->pipe;
 	}
-	(void)close_fds(fd);
+	(void)close_pipes(fd);
 	i = -1;
 	while (++i < pipelen)
 	{
