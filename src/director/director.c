@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 00:45:40 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 03:16:22 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	gtfo(t_cmdline *cmdl, int exit_code)
 		free(cmdl->hist);
 	ft_strarrfree(g_shell.envp);
 	ft_dprintf(STDOUT_FILENO, "\r\nbyeee!\r\n");
-	exit((t_uc) exit_code);
+	exit(exit_code & 0xFF);
 }
 
 void	reset_cmd_line(t_cmdline *cmdl)
@@ -40,7 +40,9 @@ int	director(int ac, char **av, char **envp)
 	(void)envp;
 	if (init_shell())
 		return (EXIT_FAILURE);
-	if (do_stuff())
+	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO) || !isatty(STDERR_FILENO))
+		return (ENOTTY);
+	else if (do_stuff())
 		ft_perror("do_stuff");
 	return (EXIT_SUCCESS);
 }
