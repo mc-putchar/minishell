@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/05 21:51:36 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 03:31:02 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,12 @@ int	executor(t_cmd *cmd)
 		return (and(cmd));
 	else if (cmd->type == OR)
 		return (or(cmd));
+	else if (cmd->pipe)
+		return (pipex(cmd));
 	else if (is_builtin(cmd))
 		return (execute_builtin(cmd));
 	else if (cmd_validator(cmd))
-	{
-		if (cmd->pipe)
-			return (pipex(cmd));
-		else
-			return (simple(cmd));
-	}
+		return (simple(cmd));
 	else
 		return (invalid_command(cmd));
-	return (EXIT_FAILURE);
 }
