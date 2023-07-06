@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/07/06 07:24:18 by dlu              ###   ########.fr        #
+#    Updated: 2023/07/06 08:06:44 by dlu              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ HEADERS	:=	$(addprefix $(INCDIR)/, $(HEADER))
 LIBFTH	:=	$(addprefix $(LIBDIR)/, libft.h)
 
 #--- FLAGS ---
-CFLAGS	:=	-Wall -Wextra -Werror -I$(INCDIR) -I$(LIBDIR)
+CFLAGS	:=	-Wall -Wextra -Werror -g -I$(INCDIR) -I$(LIBDIR)
 LDLIBS	:=	-L$(LIBDIR) -lft
 
 #--- CMDS ---

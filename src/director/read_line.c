@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 07:17:46 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 08:33:30 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	csi_handler(int ret, t_cmdline *cmdl)
 void	check_control(int ret, t_cmdline *cmdl)
 {
 	if (ret == CTRL_D && !cmdl->size)
-		gtfo(cmdl);
+		gtfo(cmdl, EXIT_SUCCESS);
 	else if (ret == CTRL_C)
 	{
 		ft_printf("^C\n");
@@ -96,6 +96,7 @@ char	*read_line(char *prompt)
 
 	(void)prompt;
 	reset_cmd_line(&cmdl);
+	g_shell.cmdl = &cmdl;
 	while (true)
 	{
 		ret = 0;
@@ -124,6 +125,7 @@ int	do_stuff(void)
 	struct termios	term_backup;
 
 	ft_bzero(&term_backup, sizeof(term_backup));
+	g_shell.term_backup = &term_backup;
 	while (true)
 	{	
 		if (setup_terminal(&term_backup))

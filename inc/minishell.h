@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 07:24:03 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 08:31:46 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@
 typedef struct s_cmd		t_cmd;
 typedef struct s_cmdline	t_cmdline;
 typedef struct s_shell		t_shell;
+typedef struct termios		t_termios;
 
 typedef struct	s_cmdline
 {
@@ -63,6 +64,9 @@ typedef struct	s_shell
 	bool		parse_error;
 	t_token		*tok;
 	t_token		*tok_head;
+	t_cmd		*ast;
+	t_cmdline	*cmdl;
+	t_termios	*term_backup;
 }	t_shell;
 
 /* Global variable */
@@ -123,7 +127,7 @@ int		setup_terminal(struct termios *term_backup);
 void	reset_terminal(struct termios *term_backup);
 int		print_prompt(void);
 int		do_stuff(void);
-void	gtfo(t_cmdline *cmdl);
+void	gtfo(t_cmdline *cmdl, int status);
 void	reset_cmd_line(t_cmdline *cmdl);
 
 /* Debugging tools. */
