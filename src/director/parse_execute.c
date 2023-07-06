@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_execute.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 18:00:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/03 22:39:30 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/05 22:07:57 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ int	parse_execute(char *line)
 	g_shell.tok_head = input_lexer(line);
 	g_shell.tok = g_shell.tok_head;
 	g_shell.parse_error = false;
-	tokens_print(g_shell.tok_head);
+	// tokens_print(g_shell.tok_head);
 	ast = build_conditional();
-	ast_display(ast, 0);
+	// ast_display(ast, 0);
 	if (!g_shell.parse_error)
 		executor(ast);
 	else

@@ -6,21 +6,21 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/05 11:17:55 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 00:45:40 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // TODO: write history to file on exit
-void	gtfo(t_cmdline *cmdl)
+void	gtfo(t_cmdline *cmdl, int exit_code)
 {
 	ft_lstclear(&g_shell.hist, free);
 	if (cmdl->hist)
 		free(cmdl->hist);
 	ft_strarrfree(g_shell.envp);
 	ft_dprintf(STDOUT_FILENO, "\r\nbyeee!\r\n");
-	exit(EXIT_SUCCESS);
+	exit((t_uc) exit_code);
 }
 
 void	reset_cmd_line(t_cmdline *cmdl)

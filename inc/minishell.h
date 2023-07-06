@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/05 21:51:27 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 00:51:19 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int		setup_terminal(struct termios *term_backup);
 void	reset_terminal(struct termios *term_backup);
 int		print_prompt(void);
 int		do_stuff(void);
-void	gtfo(t_cmdline *cmdl);
+void	gtfo(t_cmdline *cmdl, int exit_code);
 void	reset_cmd_line(t_cmdline *cmdl);
 
 /* Debugging tools. */

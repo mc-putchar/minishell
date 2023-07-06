@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/05 22:04:14 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 00:51:54 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	csi_handler(int ret, t_cmdline *cmdl)
 void	check_control(int ret, t_cmdline *cmdl)
 {
 	if (ret == CTRL_D && !cmdl->size)
-		gtfo(cmdl);
+		gtfo(cmdl, EXIT_SUCCESS);
 	else if (ret == CTRL_C)
 	{
 		ft_printf("^C\n");
