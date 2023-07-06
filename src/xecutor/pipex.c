@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:34:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 16:53:31 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 18:07:52 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,9 @@ int	pipex(t_cmd *cmd)
 	i = -1;
 	while (++i < pipelen)
 	{
+		ft_wait(100000);
 		pids[i] = fork();
-		if (pids[i] < 0)
-			return (free(pids), EXIT_FAILURE);
-		if (!pids[i] && supermario(cmd, i, pipelen, fd))
+		if (pids[i] < 0 || (!pids[i] && supermario(cmd, i, pipelen, fd)))
 			return (free(pids), EXIT_FAILURE);
 		cmd = cmd->pipe;
 	}
