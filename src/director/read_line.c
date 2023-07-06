@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 01:19:20 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 07:17:46 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	delete(t_cmdline *cmdl)
 {
-	CLEAR_REST;
+	CLEAR_REST();
 	ft_memcpy(&cmdl->buff[cmdl->i], &cmdl->buff[cmdl->i + 1], \
 		cmdl->size - cmdl->i);
 	cmdl->buff[cmdl->size] = 0;
@@ -50,8 +50,8 @@ void	check_control(int ret, t_cmdline *cmdl)
 	}
 	else if (ret == CTRL_L)
 	{
-		CLEAR_SCREEN;
-		MOVE_HOME;
+		CLEAR_SCREEN();
+		MOVE_HOME();
 		if (print_prompt())
 			ft_perror("print_prompt");
 		ft_printf("%s", cmdl->buff);

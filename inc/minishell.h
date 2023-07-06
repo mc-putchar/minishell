@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 06:39:13 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 07:24:03 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,6 @@ t_cmd	*build_command(void);
 
 int		executor(t_cmd *cmd);
 int		pipex(t_cmd *cmd);
-//int		redir_in(t_cmd *cmd, char * const envp[]);
-//int		redir_out(t_cmd *cmd, char * const envp[]);
-//int		redir_append(t_cmd *cmd, char * const envp[]);
-//int		redir_here(t_cmd *cmd, char * const envp[]);
 bool	cmd_validator(t_cmd *cmd);
 char	*cmd_path(t_cmd *cmd);
 int		parse_execute(char *line);
@@ -103,6 +99,7 @@ char	*arg_expansion(char *arg);
 void	replace_env(char *key, char *replace);
 
 int		wildcard_expansion(char **args, char *format, int i);
+bool	redir_setup(t_cmd *cmd);
 
 /* Builtins. */
 int		builtin_echo(t_cmd *cmd);

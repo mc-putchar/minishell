@@ -3,111 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/18 21:33:59 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/27 13:52:59 by dlu              ###   ########.fr       */
+/*   Created: 2023/07/05 20:14:35 by dlu               #+#    #+#             */
+/*   Updated: 2023/07/06 07:34:37 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	redir_in(t_cmd *cmd, char * const envp[])
+/* Open file based on the redirection type. */
+int	open_file(char *path, t_type type)
 {
-	int		fd;
-	pid_t	pid;
-	int		status;
+	int	fd;
 
-	pid = fork();
-	if (pid < 0)
-		return (EXIT_FAILURE);
-	if (!pid)
-	{
-		fd = open(cmd->right->args[1], O_RDONLY);
-		if (fd == -1)
-			return (EXIT_FAILURE);
-		if (dup2(fd, STDIN_FILENO) == -1)
-			return (EXIT_FAILURE);
-		close(fd);
-		if (execve(cmd->left->args[0], cmd->left->args, envp) == -1)
-			return (EXIT_FAILURE);
-	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (EXIT_SUCCESS);
+	fd = 0;
+	if (type == APPEND)
+		fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (type == REDIR_OUT)
+		fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (type == REDIR_IN)
+		fd = open(path, O_RDONLY);
+	if (fd < 0)
+		ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", path, strerror(errno));
+	return (fd);
 }
 
-int	redir_out(t_cmd *cmd, char * const envp[])
+/* Setup redirection for each command. */
+bool	redir_setup(t_cmd *cmd)
 {
-	int		fd;
-	pid_t	pid;
-	int		status;
+	int	o_fd;
+	int	i_fd;
 
-	pid = fork();
-	if (pid < 0)
-		return (EXIT_FAILURE);
-	if (!pid)
-	{
-		fd = open(cmd->right->args[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd == -1)
-			return (EXIT_FAILURE);
-		if (dup2(fd, STDOUT_FILENO) == -1)
-			return (EXIT_FAILURE);
-		close(fd);
-		if (execve(cmd->left->args[0], cmd->left->args, envp) == -1)
-			return (EXIT_FAILURE);
-	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (EXIT_SUCCESS);
-}
-
-int	redir_append(t_cmd *cmd, char * const envp[])
-{
-	int		fd;
-	pid_t	pid;
-	int		status;
-
-	pid = fork();
-	if (pid < 0)
-		return (EXIT_FAILURE);
-	if (!pid)
-	{
-		fd = open(cmd->right->args[1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (fd == -1)
-			return (EXIT_FAILURE);
-		if (dup2(fd, STDOUT_FILENO) == -1)
-			return (EXIT_FAILURE);
-		close(fd);
-		if (execve(cmd->left->args[0], cmd->left->args, envp) == -1)
-			return (EXIT_FAILURE);
-	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (EXIT_SUCCESS);
-}
-
-int	redir_here(t_cmd *cmd, char * const envp[])
-{
-	int		fd;
-	pid_t	pid;
-	int		status;
-
-	pid = fork();
-	if (pid < 0)
-		return (EXIT_FAILURE);
-	if (!pid)
-	{
-		// TODO: HERE DOC
-		(void)cmd;
-		(void)envp;
-		(void)fd;
-	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (EXIT_SUCCESS);
+	o_fd = STDOUT_FILENO;
+	i_fd = STDIN_FILENO;
+	if (cmd->o_file)
+		o_fd = open_file(cmd->o_file, cmd->o_type);
+	if (o_fd < 0)
+		return (false);
+	if (cmd->i_file)
+		i_fd = open_file(cmd->i_file, cmd->i_type);
+	if (i_fd < 0)
+		return (close(o_fd), false);
+	if (dup2(o_fd, STDOUT_FILENO) == -1)
+		return (false);
+	if (dup2(i_fd, STDIN_FILENO) == -1)
+		return (false);
+	return (true);
 }

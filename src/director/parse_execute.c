@@ -6,7 +6,7 @@
 /*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 18:00:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/03 22:39:30 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 07:18:06 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ int	parse_execute(char *line)
 		executor(ast);
 	else
 		ft_perror("parser error");
-	free_cmd_ast(ast); // everything needs freeing needs to be in the global struct
-					   // so that it can be freed when exit is being executed
+	free_cmd_ast(ast);
 	free_token(g_shell.tok_head);
 	return (EXIT_SUCCESS);
 }

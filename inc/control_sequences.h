@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 07:21:52 by mcutura           #+#    #+#             */
-/*   Updated: 2023/06/22 12:48:53 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 07:13:23 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@
 # define MOVE_LEFT(x)	(void)ft_dprintf(STDOUT_FILENO, "\033[%dD", x)
 # define MOVE_RIGHT(x)	(void)ft_dprintf(STDOUT_FILENO, "\033[%dC", x)
 # define MOVE_COL(x)	(void)ft_dprintf(STDOUT_FILENO, "\033[%dG", x)
-# define CLEAR_LINE		(void)ft_dprintf(STDOUT_FILENO, "\033[2K")
-# define CLEAR_REST		(void)ft_dprintf(STDOUT_FILENO, "\033[0J")
-# define CLEAR_SCREEN	(void)ft_dprintf(STDOUT_FILENO, "\033[2J")
-# define MOVE_HOME		(void)ft_dprintf(STDOUT_FILENO, "\033[H")
+# define CLEAR_LINE()	(void)ft_dprintf(STDOUT_FILENO, "\033[2K")
+# define CLEAR_REST()	(void)ft_dprintf(STDOUT_FILENO, "\033[0J")
+# define CLEAR_SCREEN()	(void)ft_dprintf(STDOUT_FILENO, "\033[2J")
+# define MOVE_HOME()	(void)ft_dprintf(STDOUT_FILENO, "\033[H")
 
 #endif
