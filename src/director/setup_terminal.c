@@ -6,23 +6,11 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:22:49 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 02:25:05 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 16:32:40 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// Print terminal settings
-// void	print_term(struct termios *term)
-// {
-// 	ft_printf("c_iflag: %d\n", term->c_iflag);
-// 	ft_printf("c_oflag: %d\n", term->c_oflag);
-// 	ft_printf("c_cflag: %d\n", term->c_cflag);
-// 	ft_printf("c_lflag: %d\n", term->c_lflag);
-// 	ft_printf("c_cc: %d\n", term->c_cc);
-// 	ft_printf("c_ispeed: %d\n", term->c_ispeed);
-// 	ft_printf("c_ospeed: %d\n", term->c_ospeed);
-// }
 
 int	setup_terminal(struct termios *term_backup)
 {

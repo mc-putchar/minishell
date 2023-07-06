@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 22:05:50 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/04 17:20:46 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 09:53:35 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ bool	is_builtin(t_cmd *cmd)
 {
 	const char	*c = cmd->args[0];
 
-	if (ft_strlen(c) == 4 && ft_strncmp(c, "echo", 4) == 0)
+	if (!c)
+		return (false);
+	else if (ft_strlen(c) == 4 && ft_strncmp(c, "echo", 4) == 0)
 		return (true);
 	else if (ft_strlen(c) == 2 && ft_strncmp(c, "cd", 2) == 0)
 		return (true);

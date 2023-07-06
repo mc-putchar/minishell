@@ -5,69 +5,65 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/18 21:33:59 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 04:51:43 by mcutura          ###   ########.fr       */
+/*   Created: 2023/07/05 20:14:35 by dlu               #+#    #+#             */
+/*   Updated: 2023/07/06 16:38:31 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	redirect_in(t_cmd *cmd)
+/* Open file based on the redirection type. */
+static int	open_file(char *path, t_type type, int fd_default)
 {
-	int		fd;
+	int	fd;
 
-	if (cmd->i_type == REDIR_IN)
-		fd = open(cmd->i_file, O_RDONLY);
-	else if (cmd->i_type == HERE_DOC)
-		fd = redirect_here(cmd);
-	else
-		return (EXIT_FAILURE);
-	if (fd == -1)
-		return (EXIT_FAILURE);
-	if (dup2(fd, STDIN_FILENO) == -1)
-		return (EXIT_FAILURE);
-	(void)close(fd);
-	return (EXIT_SUCCESS);
-}
-
-int	redirect_out(t_cmd *cmd)
-{
-	int		fd;
-
-	if (cmd->o_type == REDIR_OUT)
-		fd = open(cmd->o_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (cmd->o_type == APPEND)
-		fd = open(cmd->o_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else
-		return (EXIT_FAILURE);
-	if (fd == -1)
-		return (EXIT_FAILURE);
-	if (dup2(fd, STDOUT_FILENO) == -1)
-		return (EXIT_FAILURE);
-	(void)close(fd);
-	return (EXIT_SUCCESS);
-}
-
-int	redirect_here(t_cmd *cmd)
-{
-	int		fd;
-	size_t	len;
-	char	*line;
-
-	fd = open(HERE_DOC_FILE, O_WRONLY | O_CREAT | O_TRUNC, 0600);
-	if (fd == -1)
-		return (fd);
-	len = ft_strlen(cmd->i_file);
-	line = get_delim(STDIN_FILENO, '\n');
-	while (ft_strncmp(line, cmd->i_file, len))
-	{
-		ft_dprintf(fd, "%s\n", line);
-		free(line);
-		line = get_delim(STDIN_FILENO, '\n');
-	}
-	free(line);
-	close(fd);
-	fd = open(HERE_DOC_FILE, O_RDONLY);
-	unlink(HERE_DOC_FILE);
+	if (!path)
+		return (fd_default);
+	fd = 0;
+	if (type == APPEND)
+		fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (type == REDIR_OUT)
+		fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (type == REDIR_IN)
+		fd = open(path, O_RDONLY);
+	if (fd < 0)
+		ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", path, strerror(errno));
 	return (fd);
+}
+
+/* Close the open file descriptors, return if any is still open. */
+static bool	close_fd(t_cmd *cmd, int o_fd, int i_fd)
+{
+	if (o_fd < 0 && i_fd != STDIN_FILENO)
+		return (close(i_fd), false);
+	if (i_fd < 0 && o_fd != STDOUT_FILENO)
+		return (close(o_fd), false);
+	if (o_fd < 0 || i_fd < 0)
+		return (false);
+	if (!cmd->args[0])
+	{
+		if (o_fd != STDOUT_FILENO)
+			close(o_fd);
+		if (i_fd != STDIN_FILENO)
+			close(i_fd);
+		return (false);
+	}
+	return (true);
+}
+
+/* Setup redirection for each command. */
+bool	redir_setup(t_cmd *cmd)
+{
+	int	o_fd;
+	int	i_fd;
+
+	o_fd = open_file(cmd->o_file, cmd->o_type, STDOUT_FILENO);
+	i_fd = open_file(cmd->i_file, cmd->i_type, STDIN_FILENO);
+	if (!close_fd(cmd, o_fd, i_fd))
+		return (true);
+	if (dup2(o_fd, STDOUT_FILENO) == -1)
+		return (false);
+	if (dup2(i_fd, STDIN_FILENO) == -1)
+		return (false);
+	return (true);
 }

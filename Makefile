@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/07/06 04:30:58 by mcutura          ###   ########.fr        #
+#    Updated: 2023/07/06 16:28:03 by mcutura          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ SRC		:=	main.c \
 			builtin/builtin.c builtin/builtin_echo.c builtin/builtin_dir.c \
 			builtin/builtin_environ.c builtin/builtin_exit.c \
 			xecutor/xecutor.c xecutor/cmd_validator.c xecutor/cmd_expansion.c \
-			xecutor/pipex.c xecutor/redirect.c \
+			xecutor/pipex.c xecutor/redirect.c xecutor/wildcard.c \
 			debug/ast_display.c debug/tokens_print.c
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRC))
 
@@ -47,7 +47,7 @@ HEADERS	:=	$(addprefix $(INCDIR)/, $(HEADER))
 LIBFTH	:=	$(addprefix $(LIBDIR)/, libft.h)
 
 #--- FLAGS ---
-CFLAGS	:=	-Wall -Wextra -Werror -I$(INCDIR) -I$(LIBDIR)
+CFLAGS	:=	-Wall -Wextra -Werror -g -I$(INCDIR) -I$(LIBDIR)
 LDLIBS	:=	-L$(LIBDIR) -lft
 
 #--- CMDS ---

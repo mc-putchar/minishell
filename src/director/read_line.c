@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 00:51:54 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 16:31:24 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	delete(t_cmdline *cmdl)
 {
-	CLEAR_REST;
+	CLEAR_REST();
 	ft_memcpy(&cmdl->buff[cmdl->i], &cmdl->buff[cmdl->i + 1], \
 		cmdl->size - cmdl->i);
 	cmdl->buff[cmdl->size] = 0;
@@ -50,8 +50,8 @@ void	check_control(int ret, t_cmdline *cmdl)
 	}
 	else if (ret == CTRL_L)
 	{
-		CLEAR_SCREEN;
-		MOVE_HOME;
+		CLEAR_SCREEN();
+		MOVE_HOME();
 		if (print_prompt())
 			ft_perror("print_prompt");
 		ft_printf("%s", cmdl->buff);
@@ -96,6 +96,7 @@ char	*read_line(char *prompt)
 
 	(void)prompt;
 	reset_cmd_line(&cmdl);
+	g_shell.cmdl = &cmdl;
 	while (true)
 	{
 		ret = 0;
@@ -124,6 +125,7 @@ int	do_stuff(void)
 	struct termios	term_backup;
 
 	ft_bzero(&term_backup, sizeof(term_backup));
+	g_shell.term_backup = &term_backup;
 	while (true)
 	{	
 		if (setup_terminal(&term_backup))
