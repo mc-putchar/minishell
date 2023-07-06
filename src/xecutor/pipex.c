@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:34:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 16:34:09 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 16:53:31 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static int	close_pipes(int fd[2][2])
 		close(fd[1][0]) || close(fd[1][1]));
 }
 
-//TODO: handle redirections
 static int	supermario(t_cmd *cmd, int i, int len, int fd[2][2])
 {
 	char	**args;
@@ -65,7 +64,7 @@ static int	supermario(t_cmd *cmd, int i, int len, int fd[2][2])
 	if (!args[0] && invalid_command(cmd))
 		exit(EXIT_FAILURE);
 	if (execve(args[0], args, g_shell.envp) == -1)
-		return (EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	return (EXIT_FAILURE);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 16:36:43 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/06 16:58:57 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	or(t_cmd *cmd)
 int	invalid_command(t_cmd *cmd)
 {
 	ft_wait(100000);
-	ft_dprintf(STDERR_FILENO, "minishell: %s: command not found\n",
+	ft_dprintf(STDERR_FILENO, "%s: command not found\n",
 		cmd->args[0]);
 	return (EXIT_FAILURE);
 }
@@ -84,8 +84,6 @@ int	executor(t_cmd *cmd)
 		return (pipex(cmd));
 	else if (is_builtin(cmd))
 		return (execute_builtin(cmd));
-	else if (cmd_validator(cmd))
-		return (simple(cmd));
 	else
-		return (invalid_command(cmd));
+		return (simple(cmd));
 }
