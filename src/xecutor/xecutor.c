@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 10:49:19 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/06 17:28:08 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	simple(t_cmd *cmd)
 		if (!args[0] && invalid_command(cmd))
 			exit(EXIT_FAILURE);
 		if (execve(args[0], args, g_shell.envp) == -1)
-			return (EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 	}
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
@@ -67,7 +67,6 @@ static int	or(t_cmd *cmd)
 /* Couldn't find the command, print error message. */
 int	invalid_command(t_cmd *cmd)
 {
-	ft_wait(100000);
 	ft_dprintf(STDERR_FILENO, "minishell: %s: command not found\n",
 		cmd->args[0]);
 	return (EXIT_FAILURE);
