@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 20:14:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 04:47:45 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 10:51:07 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	open_file(char *path, t_type type, int fd_default)
 	else if (type == REDIR_IN)
 		fd = open(path, O_RDONLY);
 	if (fd < 0)
-		ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", path, strerror(errno));
+		ft_dprintf(STDERR_FILENO, MISH": %s: %s\n", path, strerror(errno));
 	return (fd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:05:42 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 07:17:00 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 10:47:39 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,12 @@ int	builtin_cd(t_cmd *cmd)
 	char	*temp;
 	int		status;
 
-	temp = arg_expansion(cmd->args[1]);
+	if (!cmd->args[1] || !ft_strncmp(cmd->args[1], "~", 1))
+		temp = ft_strdup(getenv("HOME"));
+	else if (!ft_strncmp(cmd->args[1], "-", 1))
+		temp = ft_strdup(getenv("OLDPWD"));
+	else
+		temp = arg_expansion(cmd->args[1]);
 	(void)getcwd(buffer, BUFFER_SIZE);
 	status = chdir(temp);
 	if (status < 0)
@@ -29,6 +34,7 @@ int	builtin_cd(t_cmd *cmd)
 		free(temp);
 		temp = ft_strjoin("OLDPWD=", buffer);
 		replace_env("OLDPWD", temp);
+		free(temp);
 		(void)getcwd(buffer, BUFFER_SIZE);
 		temp = ft_strjoin("PWD=", buffer);
 		replace_env("PWD", temp);

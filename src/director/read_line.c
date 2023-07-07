@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 04:26:32 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 10:46:50 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,5 @@ int	do_stuff(void)
 		if (!line)
 			return (ft_perror("read_line"));
 		parse_execute(line);
-		free(line);
 	}
 }

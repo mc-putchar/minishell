@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:34:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 07:52:25 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 10:30:33 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,14 @@ static int	supermario(t_cmd *cmd, int i, int len, int fd[2][2])
 	if (i < len - 1)
 		if (dup2(fd[(i + 1) & 1][1], STDOUT_FILENO) == -1)
 			exit(EXIT_FAILURE);
+	if (close_pipes(fd))
+		exit(EXIT_FAILURE);
+	if (is_builtin(cmd))
+		exit(execute_builtin(cmd));
 	if (!redir_setup(cmd))
 		exit(EXIT_FAILURE);
 	if (!cmd->args[0])
 		exit(EXIT_SUCCESS);
-	if (close_pipes(fd))
-		exit(EXIT_FAILURE);
 	args = cmd_expansion(cmd->args);
 	args[0] = cmd_path(args[0]);
 	if (!args[0] && invalid_command(cmd))

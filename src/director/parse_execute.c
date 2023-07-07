@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 18:00:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 18:05:29 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 10:46:46 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	parse_execute(char *line)
 	if (!input_validator((const char *) line))
 		return (EXIT_FAILURE);
 	g_shell.tok_head = input_lexer(line);
+	free(line);
 	g_shell.tok = g_shell.tok_head;
 	g_shell.parse_error = false;
 	g_shell.ast = build_conditional();

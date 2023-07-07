@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:10:14 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 15:19:01 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 10:48:42 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#define ERR_ARG	"minishell: exit: too many arguments\n"
-#define ERR_NUM	"minishell: exit: %s: numeric argument required\n"
+#define ERR_ARG	MISH": exit: too many arguments\n"
+#define ERR_NUM	MISH": exit: %s: numeric argument required\n"
 
 /* Check if argument is a numeric. */
 static bool	arg_isnum(char *arg)
@@ -33,6 +33,8 @@ static bool	arg_isnum(char *arg)
 
 int	builtin_exit(t_cmd *cmd)
 {
+	if (!isatty(STDIN_FILENO))
+		return (EXIT_SUCCESS);
 	if (ft_strarrlen(cmd->args) > 2)
 	{
 		ft_dprintf(STDERR_FILENO, ERR_ARG);
