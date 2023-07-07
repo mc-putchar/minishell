@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 19:16:56 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 05:55:43 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 06:13:27 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,34 +38,37 @@ static char	*create_here_doc_file(void)
 	return (path);
 }
 
-void	here_doc_reader(int fd, char *delim)
+void	here_doc_reader(int fd, char *token)
 {
 	char			*line;
-	size_t const	len = ft_strlen(delim);
 	t_termios		term_backup;
-	bool const		expand = !ft_memchr(delim, '"', len);
+	bool const		expand = !ft_memchr(token, '"', ft_strlen(token));
+	char			*delim;
 	char			*tmp;
 
 	ft_bzero(&term_backup, sizeof(term_backup));
 	g_shell.term_backup = &term_backup;
 	setup_terminal(&term_backup);
 	if (!expand)
-		delim = ft_strtrim(delim, "\"");
+		delim = ft_strtrim(token, "\"");
+	else
+		delim = ft_strdup(token);
 	line = read_line("> ");
-	while (line && ft_memcmp(line, delim, len))
+	while (line && ft_strncmp(line, delim, ft_strlen(delim)))
 	{
 		if (expand && ft_memchr(line, '$', ft_strlen(line)))
 		{
 			tmp = arg_expansion(line);
-			ft_dprintf(fd, "%s\n", tmp);
+			ft_dprintf(fd, "%s\r\n", tmp);
 			free(tmp);
 		}
 		else
-			ft_dprintf(fd, "%s\n", line);
+			ft_dprintf(fd, "%s\r\n", line);
 		free(line);
 		line = read_line("> ");
 	}
 	free(line);
+	free(delim);
 	reset_terminal(&term_backup);
 }
 
