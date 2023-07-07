@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:10:14 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 16:43:58 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 16:47:38 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	builtin_exit(t_cmd *cmd)
 {
 	if (!isatty(STDIN_FILENO))
 		return (EXIT_SUCCESS);
-	ft_printf("wft");
 	if (ft_strarrlen(cmd->args) > 2)
 	{
 		ft_dprintf(STDERR_FILENO, ERR_ARG, MISH);
