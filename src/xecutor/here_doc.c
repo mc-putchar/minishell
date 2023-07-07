@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 19:16:56 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 05:23:03 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 05:55:43 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	here_doc_reader(int fd, char *delim)
 	ft_bzero(&term_backup, sizeof(term_backup));
 	g_shell.term_backup = &term_backup;
 	setup_terminal(&term_backup);
+	if (!expand)
+		delim = ft_strtrim(delim, "\"");
 	line = read_line("> ");
 	while (line && ft_memcmp(line, delim, len))
 	{
