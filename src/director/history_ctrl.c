@@ -6,13 +6,13 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 12:44:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 07:14:38 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 03:41:32 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ctrl_end_history(t_cmdline *cmdl)
+void	ctrl_end_history(t_cmdline *cmdl, char *prompt)
 {
 	if (cmdl->hist)
 	{
@@ -26,14 +26,14 @@ void	ctrl_end_history(t_cmdline *cmdl)
 		cmdl->size = 0;
 	CLEAR_LINE();
 	MOVE_COL(0);
-	if (print_prompt())
+	if (print_prompt(prompt))
 		ft_perror("print_prompt");
 	ft_printf("%s", cmdl->buff);
 	cmdl->i = cmdl->size;
 	return ;
 }
 
-void	ctrl_down_history(t_cmdline *cmdl)
+void	ctrl_down_history(t_cmdline *cmdl, char *prompt)
 {
 	t_list	*tmp;
 	char	*line;
@@ -42,7 +42,7 @@ void	ctrl_down_history(t_cmdline *cmdl)
 		return ;
 	if (g_shell.hist_i-- == 1)
 	{
-		ctrl_end_history(cmdl);
+		ctrl_end_history(cmdl, prompt);
 		return ;
 	}
 	tmp = ft_lstget_atindex(g_shell.hist, g_shell.hist_i - 1);
@@ -53,13 +53,13 @@ void	ctrl_down_history(t_cmdline *cmdl)
 	(void)ft_memcpy(cmdl->buff, line, ft_strlen(line));
 	CLEAR_LINE();
 	MOVE_COL(0);
-	if (print_prompt())
+	if (print_prompt(prompt))
 		ft_perror("print_prompt");
 	ft_printf("%s", line);
 	cmdl->i = cmdl->size;
 }
 
-void	ctrl_up_history(t_cmdline *cmdl)
+void	ctrl_up_history(t_cmdline *cmdl, char *prompt)
 {
 	t_list	*tmp;
 
@@ -79,7 +79,7 @@ void	ctrl_up_history(t_cmdline *cmdl)
 		}
 		CLEAR_LINE();
 		MOVE_COL(0);
-		if (print_prompt())
+		if (print_prompt(prompt))
 			ft_perror("print_prompt");
 		ft_printf("%s", tmp->content);
 		cmdl->size = ft_strlen(tmp->content);

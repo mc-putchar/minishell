@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:06 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 01:09:56 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 12:52:31 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ t_shell	g_shell;
 /* Setup environment variables. */
 static bool	env_setup(char **ev)
 {
-	int	i;
+	int		i;
+	char	*lvl;
+	char	*tmp;
 
 	g_shell.envp = (char **) ft_calloc(sizeof(char *), MAX_ENV);
 	if (!g_shell.envp)
@@ -26,15 +28,26 @@ static bool	env_setup(char **ev)
 	while (ev[++i])
 		g_shell.envp[i] = ft_strdup(ev[i]);
 	__environ = g_shell.envp;
+	lvl = ft_getenv("SHLVL");
+	if (lvl)
+	{
+		tmp = ft_itoa2(ft_atoi(lvl) + 1);
+		ft_setenv("SHLVL", tmp, 1);
+		free(tmp);
+	}
+	else
+		ft_setenv("SHLVL", "1", 1);
+	ft_setenv("SHELL", "minishell", 1);
 	return (true);
 }
 
+// TODO: run in non-interactive mode if ac > 1
 int	main(int ac, char **av, char **ev)
 {
+	(void) av;
 	if (!env_setup(ev))
 		return (EXIT_FAILURE);
-	while (ac && av && ev)
-		if (director(ac, av, ev))
-			return (EXIT_FAILURE);
+	if (ac == 1 && director())
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

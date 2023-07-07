@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_expansion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:13:47 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 06:40:36 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 11:13:04 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	put_envvalue(char *arg, char *ret, int *i, int *j)
 	*i += get_envname(&arg[*i], env_name) - 1;
 	if (ft_strncmp(env_name, "?", 1) == 0)
 	{
-		temp = ft_itoa(g_shell.status);
+		temp = ft_itoa2(g_shell.status);
 		*j = ft_strlcat(ret, temp, BUFFER_SIZE);
 		free(temp);
 	}

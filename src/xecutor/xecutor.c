@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 17:28:08 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 13:24:31 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int	simple(t_cmd *cmd)
 	pid_t	pid;
 	int		status;
 	char	**args;
+	char	*path;
 
 	pid = fork();
 	if (pid < 0)
@@ -28,10 +29,10 @@ static int	simple(t_cmd *cmd)
 		if (!cmd->args[0])
 			exit(EXIT_SUCCESS);
 		args = cmd_expansion(cmd->args);
-		args[0] = cmd_path(cmd);
-		if (!args[0] && invalid_command(cmd))
+		path = cmd_path(args[0]);
+		if (!path && invalid_command(cmd))
 			exit(EXIT_FAILURE);
-		if (execve(args[0], args, g_shell.envp) == -1)
+		if (execve(path, args, g_shell.envp) == -1)
 			exit(EXIT_FAILURE);
 	}
 	waitpid(pid, &status, 0);
@@ -45,10 +46,9 @@ static int	and(t_cmd *cmd)
 {
 	int	status;
 
-	if (executor(cmd->left) == EXIT_SUCCESS)
+	status = executor(cmd->left);
+	if (status == EXIT_SUCCESS)
 		status = executor(cmd->right);
-	else
-		status = EXIT_FAILURE;
 	return (status);
 }
 
@@ -57,9 +57,8 @@ static int	or(t_cmd *cmd)
 {
 	int	status;
 
-	if (executor(cmd->left) == EXIT_SUCCESS)
-		status = EXIT_SUCCESS;
-	else
+	status = executor(cmd->left);
+	if (status != EXIT_SUCCESS)
 		status = executor(cmd->right);
 	return (status);
 }
@@ -67,7 +66,7 @@ static int	or(t_cmd *cmd)
 /* Couldn't find the command, print error message. */
 int	invalid_command(t_cmd *cmd)
 {
-	ft_dprintf(STDERR_FILENO, "minishell: %s: command not found\n",
+	ft_dprintf(STDERR_FILENO, MISH": %s: command not found\n",
 		cmd->args[0]);
 	return (EXIT_FAILURE);
 }
@@ -79,14 +78,10 @@ int	executor(t_cmd *cmd)
 		return (and(cmd));
 	else if (cmd->type == OR)
 		return (or(cmd));
+	else if (cmd->pipe)
+		return (pipex(cmd));
 	else if (is_builtin(cmd))
 		return (execute_builtin(cmd));
 	else
-	{
-		if (cmd->pipe)
-			return (pipex(cmd));
-		else
-			return (simple(cmd));
-	}
-	return (EXIT_FAILURE);
+		return (simple(cmd));
 }

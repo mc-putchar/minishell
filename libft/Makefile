@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 12:01:08 by dlu               #+#    #+#              #
-#    Updated: 2023/07/06 10:47:22 by dlu              ###   ########.fr        #
+#    Updated: 2023/07/07 05:22:27 by mcutura          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ _SRC	:=	ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
 			ft_memgrow.c ft_memccpy.c ft_split_blocks.c get_delim.c \
 			ft_strarrcpy.c ft_strarrlen.c ft_strarrfree.c ft_strarrjoin.c \
 			ft_replace_quotes.c ft_perror.c ft_lstget_atindex.c \
-			ft_wait.c
+			ft_wait.c ft_itoa2.c
 SRC		:=	$(addprefix, $(SRCDIR)/, $(_SRC))
 
 OBJDIR	:=	objs

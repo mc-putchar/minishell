@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 07:21:52 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 07:13:23 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 13:05:37 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@
 # define ARROW_DOWN		0x425B1B
 # define ARROW_RIGHT	0x435B1B
 # define ARROW_LEFT		0x445B1B
+# define END			0x465B1B
+# define HOME			0x485B1B
 # define DELETE			0x7E335B1B
+# define CTRL_LEFT		0x445B1B1B
+# define CTRL_RIGHT		0x435B1B1B
 
 # define MOVE_LEFT(x)	(void)ft_dprintf(STDOUT_FILENO, "\033[%dD", x)
 # define MOVE_RIGHT(x)	(void)ft_dprintf(STDOUT_FILENO, "\033[%dC", x)

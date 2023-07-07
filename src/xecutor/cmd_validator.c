@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 18:02:34 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 09:48:12 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 07:52:52 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,22 +50,22 @@ static char	*find_path(char *cmdname)
 }
 
 /* Get actual command path, validated first so it should never fail. */
-char	*cmd_path(t_cmd *cmd)
+char	*cmd_path(char *cmd)
 {
 	char	*path;
 
-	if (!cmd->args[0])
+	if (!cmd)
 		return (NULL);
-	path = find_path(cmd->args[0]);
+	path = find_path(cmd);
 	if (path)
 		return (path);
-	if (cmd->args[0][0] == '.' || cmd->args[0][0] == '/')
+	if (cmd[0] == '.' || cmd[0] == '/')
 	{
-		if (!access(cmd->args[0], X_OK))
-			return (cmd->args[0]);
+		if (!access(cmd, X_OK))
+			return (cmd);
 	}
-	if (ft_strchr(cmd->args[0], '/') && !access(cmd->args[0], X_OK))
-		return (cmd->args[0]);
+	if (ft_strchr(cmd, '/') && !access(cmd, X_OK))
+		return (cmd);
 	return (NULL);
 }
 

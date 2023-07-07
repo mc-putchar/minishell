@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/07/06 08:06:44 by dlu              ###   ########.fr        #
+#    Updated: 2023/07/07 12:29:45 by mcutura          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,16 +25,17 @@ LIBFT	:=	$(LIBDIR)/libft.a
 #--- SOURCES ---
 
 SRC		:=	main.c \
-			director/build_prompt.c director/director.c director/init_shell.c \
-			director/read_line.c director/setup_terminal.c director/history.c \
+			director/build_prompt.c director/director.c director/read_line.c \
+			director/setup_terminal.c director/history.c \
 			director/history_ctrl.c director/parse_execute.c \
 			lexer/token.c lexer/lexer.c lexer/validator.c \
 			parser/ast_basic.c parser/ast_block.c parser/ast_command.c \
 			parser/ast_redir.c \
 			builtin/builtin.c builtin/builtin_echo.c builtin/builtin_dir.c \
-			builtin/builtin_environ.c builtin/builtin_exit.c \
+			builtin/builtin_environ.c builtin/builtin_exit.c builtin/env.c \
 			xecutor/xecutor.c xecutor/cmd_validator.c xecutor/cmd_expansion.c \
 			xecutor/pipex.c xecutor/redirect.c xecutor/wildcard.c \
+			xecutor/here_doc.c \
 			debug/ast_display.c debug/tokens_print.c
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRC))
 

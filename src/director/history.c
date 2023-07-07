@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:39:23 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/04 11:19:36 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 06:24:17 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,15 +94,17 @@ int	init_history(void)
 	g_shell.hist_i = 0;
 	path = ft_strjoin(getenv("HOME"), HIST_FILE);
 	if (!path)
-		return (ft_dprintf(STDERR_FILENO, "Error: ft_strjoin\n"));
-	if (access(path, F_OK) == -1)
+		return (ft_dprintf(STDERR_FILENO, MISH": error: ft_strjoin\n"));
+	if (access(path, F_OK))
 		return (free(path), EXIT_SUCCESS);
 	fd = open(path, O_RDONLY);
 	free(path);
 	if (fd == -1)
-		return (ft_dprintf(STDERR_FILENO, "Error: open: %s\n", HIST_FILE));
+		return (ft_dprintf(STDERR_FILENO, MISH": %s: %s\n", \
+			strerror(errno), HIST_FILE), EXIT_FAILURE);
 	if (read_history(fd))
-		return (ft_dprintf(STDERR_FILENO, "Error: read_history\n"));
+		return (ft_dprintf(STDERR_FILENO, MISH": error: read_history\n"), \
+			close(fd), EXIT_FAILURE);
 	close(fd);
 	return (EXIT_SUCCESS);
 }

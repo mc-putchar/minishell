@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 20:14:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 10:47:43 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 10:51:07 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	open_file(char *path, t_type type, int fd_default)
 	else if (type == REDIR_IN)
 		fd = open(path, O_RDONLY);
 	if (fd < 0)
-		ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", path, strerror(errno));
+		ft_dprintf(STDERR_FILENO, MISH": %s: %s\n", path, strerror(errno));
 	return (fd);
 }
 
@@ -57,6 +57,12 @@ bool	redir_setup(t_cmd *cmd)
 	int	o_fd;
 	int	i_fd;
 
+	if (cmd->i_type == HERE_DOC)
+	{
+		if (dup2(cmd->here_doc, STDIN_FILENO) == -1)
+			return (close(cmd->here_doc), false);
+		return (close(cmd->here_doc), true);
+	}
 	o_fd = open_file(cmd->o_file, cmd->o_type, STDOUT_FILENO);
 	i_fd = open_file(cmd->i_file, cmd->i_type, STDIN_FILENO);
 	if (!close_fd(cmd, o_fd, i_fd))
