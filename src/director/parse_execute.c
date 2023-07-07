@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 18:00:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 11:29:22 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 14:06:36 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static bool	syntax_check(t_cmd *cmd, t_token *tok)
 int	parse_execute(char *line)
 {
 	if (!input_validator((const char *) line))
-		return (EXIT_FAILURE);
+		return (free(line), EXIT_FAILURE);
 	g_shell.tok_head = input_lexer(line);
 	free(line);
 	g_shell.tok = g_shell.tok_head;
