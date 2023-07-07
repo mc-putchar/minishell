@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/07/07 06:25:06 by mcutura          ###   ########.fr        #
+#    Updated: 2023/07/07 12:29:45 by mcutura          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ SRC		:=	main.c \
 			parser/ast_basic.c parser/ast_block.c parser/ast_command.c \
 			parser/ast_redir.c \
 			builtin/builtin.c builtin/builtin_echo.c builtin/builtin_dir.c \
-			builtin/builtin_environ.c builtin/builtin_exit.c \
+			builtin/builtin_environ.c builtin/builtin_exit.c builtin/env.c \
 			xecutor/xecutor.c xecutor/cmd_validator.c xecutor/cmd_expansion.c \
 			xecutor/pipex.c xecutor/redirect.c xecutor/wildcard.c \
 			xecutor/here_doc.c \

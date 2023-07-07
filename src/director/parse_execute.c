@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 18:00:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 10:46:46 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 11:29:22 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	parse_execute(char *line)
 	g_shell.parse_error = false;
 	g_shell.ast = build_conditional();
 	if (!g_shell.parse_error && syntax_check(g_shell.ast, g_shell.tok_head))
-		executor(g_shell.ast);
+		g_shell.status = executor(g_shell.ast);
 	else
 		ft_perror("parser error");
 	free_cmd_ast(g_shell.ast);

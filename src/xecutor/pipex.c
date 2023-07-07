@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:34:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 10:30:33 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 11:14:28 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ int	pipex(t_cmd *cmd)
 	i = -1;
 	while (++i < pipelen)
 		pids[i] = wait_for_child(pids[i]);
-	return (free(pids), EXIT_SUCCESS);
+	i = pids[i - 1];
+	return (free(pids), i);
 }

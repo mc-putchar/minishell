@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 07:53:38 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 11:29:07 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,9 @@ static int	and(t_cmd *cmd)
 {
 	int	status;
 
-	if (executor(cmd->left) == EXIT_SUCCESS)
+	status = executor(cmd->left);
+	if (status == EXIT_SUCCESS)
 		status = executor(cmd->right);
-	else
-		status = EXIT_FAILURE;
 	return (status);
 }
 
@@ -57,9 +56,8 @@ static int	or(t_cmd *cmd)
 {
 	int	status;
 
-	if (executor(cmd->left) == EXIT_SUCCESS)
-		status = EXIT_SUCCESS;
-	else
+	status = executor(cmd->left);
+	if (status != EXIT_SUCCESS)
 		status = executor(cmd->right);
 	return (status);
 }
@@ -67,7 +65,7 @@ static int	or(t_cmd *cmd)
 /* Couldn't find the command, print error message. */
 int	invalid_command(t_cmd *cmd)
 {
-	ft_dprintf(STDERR_FILENO, "minishell: %s: command not found\n",
+	ft_dprintf(STDERR_FILENO, MISH": %s: command not found\n",
 		cmd->args[0]);
 	return (EXIT_FAILURE);
 }
