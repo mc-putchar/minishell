@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:13:47 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 15:16:10 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 15:43:52 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static void	put_envvalue(char *arg, char *ret, int *i, int *j)
 		*j = ft_strlcat(ret, temp, BUFFER_SIZE);
 		free(temp);
 	}
-	else if (ft_getenv(env_name))
-		*j = ft_strlcat(ret, ft_getenv(env_name), BUFFER_SIZE);
+	else if (getenv(env_name))
+		*j = ft_strlcat(ret, getenv(env_name), BUFFER_SIZE);
 }
 
 /* Expand a single token. */
