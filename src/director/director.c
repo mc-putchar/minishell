@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 13:28:18 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 14:31:53 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 // TODO: write history to file on exit
 void	gtfo(t_cmdline *cmdl, int status, char *msg)
 {
+	if (write_history())
+		ft_dprintf(STDERR_FILENO, MISH": %s: %s\n", strerror(errno), \
+			HIST_FILE);
 	ft_lstclear(&g_shell.hist, free);
 	(void) cmdl;
 	if (g_shell.tok_head)
