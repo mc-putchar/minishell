@@ -6,13 +6,13 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:09:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 07:20:08 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 16:44:41 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#define ERR_KEY	MISH": export: '%s': not a valid identifier\n"
+#define ERR_KEY	"%s: export: '%s': not a valid identifier\n"
 #define ERR_MAX	"environment variable over limit"
 
 /* Check if the env key is valid. */
@@ -68,7 +68,7 @@ int	builtin_export(t_cmd *cmd)
 		temp = ft_split(av[i], '=');
 		if (!envkey_valid(temp[0]))
 		{
-			ft_dprintf(STDERR_FILENO, ERR_KEY, av[i]);
+			ft_dprintf(STDERR_FILENO, ERR_KEY, MISH, av[i]);
 			ft_strarrfree(temp);
 			status = EXIT_FAILURE;
 			continue ;
