@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:19:39 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 01:09:24 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 03:38:00 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@ char	*compact_cwd(char *cwd, char *home)
 }
 
 // TODO: switch to local env once implemented
-int	print_prompt(void)
+int	print_prompt(char *prompt)
 {
 	char	*user;
 	char	*host;
 	char	*cwd;
 
+	if (prompt)
+		return (ft_printf("%s", prompt), EXIT_SUCCESS);
 	user = getenv("USER");
 	host = getenv("HOST");
 	cwd = malloc(BUFFER_SIZE);
@@ -44,7 +46,7 @@ int	print_prompt(void)
 	cwd = compact_cwd(cwd, getenv("HOME"));
 	if (!host)
 		host = "localhost";
-	if (ft_printf("\r%s%s🐭%s:%s%s$ ", \
+	if (ft_printf("\r%s%s"MISH"%s:%s%s$ ", \
 		BGCYAN MAGENTA, user, host, cwd, RESET) < 0)
 		return (free(cwd), EXIT_FAILURE);
 	free(cwd);

@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 20:14:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 16:38:31 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 04:47:45 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,12 @@ bool	redir_setup(t_cmd *cmd)
 	int	o_fd;
 	int	i_fd;
 
+	if (cmd->i_type == HERE_DOC)
+	{
+		if (dup2(cmd->here_doc, STDIN_FILENO) == -1)
+			return (close(cmd->here_doc), false);
+		return (close(cmd->here_doc), true);
+	}
 	o_fd = open_file(cmd->o_file, cmd->o_type, STDOUT_FILENO);
 	i_fd = open_file(cmd->i_file, cmd->i_type, STDIN_FILENO);
 	if (!close_fd(cmd, o_fd, i_fd))

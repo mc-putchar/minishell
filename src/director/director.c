@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 16:30:29 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 03:48:07 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ void	gtfo(t_cmdline *cmdl, int status)
 	exit(status);
 }
 
-void	reset_cmd_line(t_cmdline *cmdl)
+void	reset_cmd_line(t_cmdline *cmdl, char *prompt)
 {
 	cmdl->i = 0;
 	cmdl->size = 0;
 	ft_bzero(cmdl->buff, BUFSIZ);
-	if (print_prompt())
+	if (print_prompt(prompt))
 		ft_perror("print_prompt");
 	cmdl->hist = NULL;
 }

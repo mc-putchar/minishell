@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:29:45 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 10:56:32 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 03:05:37 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ struct s_cmd
 	char	*o_file;
 	t_type	o_type;
 	t_type	i_type;
+	int		here_doc;
 };
 
 struct s_token

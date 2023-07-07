@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 16:29:51 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 03:48:30 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define RC_FILE		"/.mishrc"
 # define HIST_FILE		"/.mish_hist"
 # define HERE_DOC_FILE	"/tmp/.mish_here_doc"
+# define MISH			"🐭"
 # define MAX_HIST_SIZE	1000
 # define MAX_PATH_SIZE	1024
 # define MAX_CMD_SIZE	1024
@@ -92,15 +93,13 @@ t_cmd	*build_command(void);
 int		parse_execute(char *line);
 int		executor(t_cmd *cmd);
 int		pipex(t_cmd *cmd);
-int		redirect_out(t_cmd *cmd);
-int		redirect_in(t_cmd *cmd);
-int		redirect_here(t_cmd *cmd);
 int		invalid_command(t_cmd *cmd);
 int		wildcard_expansion(char **args, char *format, int i);
 char	*cmd_path(t_cmd *cmd);
 char	**cmd_expansion(char **args);
 char	*arg_expansion(char *arg);
 bool	redir_setup(t_cmd *cmd);
+int		here_doc(t_cmd *cmd);
 
 /* Builtins. */
 int		builtin_echo(t_cmd *cmd);
@@ -120,14 +119,15 @@ int		init_shell(void);
 int		init_history(void);
 int		flush_history(t_cmdline *cmdl);
 int		write_history(int fd);
-void	ctrl_up_history(t_cmdline *cmdl);
-void	ctrl_down_history(t_cmdline *cmdl);
-int		setup_terminal(struct termios *term_backup);
-void	reset_terminal(struct termios *term_backup);
-int		print_prompt(void);
+void	ctrl_up_history(t_cmdline *cmdl, char *prompt);
+void	ctrl_down_history(t_cmdline *cmdl, char *prompt);
+int		setup_terminal(t_termios *term_backup);
+void	reset_terminal(t_termios *term_backup);
+int		print_prompt(char *prompt);
+char	*read_line(char *prompt);
 int		do_stuff(void);
 void	gtfo(t_cmdline *cmdl, int status);
-void	reset_cmd_line(t_cmdline *cmdl);
+void	reset_cmd_line(t_cmdline *cmdl, char *prompt);
 
 /* Debugging tools. */
 void	ast_display(t_cmd *node, int level);

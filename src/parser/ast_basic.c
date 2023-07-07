@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_basic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:48:28 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 09:43:09 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 05:11:19 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_cmd	*new_cmd(t_type type)
 	cmd->i_type = EMPTY;
 	cmd->left = NULL;
 	cmd->right = NULL;
+	cmd->here_doc = -1;
 	return (cmd);
 }
 

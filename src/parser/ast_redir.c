@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_redir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 19:34:18 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/03 22:37:07 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 05:10:31 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static bool	redir_in(t_cmd *node, t_type type)
 		return (ft_perror("parser: redirection syntax"), false);
 	node->i_file = g_shell.tok->value;
 	node->i_type = type;
+	if (type == HERE_DOC)
+		node->here_doc = here_doc(node);
 	return (accept(WORD));
 }
 
