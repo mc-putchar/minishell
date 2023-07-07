@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 06:29:37 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 07:26:30 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 void	gtfo(t_cmdline *cmdl, int status)
 {
 	ft_lstclear(&g_shell.hist, free);
-	//if (cmdl->hist)
-	//	free(cmdl->hist);
+	if (cmdl->hist)
+		free(cmdl->hist);
 	(void) cmdl;
 	if (g_shell.tok_head)
 		free_token(g_shell.tok_head);
@@ -33,6 +33,7 @@ void	reset_cmd_line(t_cmdline *cmdl, char *prompt)
 {
 	cmdl->i = 0;
 	cmdl->size = 0;
+	cmdl->hist = NULL;
 	ft_bzero(cmdl->buff, BUFSIZ);
 	if (print_prompt(prompt))
 		ft_perror("print_prompt");

@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 04:48:25 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 07:53:38 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	simple(t_cmd *cmd)
 		if (!cmd->args[0])
 			exit(EXIT_SUCCESS);
 		args = cmd_expansion(cmd->args);
-		args[0] = cmd_path(cmd);
+		args[0] = cmd_path(args[0]);
 		if (!args[0] && invalid_command(cmd))
 			exit(EXIT_FAILURE);
 		if (execve(args[0], args, g_shell.envp) == -1)

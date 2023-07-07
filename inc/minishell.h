@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 07:03:44 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 07:53:00 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int		executor(t_cmd *cmd);
 int		pipex(t_cmd *cmd);
 int		invalid_command(t_cmd *cmd);
 int		wildcard_expansion(char **args, char *format, int i);
-char	*cmd_path(t_cmd *cmd);
+char	*cmd_path(char *cmd);
 char	**cmd_expansion(char **args);
 char	*arg_expansion(char *arg);
 bool	redir_setup(t_cmd *cmd);
