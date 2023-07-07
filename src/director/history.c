@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:39:23 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 06:24:17 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 14:53:12 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,20 @@ int	read_history(int fd)
 	return (EXIT_SUCCESS);
 }
 
-int	write_history(int fd)
+int	write_history(void)
 {
 	t_list	*tmp;
 	t_list	*rev;
+	int		fd;
+	char	*path;
 
 	if (!g_shell.hist)
 		return (EXIT_SUCCESS);
+	path = ft_strjoin(g_shell.home, HIST_FILE);
+	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	free(path);
+	if (fd < 0)
+		return (EXIT_FAILURE);
 	rev = g_shell.hist;
 	tmp = g_shell.hist->next;
 	while (tmp)
@@ -74,10 +81,12 @@ int	flush_history(t_cmdline *cmdl)
 		return (EXIT_SUCCESS);
 	line = ft_strdup(cmdl->buff);
 	if (!line)
-		return (ft_dprintf(STDERR_FILENO, "Error: ft_strjoin\n"));
+		return (ft_dprintf(STDERR_FILENO, MISH": error: ft_strjoin\n"), \
+			free(cmdl->buff), EXIT_FAILURE);
 	tmp = ft_lstnew(line);
 	if (!tmp)
-		return (free(line), ft_dprintf(STDERR_FILENO, "Error: ft_lstnew\n"));
+		return (free(line), ft_dprintf(STDERR_FILENO, \
+			MISH": error: ft_lstnew\n"), free(cmdl->buff), EXIT_FAILURE);
 	if (!g_shell.hist)
 		g_shell.hist = tmp;
 	else
@@ -92,7 +101,7 @@ int	init_history(void)
 
 	g_shell.hist = NULL;
 	g_shell.hist_i = 0;
-	path = ft_strjoin(getenv("HOME"), HIST_FILE);
+	path = ft_strjoin(g_shell.home, HIST_FILE);
 	if (!path)
 		return (ft_dprintf(STDERR_FILENO, MISH": error: ft_strjoin\n"));
 	if (access(path, F_OK))

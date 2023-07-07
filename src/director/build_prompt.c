@@ -6,20 +6,21 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:19:39 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 14:08:43 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 14:47:09 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //TODO: add check for long paths and shorten them
-char	*compact_cwd(char *cwd, char *home)
+char	*compact_cwd(char *cwd)
 {
-	char	*compact;
+	char			*compact;
+	size_t const	homelen = ft_strlen(g_shell.home);
 
-	if (ft_strncmp(cwd, home, ft_strlen(home)) == 0)
+	if (!ft_strncmp(cwd, g_shell.home, homelen))
 	{
-		compact = ft_strjoin("~", cwd + ft_strlen(home));
+		compact = ft_strjoin("~", cwd + homelen);
 		free(cwd);
 		return (compact);
 	}
@@ -42,7 +43,7 @@ int	print_prompt(char *prompt)
 	cwd = getcwd(cwd, BUFFER_SIZE);
 	if (!cwd)
 		return (EXIT_FAILURE);
-	cwd = compact_cwd(cwd, ft_getenv("HOME"));
+	cwd = compact_cwd(cwd);
 	if (!user)
 		user = "mish";
 	if (!host)
