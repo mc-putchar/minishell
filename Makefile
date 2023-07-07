@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/07/06 19:17:49 by mcutura          ###   ########.fr        #
+#    Updated: 2023/07/07 06:25:06 by mcutura          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,8 @@ LIBFT	:=	$(LIBDIR)/libft.a
 #--- SOURCES ---
 
 SRC		:=	main.c \
-			director/build_prompt.c director/director.c director/init_shell.c \
-			director/read_line.c director/setup_terminal.c director/history.c \
+			director/build_prompt.c director/director.c director/read_line.c \
+			director/setup_terminal.c director/history.c \
 			director/history_ctrl.c director/parse_execute.c \
 			lexer/token.c lexer/lexer.c lexer/validator.c \
 			parser/ast_basic.c parser/ast_block.c parser/ast_command.c \

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_environ.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:09:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 08:46:28 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 07:20:08 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#define ERR_KEY	"minishell: export: '%s': not a valid identifier\n"
+#define ERR_KEY	MISH": export: '%s': not a valid identifier\n"
 #define ERR_MAX	"environment variable over limit"
 
 /* Check if the env key is valid. */
@@ -99,9 +99,14 @@ int	builtin_unset(t_cmd *cmd)
 int	builtin_env(t_cmd *cmd)
 {
 	int	i;
+	int	fd[2];
 
+	backup_stdfds(fd);
+	if (!redir_setup(cmd))
+		return (EXIT_FAILURE);
 	i = -1;
 	while (g_shell.envp[++i] && cmd)
-		ft_printf("%s\n", g_shell.envp[i]);
+		ft_printf("%s\r\n", g_shell.envp[i]);
+	restore_stdfds(fd);
 	return (EXIT_SUCCESS);
 }

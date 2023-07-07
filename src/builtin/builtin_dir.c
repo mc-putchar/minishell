@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_dir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlu <dlu@student.42berlin.de>              +#+  +:+       +#+        */
+/*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:05:42 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/06 09:16:08 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 07:17:00 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,29 +20,33 @@ int	builtin_cd(t_cmd *cmd)
 	int		status;
 
 	temp = arg_expansion(cmd->args[1]);
+	(void)getcwd(buffer, BUFFER_SIZE);
 	status = chdir(temp);
 	if (status < 0)
-		ft_dprintf(STDERR_FILENO, "minishell: cd: %s: %s\n", temp,
-			strerror(errno));
+		ft_dprintf(STDERR_FILENO, MISH": cd: %s: %s\n", temp, strerror(errno));
 	else
 	{
-		getcwd(buffer, BUFFER_SIZE);
 		free(temp);
-		temp = ft_strjoin("OLDPWD=", getenv("PWD"));
+		temp = ft_strjoin("OLDPWD=", buffer);
 		replace_env("OLDPWD", temp);
+		(void)getcwd(buffer, BUFFER_SIZE);
 		temp = ft_strjoin("PWD=", buffer);
 		replace_env("PWD", temp);
 	}
 	return (free(temp), status);
 }
 
-// TODO: redirection
 int	builtin_pwd(t_cmd *cmd)
 {
 	char	buffer[BUFFER_SIZE];
+	int		fd[2];
 
+	backup_stdfds(fd);
+	if (!redir_setup(cmd))
+		return (EXIT_FAILURE);
 	(void) cmd;
 	getcwd(buffer, BUFFER_SIZE);
-	ft_printf("%s\n", buffer);
+	ft_printf("%s\r\n", buffer);
+	restore_stdfds(fd);
 	return (EXIT_SUCCESS);
 }

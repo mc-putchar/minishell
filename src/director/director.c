@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 03:48:07 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 06:29:37 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,9 @@ void	reset_cmd_line(t_cmdline *cmdl, char *prompt)
 	cmdl->hist = NULL;
 }
 
-int	director(int ac, char **av, char **envp)
+int	director(void)
 {
-	(void)ac;
-	(void)av;
-	(void)envp;
-	if (init_shell())
+	if (init_history())
 		return (EXIT_FAILURE);
 	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO) || !isatty(STDERR_FILENO))
 		return (ENOTTY);

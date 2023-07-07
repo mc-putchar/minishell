@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 03:48:30 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 07:03:44 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ bool	redir_setup(t_cmd *cmd);
 int		here_doc(t_cmd *cmd);
 
 /* Builtins. */
+void	backup_stdfds(int fd[2]);
+void	restore_stdfds(int fd[2]);
 int		builtin_echo(t_cmd *cmd);
 int		builtin_cd(t_cmd *cmd);
 int		builtin_pwd(t_cmd *cmd);
@@ -114,8 +116,7 @@ bool	is_builtin(t_cmd *cmd);
 void	replace_env(char *key, char *replace);
 
 /* Director. */
-int		director(int ac, char **av, char **envp);
-int		init_shell(void);
+int		director(void);
 int		init_history(void);
 int		flush_history(t_cmdline *cmdl);
 int		write_history(int fd);
