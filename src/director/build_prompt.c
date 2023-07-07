@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:19:39 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 03:38:00 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 14:08:43 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ char	*compact_cwd(char *cwd, char *home)
 	return (cwd);
 }
 
-// TODO: switch to local env once implemented
 int	print_prompt(char *prompt)
 {
 	char	*user;
@@ -35,18 +34,20 @@ int	print_prompt(char *prompt)
 
 	if (prompt)
 		return (ft_printf("%s", prompt), EXIT_SUCCESS);
-	user = getenv("USER");
-	host = getenv("HOST");
+	user = ft_getenv("USER");
+	host = ft_getenv("HOSTNAME");
 	cwd = malloc(BUFFER_SIZE);
 	if (!cwd)
 		return (EXIT_FAILURE);
 	cwd = getcwd(cwd, BUFFER_SIZE);
 	if (!cwd)
 		return (EXIT_FAILURE);
-	cwd = compact_cwd(cwd, getenv("HOME"));
+	cwd = compact_cwd(cwd, ft_getenv("HOME"));
+	if (!user)
+		user = "mish";
 	if (!host)
 		host = "localhost";
-	if (ft_printf("\r%s%s"MISH"%s:%s%s$ ", \
+	if (ft_printf("%s%s"MISH"%s:%s%s$ ", \
 		BGCYAN MAGENTA, user, host, cwd, RESET) < 0)
 		return (free(cwd), EXIT_FAILURE);
 	free(cwd);
