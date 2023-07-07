@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:06 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 12:47:20 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 12:52:31 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static bool	env_setup(char **ev)
 	lvl = ft_getenv("SHLVL");
 	if (lvl)
 	{
-		tmp = ft_itoa(ft_atoi(lvl) + 1);
+		tmp = ft_itoa2(ft_atoi(lvl) + 1);
 		ft_setenv("SHLVL", tmp, 1);
 		free(tmp);
 	}

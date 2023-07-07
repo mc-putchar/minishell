@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 11:29:07 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 13:24:31 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int	simple(t_cmd *cmd)
 	pid_t	pid;
 	int		status;
 	char	**args;
+	char	*path;
 
 	pid = fork();
 	if (pid < 0)
@@ -28,10 +29,10 @@ static int	simple(t_cmd *cmd)
 		if (!cmd->args[0])
 			exit(EXIT_SUCCESS);
 		args = cmd_expansion(cmd->args);
-		args[0] = cmd_path(args[0]);
-		if (!args[0] && invalid_command(cmd))
+		path = cmd_path(args[0]);
+		if (!path && invalid_command(cmd))
 			exit(EXIT_FAILURE);
-		if (execve(args[0], args, g_shell.envp) == -1)
+		if (execve(path, args, g_shell.envp) == -1)
 			exit(EXIT_FAILURE);
 	}
 	waitpid(pid, &status, 0);

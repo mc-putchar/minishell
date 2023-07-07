@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 10:46:50 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 13:09:27 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,19 @@ static void	csi_handler(int ret, t_cmdline *cmdl, char *prompt)
 		MOVE_LEFT(1);
 	else if (ret == DELETE && cmdl->i < cmdl->size)
 		delete(cmdl);
+	else if (ret == HOME && cmdl->i > 0)
+	{
+		MOVE_LEFT(cmdl->i);
+		cmdl->i = 0;
+	}
+	else if (ret == END && cmdl->i < cmdl->size)
+	{
+		MOVE_RIGHT(cmdl->size - cmdl->i);
+		cmdl->i = cmdl->size;
+	}
 }
 
-void	check_control(int ret, t_cmdline *cmdl, char *prompt)
+static void	check_control(int ret, t_cmdline *cmdl, char *prompt)
 {
 	if (ret == CTRL_D && !cmdl->size)
 		gtfo(cmdl, EXIT_SUCCESS);
@@ -70,7 +80,7 @@ void	check_control(int ret, t_cmdline *cmdl, char *prompt)
 	}
 }
 
-void	insert_input(int ret, t_cmdline *cmdl)
+static void	insert_input(int ret, t_cmdline *cmdl)
 {
 	if (cmdl->i == cmdl->size)
 	{
@@ -119,24 +129,5 @@ char	*read_line(char *prompt)
 		}
 		else if (ft_isascii(ret))
 			check_control(ret, &cmdl, prompt);
-	}
-}
-
-int	do_stuff(void)
-{
-	char		*line;
-	t_termios	term_backup;
-
-	ft_bzero(&term_backup, sizeof(term_backup));
-	g_shell.term_backup = &term_backup;
-	while (true)
-	{	
-		if (setup_terminal(&term_backup))
-			return (ft_perror("setup_terminal"));
-		line = read_line(NULL);
-		reset_terminal(&term_backup);
-		if (!line)
-			return (ft_perror("read_line"));
-		parse_execute(line);
 	}
 }

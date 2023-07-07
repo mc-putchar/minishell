@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 10:09:26 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 13:11:51 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,27 @@ void	reset_cmd_line(t_cmdline *cmdl, char *prompt)
 	cmdl->hist = NULL;
 	ft_bzero(cmdl->buff, BUFSIZ);
 	if (print_prompt(prompt))
-		ft_perror("print_prompt");
+		ft_dprintf(STDERR_FILENO, MISH": error: print_prompt\n");
 	cmdl->hist = NULL;
+}
+
+int	do_stuff(void)
+{
+	char		*line;
+	t_termios	term_backup;
+
+	ft_bzero(&term_backup, sizeof(term_backup));
+	g_shell.term_backup = &term_backup;
+	while (true)
+	{	
+		if (setup_terminal(&term_backup))
+			return (ft_dprintf(STDERR_FILENO, MISH":error: setup_terminal\n"));
+		line = read_line(NULL);
+		reset_terminal(&term_backup);
+		if (!line)
+			return (ft_dprintf(STDERR_FILENO, MISH": error: read_line\n"));
+		parse_execute(line);
+	}
 }
 
 int	director(void)
@@ -45,6 +64,6 @@ int	director(void)
 	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO) || !isatty(STDERR_FILENO))
 		return (ENOTTY);
 	else if (do_stuff())
-		ft_perror("do_stuff");
+		ft_dprintf(STDERR_FILENO, MISH": error: do_stuff\n");
 	return (EXIT_SUCCESS);
 }
