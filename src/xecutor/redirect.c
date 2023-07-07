@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 20:14:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 15:50:23 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/07 15:20:48 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,22 @@
 /* Open file based on the redirection type. */
 static int	open_file(char *path, t_type type, int fd_default)
 {
-	int	fd;
+	char	*expand;
+	int		fd;
 
 	if (!path)
 		return (fd_default);
 	fd = 0;
+	expand = arg_expansion(path);
 	if (type == APPEND)
-		fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		fd = open(expand, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (type == REDIR_OUT)
-		fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		fd = open(expand, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (type == REDIR_IN)
-		fd = open(path, O_RDONLY);
+		fd = open(expand, O_RDONLY);
 	if (fd < 0)
-		ft_dprintf(STDERR_FILENO, MISH": %s: %s\n", path, strerror(errno));
-	return (fd);
+		ft_dprintf(STDERR_FILENO, MISH": %s: %s\n", expand, strerror(errno));
+	return (free(expand), fd);
 }
 
 /* Close the open file descriptors, return if any is still open. */
