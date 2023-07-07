@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 13:28:12 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 14:51:01 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_shell
 	t_cmd		*ast;
 	t_cmdline	*cmdl;
 	t_termios	*term_backup;
+	char		*home;
 }	t_shell;
 
 /* Lexer & Parser. */
@@ -121,7 +122,7 @@ int		ft_setenv(char *name, char *value, int overwrite);
 int		director(void);
 int		init_history(void);
 int		flush_history(t_cmdline *cmdl);
-int		write_history(int fd);
+int		write_history(void);
 void	ctrl_up_history(t_cmdline *cmdl, char *prompt);
 void	ctrl_down_history(t_cmdline *cmdl, char *prompt);
 int		setup_terminal(t_termios *term_backup);

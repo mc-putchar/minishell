@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:05:42 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 10:47:39 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 14:51:52 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	builtin_cd(t_cmd *cmd)
 	int		status;
 
 	if (!cmd->args[1] || !ft_strncmp(cmd->args[1], "~", 1))
-		temp = ft_strdup(getenv("HOME"));
-	else if (!ft_strncmp(cmd->args[1], "-", 1))
-		temp = ft_strdup(getenv("OLDPWD"));
+		temp = ft_strdup(g_shell.home);
+	else if (!ft_strncmp(cmd->args[1], "-", 1) && ft_getenv("OLDPWD"))
+		temp = ft_strdup(ft_getenv("OLDPWD"));
 	else
 		temp = arg_expansion(cmd->args[1]);
 	(void)getcwd(buffer, BUFFER_SIZE);
