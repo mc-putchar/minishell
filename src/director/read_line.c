@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 13:09:27 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 13:32:24 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	csi_handler(int ret, t_cmdline *cmdl, char *prompt)
 static void	check_control(int ret, t_cmdline *cmdl, char *prompt)
 {
 	if (ret == CTRL_D && !cmdl->size)
-		gtfo(cmdl, EXIT_SUCCESS);
+		gtfo(cmdl, EXIT_SUCCESS, NULL);
 	else if (ret == CTRL_C)
 	{
 		ft_printf("^C\n");

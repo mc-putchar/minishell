@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 12:39:31 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 13:28:12 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	reset_terminal(t_termios *term_backup);
 int		print_prompt(char *prompt);
 char	*read_line(char *prompt);
 int		do_stuff(void);
-void	gtfo(t_cmdline *cmdl, int status);
+void	gtfo(t_cmdline *cmdl, int status, char *msg);
 void	reset_cmd_line(t_cmdline *cmdl, char *prompt);
 
 /* Debugging tools. */

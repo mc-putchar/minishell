@@ -6,14 +6,14 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 13:11:51 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 13:28:18 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // TODO: write history to file on exit
-void	gtfo(t_cmdline *cmdl, int status)
+void	gtfo(t_cmdline *cmdl, int status, char *msg)
 {
 	ft_lstclear(&g_shell.hist, free);
 	(void) cmdl;
@@ -22,7 +22,10 @@ void	gtfo(t_cmdline *cmdl, int status)
 	if (g_shell.ast)
 		free_cmd_ast(g_shell.ast);
 	ft_strarrfree(g_shell.envp);
-	ft_dprintf(STDOUT_FILENO, "\r\nbyeee!\r\n");
+	if (!msg)
+		ft_dprintf(STDOUT_FILENO, "\r\nbyeee!\r\n");
+	else
+		ft_dprintf(STDOUT_FILENO, "%s\r\n", msg);
 	reset_terminal(g_shell.term_backup);
 	exit(status);
 }
