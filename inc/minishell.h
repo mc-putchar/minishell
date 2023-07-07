@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 14:51:01 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 16:37:29 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <signal.h>
 
 # define PROMPT			" $> "
 # define RC_FILE		"/.mishrc"
@@ -91,16 +92,21 @@ t_cmd	*build_pipeline(void);
 t_cmd	*build_command(void);
 
 /* Execution. */
+int		cmd_and(t_cmd *cmd);
+int		cmd_or(t_cmd *cmd);
 int		parse_execute(char *line);
 int		executor(t_cmd *cmd);
 int		pipex(t_cmd *cmd);
+int		here_doc(t_cmd *cmd);
 int		invalid_command(t_cmd *cmd);
 int		wildcard_expansion(char **args, char *format, int i);
 char	*cmd_path(char *cmd);
 char	**cmd_expansion(char **args);
 char	*arg_expansion(char *arg);
 bool	redir_setup(t_cmd *cmd);
-int		here_doc(t_cmd *cmd);
+void	signal_handler(int signum);
+void	signal_suspend(void);
+void	signal_restore(void);
 
 /* Builtins. */
 void	backup_stdfds(int fd[2]);

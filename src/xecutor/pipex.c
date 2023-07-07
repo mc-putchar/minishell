@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:34:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 11:14:28 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/07 16:41:22 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,11 @@ int	pipex(t_cmd *cmd)
 			return (free(pids), EXIT_FAILURE);
 		cmd = cmd->pipe;
 	}
+	signal_suspend();
 	(void)close_pipes(fd);
 	i = -1;
 	while (++i < pipelen)
 		pids[i] = wait_for_child(pids[i]);
 	i = pids[i - 1];
-	return (free(pids), i);
+	return (signal_restore(), free(pids), i);
 }
