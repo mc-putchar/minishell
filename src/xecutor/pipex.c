@@ -6,20 +6,25 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:34:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 16:41:22 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/08 11:59:13 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	wait_for_child(pid_t pid)
+static int	wait_for_children(pid_t *pids, int len)
 {
+	int	i;
 	int	status;
 
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (EXIT_SUCCESS);
+	i = -1;
+	while (++i < len)
+	{
+		waitpid(pids[i], &status, 0);
+		if (WIFEXITED(status))
+			status = WEXITSTATUS(status);
+	}
+	return (status);
 }
 
 static int	pipeline_len(t_cmd *cmd)
@@ -90,12 +95,13 @@ int	pipex(t_cmd *cmd)
 		if (pids[i] < 0 || (!pids[i] && supermario(cmd, i, pipelen, fd)))
 			return (free(pids), EXIT_FAILURE);
 		cmd = cmd->pipe;
+		if (i && (close(fd[(i) & 1][0]) || close(fd[(i) & 1][1])))
+			return (free(pids), EXIT_FAILURE);
+		if (i < pipelen - 1 && (pipe(fd[(i) & 1]) == -1))
+			return (free(pids), EXIT_FAILURE);
 	}
 	signal_suspend();
 	(void)close_pipes(fd);
-	i = -1;
-	while (++i < pipelen)
-		pids[i] = wait_for_child(pids[i]);
-	i = pids[i - 1];
+	i = wait_for_children(pids, pipelen);
 	return (signal_restore(), free(pids), i);
 }
