@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:34:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/08 11:59:13 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/08 12:30:32 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,6 @@ static int	pipeline_len(t_cmd *cmd)
 	return (len);
 }
 
-static int	close_pipes(int fd[2][2])
-{
-	return (close(fd[0][0]) || close(fd[0][1]) || \
-		close(fd[1][0]) || close(fd[1][1]));
-}
-
 static int	supermario(t_cmd *cmd, int i, int len, int fd[2][2])
 {
 	char	**args;
@@ -58,7 +52,8 @@ static int	supermario(t_cmd *cmd, int i, int len, int fd[2][2])
 	if (i < len - 1)
 		if (dup2(fd[(i + 1) & 1][1], STDOUT_FILENO) == -1)
 			exit(EXIT_FAILURE);
-	if (close_pipes(fd))
+	if (close(fd[0][0]) || close(fd[0][1]) || \
+		close(fd[1][0]) || close(fd[1][1]))
 		exit(EXIT_FAILURE);
 	if (is_builtin(cmd))
 		exit(execute_builtin(cmd));
@@ -73,6 +68,22 @@ static int	supermario(t_cmd *cmd, int i, int len, int fd[2][2])
 	if (execve(args[0], args, g_shell.envp) == -1)
 		exit(EXIT_FAILURE);
 	return (EXIT_FAILURE);
+}
+
+static int	luigi(int i, int len, int fd[2][2])
+{
+	if (i == len - 1)
+	{
+		if (close(fd[(i) & 1][0]) || close(fd[(i) & 1][1]))
+			return (EXIT_FAILURE);
+		return (EXIT_SUCCESS);
+	}
+	if (i && (close(fd[(i) & 1][0]) || close(fd[(i) & 1][1])))
+		return (EXIT_FAILURE);
+	if (i < len - 1 && (pipe(fd[(i) & 1]) == -1))
+		return (EXIT_FAILURE);
+	ft_wait(100000);
+	return (EXIT_SUCCESS);
 }
 
 int	pipex(t_cmd *cmd)
@@ -90,18 +101,14 @@ int	pipex(t_cmd *cmd)
 	i = -1;
 	while (++i < pipelen)
 	{
-		ft_wait(100000);
 		pids[i] = fork();
 		if (pids[i] < 0 || (!pids[i] && supermario(cmd, i, pipelen, fd)))
 			return (free(pids), EXIT_FAILURE);
+		if (luigi(i, pipelen, fd))
+			return (free(pids), EXIT_FAILURE);
 		cmd = cmd->pipe;
-		if (i && (close(fd[(i) & 1][0]) || close(fd[(i) & 1][1])))
-			return (free(pids), EXIT_FAILURE);
-		if (i < pipelen - 1 && (pipe(fd[(i) & 1]) == -1))
-			return (free(pids), EXIT_FAILURE);
 	}
 	signal_suspend();
-	(void)close_pipes(fd);
 	i = wait_for_children(pids, pipelen);
 	return (signal_restore(), free(pids), i);
 }
