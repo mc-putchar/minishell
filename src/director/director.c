@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 16:47:49 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/08 17:51:53 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 // TODO: write history to file on exit
 void	gtfo(t_cmdline *cmdl, int status, char *msg)
 {
-	//if (write_history())
-	//	ft_dprintf(STDERR_FILENO, MISH": %s: %s\n", strerror(errno), \
-	//		HIST_FILE);
 	ft_lstclear(&g_shell.hist, free);
 	(void) cmdl;
 	if (g_shell.tok_head)
@@ -40,7 +37,7 @@ void	reset_cmd_line(t_cmdline *cmdl, char *prompt)
 	cmdl->hist = NULL;
 	ft_bzero(cmdl->buff, BUFSIZ);
 	if (print_prompt(prompt))
-		ft_dprintf(STDERR_FILENO, MISH": error: print_prompt\n");
+		ft_printf("%s%s", MISH, PROMPT);
 	cmdl->hist = NULL;
 }
 
@@ -52,9 +49,10 @@ int	do_stuff(void)
 	ft_bzero(&term_backup, sizeof(term_backup));
 	g_shell.term_backup = &term_backup;
 	while (true)
-	{	
+	{
 		if (setup_terminal(&term_backup))
-			return (ft_dprintf(STDERR_FILENO, MISH":error: setup_terminal\n"));
+			return (ft_dprintf(STDERR_FILENO, MISH": error: %s\n", \
+				strerror(errno)));
 		line = read_line(NULL);
 		reset_terminal(&term_backup);
 		if (!line)
@@ -67,7 +65,7 @@ int	director(void)
 {
 	if (init_history())
 		return (EXIT_FAILURE);
-	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO) || !isatty(STDERR_FILENO))
+	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
 		return (ENOTTY);
 	else if (do_stuff())
 		ft_dprintf(STDERR_FILENO, MISH": error: do_stuff\n");

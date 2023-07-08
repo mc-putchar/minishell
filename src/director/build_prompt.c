@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:19:39 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 14:47:09 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/08 19:45:35 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*compact_cwd(char *cwd)
 	{
 		compact = ft_strjoin("~", cwd + homelen);
 		free(cwd);
-		return (compact);
+		cwd = compact;
 	}
 	return (cwd);
 }
@@ -37,10 +37,8 @@ int	print_prompt(char *prompt)
 		return (ft_printf("%s", prompt), EXIT_SUCCESS);
 	user = ft_getenv("USER");
 	host = ft_getenv("HOSTNAME");
-	cwd = malloc(BUFFER_SIZE);
-	if (!cwd)
-		return (EXIT_FAILURE);
-	cwd = getcwd(cwd, BUFFER_SIZE);
+	cwd = NULL;
+	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return (EXIT_FAILURE);
 	cwd = compact_cwd(cwd);
@@ -49,8 +47,7 @@ int	print_prompt(char *prompt)
 	if (!host)
 		host = "localhost";
 	if (ft_printf("%s%s"MISH"%s:%s%s$ ", \
-		BGCYAN MAGENTA, user, host, cwd, RESET) < 0)
+	BGCYAN MAGENTA, user, host, cwd, RESET) < 0)
 		return (free(cwd), EXIT_FAILURE);
-	free(cwd);
-	return (EXIT_SUCCESS);
+	return (free(cwd), EXIT_SUCCESS);
 }
