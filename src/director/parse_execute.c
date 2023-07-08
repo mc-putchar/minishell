@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 18:00:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 19:30:27 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/08 21:09:02 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static bool	paren_check(t_token *t)
 {
 	while (t)
 	{
-		if (t->type == LPARENT && (!t->prev || t->prev->type == LPARENT
+		if (t->type == LPARENT && (!t->prev || t->prev->type == LPARENT \
 			|| t->prev->type == AND || t->prev->type == OR))
 			t = t->next;
-		else if (t->type == RPARENT && (!t->next || t->next->type == RPARENT
+		else if (t->type == RPARENT && (!t->next || t->next->type == RPARENT \
 			|| t->next->type == AND || t->next->type == OR))
 			t = t->next;
 		else if (t->type == LPARENT || t->type == RPARENT)

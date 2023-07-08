@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/07/07 16:29:23 by dlu              ###   ########.fr        #
+#    Updated: 2023/07/08 21:27:04 by mcutura          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME	:=	minishell
 SRCDIR	:=	src
 INCDIR	:=	inc
 OBJDIR	:=	obj
-SUBDIR	:=	director lexer parser xecutor builtin debug
+SUBDIR	:=	director lexer parser xecutor builtin debug reader
 LIBDIR	:=	libft
 
 #--- LIBRARIES ---
@@ -36,7 +36,9 @@ SRC		:=	main.c \
 			xecutor/xecutor.c xecutor/cmd_validator.c xecutor/cmd_expansion.c \
 			xecutor/pipex.c xecutor/redirect.c xecutor/wildcard.c \
 			xecutor/here_doc.c xecutor/signal.c xecutor/logic_op.c \
-			debug/ast_display.c debug/tokens_print.c
+			debug/ast_display.c debug/tokens_print.c \
+			reader/line_moves.c reader/jmp_moves.c reader/line_clear.c \
+			reader/screen_clear.c reader/delete.c
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRC))
 
 #--- OBJECTS ---

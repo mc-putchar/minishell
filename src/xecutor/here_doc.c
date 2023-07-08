@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 19:16:56 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 15:07:45 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/08 19:42:18 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,37 +38,48 @@ static char	*create_here_doc_file(void)
 	return (path);
 }
 
-void	here_doc_reader(int fd, char *token)
+static int	output_line(int fd, char **line, bool expand)
+{
+	char	*expanded;
+
+	if (!expand)
+	{
+		if (ft_dprintf(fd, "%s\r\n", *line) > 0)
+			return (EXIT_SUCCESS);
+		return (EXIT_FAILURE);
+	}
+	expanded = arg_expansion(*line);
+	if (!expanded)
+		return (ft_dprintf(STDERR_FILENO, "%s: %s\n", MISH, strerror(errno)), \
+			EXIT_FAILURE);
+	if (ft_dprintf(fd, "%s\r\n", expanded) > 0)
+		return (free(expanded), EXIT_SUCCESS);
+	return (free(expanded), EXIT_FAILURE);
+}
+
+static void	here_doc_reader(int fd, char *token)
 {
 	char			*line;
 	t_termios		term_backup;
-	bool const		expand = !ft_memchr(token, '"', ft_strlen(token));
-	char			*delim;
-	char			*tmp;
+	size_t const	toklen = ft_strlen(token);
+	bool const		expand = !ft_memchr(token, '"', toklen);
 
 	ft_bzero(&term_backup, sizeof(term_backup));
-	g_shell.term_backup = &term_backup;
 	setup_terminal(&term_backup);
 	if (!expand)
-		delim = ft_strtrim(token, "\"");
-	else
-		delim = ft_strdup(token);
+		token = ft_strtrim(token, "\"");
 	line = read_line("> ");
-	while (line && ft_strncmp(line, delim, ft_strlen(delim)))
+	while (line && ft_strncmp(line, token, toklen))
 	{
-		if (expand && ft_memchr(line, '$', ft_strlen(line)))
-		{
-			tmp = arg_expansion(line);
-			ft_dprintf(fd, "%s\r\n", tmp);
-			free(tmp);
-		}
-		else
-			ft_dprintf(fd, "%s\r\n", line);
+		if (output_line(fd, &line, expand && \
+			ft_memchr(line, '$', ft_strlen(line))))
+			break ;
 		free(line);
 		line = read_line("> ");
 	}
 	free(line);
-	free(delim);
+	if (!expand)
+		free(token);
 	reset_terminal(&term_backup);
 }
 

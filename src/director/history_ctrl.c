@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 12:44:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 03:41:32 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/08 21:06:28 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	ctrl_end_history(t_cmdline *cmdl, char *prompt)
 	}
 	else
 		cmdl->size = 0;
-	CLEAR_LINE();
-	MOVE_COL(0);
+	clear_line();
+	move_col(0);
 	if (print_prompt(prompt))
-		ft_perror("print_prompt");
+		ft_printf("%s%s", MISH, PROMPT);
 	ft_printf("%s", cmdl->buff);
 	cmdl->i = cmdl->size;
 	return ;
@@ -51,10 +51,10 @@ void	ctrl_down_history(t_cmdline *cmdl, char *prompt)
 	line = tmp->content;
 	cmdl->buff[cmdl->size] = 0;
 	(void)ft_memcpy(cmdl->buff, line, ft_strlen(line));
-	CLEAR_LINE();
-	MOVE_COL(0);
+	clear_line();
+	move_col(0);
 	if (print_prompt(prompt))
-		ft_perror("print_prompt");
+		ft_printf("%s%s", MISH, PROMPT);
 	ft_printf("%s", line);
 	cmdl->i = cmdl->size;
 }
@@ -77,10 +77,10 @@ void	ctrl_up_history(t_cmdline *cmdl, char *prompt)
 			if (!cmdl->hist)
 				return ;
 		}
-		CLEAR_LINE();
-		MOVE_COL(0);
+		clear_line();
+		move_col(0);
 		if (print_prompt(prompt))
-			ft_perror("print_prompt");
+			ft_printf("%s%s", MISH, PROMPT);
 		ft_printf("%s", tmp->content);
 		cmdl->size = ft_strlen(tmp->content);
 		(void)ft_memcpy(cmdl->buff, tmp->content, cmdl->size);

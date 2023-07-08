@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 16:37:29 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/08 21:24:49 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,23 @@ char	*read_line(char *prompt);
 int		do_stuff(void);
 void	gtfo(t_cmdline *cmdl, int status, char *msg);
 void	reset_cmd_line(t_cmdline *cmdl, char *prompt);
+
+/* Line editor. */
+void	move_up(int x);
+void	move_down(int x);
+void	move_left(int x);
+void	move_right(int x);
+void	move_col(int x);
+void	move_home(void);
+void	move_to(int x, int y);
+void	clear_terminal(void);
+void	clear_to_screen_end(void);
+void	clear_to_screen_start(void);
+void	clear_line(void);
+void	clear_to_line_end(void);
+void	clear_to_line_start(void);
+void	delete(t_cmdline *cmdl);
+void	backspace(t_cmdline *cmdl);
 
 /* Debugging tools. */
 void	ast_display(t_cmd *node, int level);
