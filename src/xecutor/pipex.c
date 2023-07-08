@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:34:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/08 12:30:32 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/08 14:02:27 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static int	pipeline_len(t_cmd *cmd)
 static int	supermario(t_cmd *cmd, int i, int len, int fd[2][2])
 {
 	char	**args;
+	char	*path;
 
 	if (i)
 		if (dup2(fd[i & 1][0], STDIN_FILENO) == -1)
@@ -62,10 +63,10 @@ static int	supermario(t_cmd *cmd, int i, int len, int fd[2][2])
 	if (!cmd->args[0])
 		exit(EXIT_SUCCESS);
 	args = cmd_expansion(cmd->args);
-	args[0] = cmd_path(args[0]);
-	if (!args[0] && invalid_command(cmd))
+	path = cmd_path(args[0]);
+	if (!path && invalid_command(cmd))
 		exit(EXIT_FAILURE);
-	if (execve(args[0], args, g_shell.envp) == -1)
+	if (execve(path, args, g_shell.envp) == -1)
 		exit(EXIT_FAILURE);
 	return (EXIT_FAILURE);
 }
@@ -103,9 +104,11 @@ int	pipex(t_cmd *cmd)
 	{
 		pids[i] = fork();
 		if (pids[i] < 0 || (!pids[i] && supermario(cmd, i, pipelen, fd)))
-			return (free(pids), EXIT_FAILURE);
+			return (free(pids), ft_dprintf(STDERR_FILENO, "%s: %s: %s", MISH, \
+				"pipex", strerror(errno)), EXIT_FAILURE);
 		if (luigi(i, pipelen, fd))
-			return (free(pids), EXIT_FAILURE);
+			return (free(pids), ft_dprintf(STDERR_FILENO, "%s: %s: %s", MISH, \
+				"pipex", strerror(errno)), EXIT_FAILURE);
 		cmd = cmd->pipe;
 	}
 	signal_suspend();
