@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:39:23 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 15:57:35 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/15 16:45:42 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,26 +94,39 @@ int	flush_history(t_cmdline *cmdl)
 	return (EXIT_SUCCESS);
 }
 
-int	init_history(void)
+static int	open_history(void)
 {
-	char	*path;
 	int		fd;
+	char	*path;
 
-	g_shell.hist = NULL;
-	g_shell.hist_i = 0;
 	path = ft_strjoin(g_shell.home, HIST_FILE);
-	if (!path)
-		return (ft_dprintf(STDERR_FILENO, MISH": error: ft_strjoin\n"));
-	if (access(path, F_OK))
-		return (free(path), EXIT_SUCCESS);
+	if (g_shell.home && !path)
+		return (ft_dprintf(STDERR_FILENO, MISH": error: ft_strjoin\n"), -1);
+	if (!path || access(path, F_OK))
+		return (free(path), -1);
 	fd = open(path, O_RDONLY);
 	free(path);
 	if (fd == -1)
 		return (ft_dprintf(STDERR_FILENO, MISH": %s: %s\n", \
-			strerror(errno), HIST_FILE), EXIT_FAILURE);
+			strerror(errno), HIST_FILE), -1);
 	if (read_history(fd))
 		return (ft_dprintf(STDERR_FILENO, MISH": error: read_history\n"), \
 			close(fd), EXIT_FAILURE);
 	close(fd);
+	return (EXIT_SUCCESS);
+}
+
+int	init_history(void)
+{
+	int	fd;
+
+	fd = open_history();
+	if (fd > 0 && read_history(fd))
+		return (close(fd), ft_dprintf(STDERR_FILENO, \
+			MISH": error: read_history\n"), close(fd), EXIT_FAILURE);
+	if (fd > 0)
+		close(fd);
+	g_shell.hist = NULL;
+	g_shell.hist_i = 0;
 	return (EXIT_SUCCESS);
 }

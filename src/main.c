@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:06 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/15 11:45:58 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/15 16:53:48 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static bool	env_setup(char **ev)
 	__environ = g_shell.envp;
 	g_shell.home = ft_getenv("HOME");
 	if (!g_shell.home)
-		g_shell.home = getcwd(NULL, 0);
+		g_shell.home = "/";
 	lvl = ft_getenv("SHLVL");
 	if (lvl)
 	{
