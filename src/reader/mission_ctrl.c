@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:45:49 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/15 03:45:10 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/15 10:58:09 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ctrl_exit(t_cmdline *cmdl, char *prompt)
 {
-	if (!ft_memcmp(prompt, HERE_PROMPT, ft_strlen(HERE_PROMPT)))
+	if (prompt && !ft_memcmp(prompt, HERE_PROMPT, ft_strlen(HERE_PROMPT)))
 	{
 		ft_dprintf(2, "\r\n%s: warning: here-document delimited by end-of-file \
 (wanted `EOF')\r\n", MISH);
