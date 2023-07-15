@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 22:05:50 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/06 09:53:35 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/15 03:34:28 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	execute_builtin(t_cmd *cmd)
 		return (builtin_env(cmd));
 	else if (ft_strncmp(cmd->args[0], "exit", 4) == 0)
 		return (builtin_exit(cmd));
+	else if (ft_strncmp(cmd->args[0], "help", 4) == 0)
+		return (builtin_help(cmd));
 	else
 		return (EXIT_FAILURE);
 }
@@ -53,6 +55,8 @@ bool	is_builtin(t_cmd *cmd)
 	else if (ft_strlen(c) == 3 && ft_strncmp(c, "env", 3) == 0)
 		return (true);
 	else if (ft_strlen(c) == 4 && ft_strncmp(c, "exit", 4) == 0)
+		return (true);
+	else if (ft_strlen(c) == 4 && ft_strncmp(c, "help", 4) == 0)
 		return (true);
 	else
 		return (false);

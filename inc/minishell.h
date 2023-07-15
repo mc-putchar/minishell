@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/15 03:06:08 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/15 03:31:53 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ bool	is_builtin(t_cmd *cmd);
 void	replace_env(char *key, char *replace);
 char	*ft_getenv(char *name);
 int		ft_setenv(char *name, char *value, int overwrite);
+int		builtin_help(t_cmd *cmd);
 
 /* Director. */
 int		director(void);
