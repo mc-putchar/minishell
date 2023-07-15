@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:36:35 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/11 10:25:40 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/15 02:59:43 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,35 +34,6 @@ static void	csi_handler(int ret, t_cmdline *cmdl, char *prompt)
 		move_right(cmdl->size - cmdl->i);
 		cmdl->i = cmdl->size;
 	}
-}
-
-static int	check_control(int ret, t_cmdline *cmdl, char *prompt)
-{
-	if (ret == CTRL_D && !cmdl->size)
-		gtfo(cmdl, EXIT_SUCCESS, NULL);
-	else if (ret == CTRL_C)
-	{
-		ft_printf("^C\r\n");
-		g_shell.status = 130;
-		if (prompt)
-			return (1);
-		(void)flush_history(cmdl);
-		reset_cmd_line(cmdl, prompt);
-	}
-	else if (ret == CTRL_L)
-	{
-		clear_terminal();
-		move_home();
-		if (print_prompt(prompt))
-			(void)ft_printf("%s%s", MISH, PROMPT);
-		(void)ft_printf("%s", cmdl->buff);
-		move_left(cmdl->size - cmdl->i);
-		if (!cmdl->size)
-			(void)ft_printf(" ");
-		else if (cmdl->i == cmdl->size)
-			move_right(1);
-	}
-	return (0);
 }
 
 static void	insert_input(int ret, t_cmdline *cmdl)

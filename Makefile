@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/07/08 21:27:04 by mcutura          ###   ########.fr        #
+#    Updated: 2023/07/15 02:58:08 by mcutura          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ SRC		:=	main.c \
 			xecutor/here_doc.c xecutor/signal.c xecutor/logic_op.c \
 			debug/ast_display.c debug/tokens_print.c \
 			reader/line_moves.c reader/jmp_moves.c reader/line_clear.c \
-			reader/screen_clear.c reader/delete.c
+			reader/screen_clear.c reader/delete.c reader/mission_ctrl.c
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRC))
 
 #--- OBJECTS ---

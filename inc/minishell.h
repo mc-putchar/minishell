@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/08 21:24:49 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/15 03:06:08 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@
 # include <sys/wait.h>
 # include <signal.h>
 
-# define PROMPT			" $> "
+# define PROMPT			"$> "
+# define HERE_PROMPT	"> "
 # define RC_FILE		"/.mishrc"
 # define HIST_FILE		"/.mish_hist"
 # define HERE_DOC_FILE	"/tmp/.mish_here_doc"
@@ -155,6 +156,7 @@ void	clear_to_line_end(void);
 void	clear_to_line_start(void);
 void	delete(t_cmdline *cmdl);
 void	backspace(t_cmdline *cmdl);
+int		check_control(int ret, t_cmdline *cmdl, char *prompt);
 
 /* Debugging tools. */
 void	ast_display(t_cmd *node, int level);
