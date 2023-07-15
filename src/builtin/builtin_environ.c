@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:09:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 16:44:41 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/15 03:29:48 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ int	builtin_unset(t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
-// TODO: With correct fd output using dprintf
 int	builtin_env(t_cmd *cmd)
 {
 	int	i;
