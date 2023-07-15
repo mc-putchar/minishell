@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/07/15 03:31:19 by mcutura          ###   ########.fr        #
+#    Updated: 2023/07/15 11:17:38 by mcutura          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,8 @@ HEADERS	:=	$(addprefix $(INCDIR)/, $(HEADER))
 LIBFTH	:=	$(addprefix $(LIBDIR)/, libft.h)
 
 #--- FLAGS ---
-CFLAGS	:=	-Wall -Wextra -Werror -g -I$(INCDIR) -I$(LIBDIR)
+CFLAGS	:=	-Wall -Wextra -Werror -I$(INCDIR) -I$(LIBDIR)
+debug: CFLAGS += -ggdb3
 LDLIBS	:=	-L$(LIBDIR) -lft
 
 #--- CMDS ---
@@ -60,7 +61,7 @@ RM		:=	/bin/rm -rf
 MUTE	:=	>/dev/null
 
 #--- RULES ---
-.PHONY: all clean fclean re
+.PHONY: all clean debug fclean re
 
 all: $(NAME)
 
@@ -73,6 +74,8 @@ $(LIBFT): $(LIBFTH)
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(OBJDIR) && cd $(OBJDIR) && mkdir -p $(SUBDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+debug: $(NAME)
 
 clean:
 	$(RM) $(OBJS)
