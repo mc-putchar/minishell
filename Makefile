@@ -6,7 +6,7 @@
 #    By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/08 19:09:15 by mcutura           #+#    #+#              #
-#    Updated: 2023/07/15 11:17:38 by mcutura          ###   ########.fr        #
+#    Updated: 2023/07/15 11:39:49 by mcutura          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRC		:=	main.c \
 			director/build_prompt.c director/director.c director/read_line.c \
 			director/setup_terminal.c director/history.c \
 			director/history_ctrl.c director/parse_execute.c \
+			director/run_script.c \
 			lexer/token.c lexer/lexer.c lexer/validator.c \
 			parser/ast_basic.c parser/ast_block.c parser/ast_command.c \
 			parser/ast_redir.c \

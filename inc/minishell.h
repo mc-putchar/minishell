@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/15 03:31:53 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/15 14:25:54 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int		ft_setenv(char *name, char *value, int overwrite);
 int		builtin_help(t_cmd *cmd);
 
 /* Director. */
-int		director(void);
+int		director(int ac, char **av);
 int		init_history(void);
 int		flush_history(t_cmdline *cmdl);
 int		write_history(void);
@@ -140,6 +140,8 @@ char	*read_line(char *prompt);
 int		do_stuff(void);
 void	gtfo(t_cmdline *cmdl, int status, char *msg);
 void	reset_cmd_line(t_cmdline *cmdl, char *prompt);
+int		open_script(char *file);
+int		run_script(int fd);
 
 /* Line editor. */
 void	move_up(int x);

@@ -6,13 +6,12 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/08 17:51:53 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/15 14:47:48 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// TODO: write history to file on exit
 void	gtfo(t_cmdline *cmdl, int status, char *msg)
 {
 	ft_lstclear(&g_shell.hist, free);
@@ -61,12 +60,14 @@ int	do_stuff(void)
 	}
 }
 
-int	director(void)
+int	director(int ac, char **av)
 {
+	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
+		return (run_script(STDIN_FILENO));
+	if (ac > 1)
+		return (open_script(av[1]));
 	if (init_history())
 		return (EXIT_FAILURE);
-	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
-		return (ENOTTY);
 	else if (do_stuff())
 		ft_dprintf(STDERR_FILENO, MISH": error: do_stuff\n");
 	return (EXIT_SUCCESS);
