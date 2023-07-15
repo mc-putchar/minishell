@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:45:49 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/15 03:14:25 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/15 03:45:10 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,3 @@ int	check_control(int ret, t_cmdline *cmdl, char *prompt)
 	}
 	return (0);
 }
-
