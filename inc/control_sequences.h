@@ -6,21 +6,21 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 07:21:52 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/08 21:06:39 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/15 15:33:55 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONTROL_SEQUENCES_H
 # define CONTROL_SEQUENCES_H
 
-# define BACKSPACE		'\177'
-# define ENTER			'\012'
-# define CTRL_C			'\003'
-# define CTRL_D			'\004'
-# define CTRL_L			'\014'
-# define CTRL_R			'\022'
-# define ESCAPE			'\033'
-# define CTRL_BACKSLASH	'\034'
+# define BACKSPACE		0x7F
+# define ENTER			0xA
+# define CTRL_C			0x3
+# define CTRL_D			0x4
+# define CTRL_L			0xC
+# define CTRL_R			0x12
+# define ESCAPE			0x1B
+# define CTRL_BACKSLASH	0x1C
 # define ARROW_UP		0x415B1B
 # define ARROW_DOWN		0x425B1B
 # define ARROW_RIGHT	0x435B1B

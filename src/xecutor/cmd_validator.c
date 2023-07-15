@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 18:02:34 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/15 11:05:23 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/15 15:27:24 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	*find_path(char *cmdname)
 	int		i;
 
 	path = ft_getenv("PATH");
-	if (!path  && !access(cmdname, X_OK))
+	if (!path && !access(cmdname, X_OK))
 		return (ft_strdup(cmdname));
 	paths = ft_split(path, ':');
 	if (!paths)
