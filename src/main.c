@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:06 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 16:14:47 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/15 16:53:48 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static bool	env_setup(char **ev)
 	__environ = g_shell.envp;
 	g_shell.home = ft_getenv("HOME");
 	if (!g_shell.home)
-		g_shell.home = getcwd(NULL, 0);
+		g_shell.home = "/";
 	lvl = ft_getenv("SHLVL");
 	if (lvl)
 	{
@@ -44,13 +44,12 @@ static bool	env_setup(char **ev)
 	return (true);
 }
 
-// TODO: run in non-interactive mode if ac > 1
 int	main(int ac, char **av, char **ev)
 {
-	(void) av;
+	int	status;
+
 	if (!env_setup(ev))
 		return (EXIT_FAILURE);
-	if (ac == 1 && director())
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	status = director(ac, av);
+	return (status);
 }

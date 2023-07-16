@@ -6,11 +6,24 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:05:42 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 14:51:52 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/15 11:12:13 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*expand_home(t_cmd *cmd)
+{
+	char	*temp;
+	char	*temp2;
+
+	if (!cmd->args[1] || (cmd->args[1][0] == '~' && !cmd->args[1][1]))
+		return (ft_strdup(g_shell.home));
+	temp = ft_strjoin(g_shell.home, "/");
+	temp2 = ft_strjoin(temp, cmd->args[1] + 1);
+	free(temp);
+	return (temp2);
+}
 
 /* Change current directory to the first argument. */
 int	builtin_cd(t_cmd *cmd)
@@ -20,7 +33,7 @@ int	builtin_cd(t_cmd *cmd)
 	int		status;
 
 	if (!cmd->args[1] || !ft_strncmp(cmd->args[1], "~", 1))
-		temp = ft_strdup(g_shell.home);
+		temp = expand_home(cmd);
 	else if (!ft_strncmp(cmd->args[1], "-", 1) && ft_getenv("OLDPWD"))
 		temp = ft_strdup(ft_getenv("OLDPWD"));
 	else
