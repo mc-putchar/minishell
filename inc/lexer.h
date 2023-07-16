@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:29:45 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 03:05:37 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 16:55:20 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef enum e_type		t_type;
 enum e_type
 {
 	EMPTY,
+	INVALID,
 	WORD,
 	REDIR_IN,
 	REDIR_OUT,
