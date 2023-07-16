@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:09:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/16 17:57:53 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/16 19:33:08 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	replace_env(char *key, char *replace)
 	temp = ft_strjoin(key, "=");
 	i = -1;
 	while (g_shell.envp[++i])
-		if (ft_strncmp(g_shell.envp[i], temp, ft_strlen(key + 1)) == 0)
+		if (ft_strncmp(g_shell.envp[i], temp, ft_strlen(temp)) == 0)
 			break ;
 	free(g_shell.envp[i]);
 	free(temp);
@@ -73,13 +73,14 @@ int	builtin_export(t_cmd *cmd)
 			status = EXIT_FAILURE;
 			continue ;
 		}
+		if (!temp[1])
+			return (ft_strarrfree((char **) av), EXIT_SUCCESS);
 		if (ft_strarrlen(g_shell.envp) >= MAX_ENV)
-			return (ft_perror(ERR_MAX), EXIT_FAILURE);
+			return (ft_strarrfree((char **) av), EXIT_FAILURE);
 		replace_env(temp[0], (char *) av[i]);
 		ft_strarrfree(temp);
 	}
-	ft_strarrfree((char **) av);
-	return (status);
+	return (ft_strarrfree((char **) av), status);
 }
 
 /* Unset all the environment variable key given as arguments. */
