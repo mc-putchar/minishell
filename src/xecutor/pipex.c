@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:34:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/16 17:56:00 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/16 18:33:31 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,25 @@ static int	supermario(t_cmd *cmd, int i, int len, int fd[2][2])
 
 	if (i && (dup2(fd[(i - 1) & 1][0], STDIN_FILENO) == -1 || \
 		close(fd[(i - 1) & 1][1]) || close(fd[(i - 1) & 1][0])))
-		exit(EXIT_FAILURE);
+		gtfo(g_shell.cmdl, EXIT_FAILURE, NULL, true);
 	if (i < len - 1 && (dup2(fd[i & 1][1], STDOUT_FILENO) == -1 || \
 		close(fd[i & 1][0]) || close(fd[i & 1][1])))
-		exit(EXIT_FAILURE);
+		gtfo(g_shell.cmdl, EXIT_FAILURE, NULL, true);
 	if (is_builtin(cmd))
-		exit(execute_builtin(cmd));
-	if (!redir_setup(cmd))
-		exit(EXIT_FAILURE);
+		gtfo(g_shell.cmdl, execute_builtin(cmd), NULL, true);
 	if (!cmd->args[0])
-		exit(EXIT_SUCCESS);
-	if (!cmd->execute)
-		exit(EXIT_FAILURE);
+		gtfo(g_shell.cmdl, EXIT_SUCCESS, NULL, true);
+	if (!redir_setup(cmd) || !cmd->execute)
+		gtfo(g_shell.cmdl, EXIT_FAILURE, NULL, true);
 	args = cmd_expansion(cmd->args);
 	path = cmd_path(args[0]);
 	if (!path && invalid_command(cmd))
-		exit(EXIT_CMD);
+	{
+		ft_strarrfree(args);
+		gtfo(g_shell.cmdl, EXIT_CMD, NULL, true);
+	}
 	if (execve(path, args, g_shell.envp) == -1)
-		exit(EXIT_FAILURE);
+		gtfo(g_shell.cmdl, EXIT_FAILURE, NULL, true);
 	return (EXIT_FAILURE);
 }
 
@@ -95,27 +96,26 @@ int	pipex(t_cmd *cmd)
 {
 	const int	pipelen = pipeline_len(cmd);
 	int			fd[2][2];
-	pid_t		*pids;
 	int			i;
 
-	pids = malloc(sizeof(pid_t) * pipelen);
-	if (!pids)
+	g_shell.pids = malloc(sizeof(pid_t) * pipelen);
+	if (!g_shell.pids)
 		return (EXIT_FAILURE);
 	i = -1;
 	while (++i < pipelen)
 	{
 		if (luigi(i, pipelen, fd))
-			return (free(pids), ft_dprintf(STDERR_FILENO, "%s %s: %s", MISH, \
+			return (free(g_shell.pids), ft_dprintf(STDERR_FILENO, "%s %s: %s", MISH, \
 				"pipex", strerror(errno)), EXIT_FAILURE);
-		pids[i] = fork();
-		if (pids[i] < 0 || (!pids[i] && supermario(cmd, i, pipelen, fd)))
-			return (free(pids), ft_dprintf(STDERR_FILENO, "%s %s: %s", MISH, \
+		g_shell.pids[i] = fork();
+		if (g_shell.pids[i] < 0 || (!g_shell.pids[i] && supermario(cmd, i, pipelen, fd)))
+			return (free(g_shell.pids), ft_dprintf(STDERR_FILENO, "%s %s: %s", MISH, \
 				"pipex", strerror(errno)), EXIT_FAILURE);
 		cmd = cmd->pipe;
 	}
 	if (close(fd[i & 1][0]) || close(fd[i & 1][1]))
 		ft_dprintf(STDERR_FILENO, "%s %s: %s", MISH, "pipex", strerror(errno));
 	signal_suspend();
-	i = wait_for_children(pids, pipelen);
-	return (signal_restore(), free(pids), i);
+	i = wait_for_children(g_shell.pids, pipelen);
+	return (signal_restore(), free(g_shell.pids), i);
 }

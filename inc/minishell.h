@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/16 17:40:26 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/16 18:32:55 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_shell
 	t_cmdline	*cmdl;
 	t_termios	*term_backup;
 	char		*home;
+	pid_t		*pids;
 }	t_shell;
 
 /* Lexer & Parser. */
@@ -138,7 +139,7 @@ void	reset_terminal(t_termios *term_backup);
 int		print_prompt(char *prompt);
 char	*read_line(char *prompt);
 int		do_stuff(void);
-void	gtfo(t_cmdline *cmdl, int status, char *msg);
+void	gtfo(t_cmdline *cmdl, int status, char *msg, bool ischild);
 void	reset_cmd_line(t_cmdline *cmdl, char *prompt);
 int		open_script(char *file);
 int		run_script(int fd);

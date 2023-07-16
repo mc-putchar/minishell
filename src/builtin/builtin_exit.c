@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:10:14 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 16:47:38 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/16 18:21:33 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ int	builtin_exit(t_cmd *cmd)
 		return (EXIT_FAILURE);
 	}
 	if (cmd->args[1] && arg_isnum(cmd->args[1]))
-		gtfo(g_shell.cmdl, ft_atoi(cmd->args[1]), "exit");
+		gtfo(g_shell.cmdl, ft_atoi(cmd->args[1]), "exit", false);
 	else if (cmd->args[1])
 	{
 		ft_dprintf(STDERR_FILENO, ERR_NUM, MISH, cmd->args[1]);
-		gtfo(g_shell.cmdl, 2, "exit");
+		gtfo(g_shell.cmdl, 2, "exit", false);
 	}
 	else
-		gtfo(g_shell.cmdl, EXIT_SUCCESS, "exit");
+		gtfo(g_shell.cmdl, EXIT_SUCCESS, "exit", false);
 	return (EXIT_SUCCESS);
 }
