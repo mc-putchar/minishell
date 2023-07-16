@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:48:57 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 07:02:59 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 17:56:57 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ void	restore_stdfds(int fd[2])
 	close(fd[1]);
 }
 
-/* Execute the builtin command, all arguments should be expanded. 
-// Permission, error message, input redirection has no effect */
-// Redirection
+/* Execute the builtin command, all arguments should be expanded. */
 int	builtin_echo(t_cmd *cmd)
 {
 	const char	**av = (const char **) cmd_expansion(cmd->args);
@@ -40,7 +38,9 @@ int	builtin_echo(t_cmd *cmd)
 	i = 0;
 	backup_stdfds(fd);
 	if (!redir_setup(cmd))
-		return (EXIT_FAILURE);
+		return (ft_strarrfree((char **) av), EXIT_FAILURE);
+	if (!cmd->execute)
+		return (ft_strarrfree((char **) av), EXIT_FAILURE);
 	while (av[++i])
 	{
 		if (i == 1 && ft_strlen(av[i]) == 2 && ft_strncmp("-n", av[1], 2) == 0)

@@ -6,12 +6,14 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:29:45 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/16 16:55:20 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/16 17:26:05 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
+
+# include <stdbool.h>
 
 typedef struct s_cmd	t_cmd;
 typedef struct s_token	t_token;
@@ -49,6 +51,7 @@ struct s_cmd
 	t_type	o_type;
 	t_type	i_type;
 	int		here_doc;
+	bool	execute;
 };
 
 struct s_token

@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:48:28 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 05:11:19 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 17:22:35 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_cmd	*new_cmd(t_type type)
 	cmd->left = NULL;
 	cmd->right = NULL;
 	cmd->here_doc = -1;
+	cmd->execute = true;
 	return (cmd);
 }
 

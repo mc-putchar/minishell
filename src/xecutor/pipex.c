@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:34:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/08 17:33:32 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 17:56:00 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,12 @@ static int	supermario(t_cmd *cmd, int i, int len, int fd[2][2])
 		exit(EXIT_FAILURE);
 	if (!cmd->args[0])
 		exit(EXIT_SUCCESS);
+	if (!cmd->execute)
+		exit(EXIT_FAILURE);
 	args = cmd_expansion(cmd->args);
 	path = cmd_path(args[0]);
 	if (!path && invalid_command(cmd))
-		exit(EXIT_FAILURE);
+		exit(EXIT_CMD);
 	if (execve(path, args, g_shell.envp) == -1)
 		exit(EXIT_FAILURE);
 	return (EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/07 16:34:24 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/16 17:55:31 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ static void	cmd_exec(t_cmd *cmd)
 
 	if (!redir_setup(cmd))
 		exit(EXIT_FAILURE);
+	if (!cmd->execute)
+		exit(EXIT_FAILURE);
 	if (!cmd->args[0])
 		exit(EXIT_SUCCESS);
 	args = cmd_expansion(cmd->args);
 	path = cmd_path(args[0]);
 	if (!path && invalid_command(cmd))
-		exit(EXIT_FAILURE);
+		exit(EXIT_CMD);
 	if (execve(path, args, g_shell.envp) == -1)
 		exit(EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 20:14:35 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 15:20:48 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/16 17:29:29 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ static int	open_file(char *path, t_type type, int fd_default)
 static bool	close_fd(t_cmd *cmd, int o_fd, int i_fd)
 {
 	if (o_fd < 0 && i_fd != STDIN_FILENO)
-		return (close(i_fd), false);
+		return (close(i_fd), cmd->execute = false, false);
 	if (i_fd < 0 && o_fd != STDOUT_FILENO)
-		return (close(o_fd), false);
+		return (close(o_fd), cmd->execute = false, false);
 	if (o_fd < 0 || i_fd < 0)
-		return (false);
+		return (cmd->execute = false, false);
 	if (!cmd->args[0])
 	{
 		if (o_fd != STDOUT_FILENO)

@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:05:42 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/15 11:12:13 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 17:57:41 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ int	builtin_pwd(t_cmd *cmd)
 	backup_stdfds(fd);
 	if (!redir_setup(cmd))
 		return (EXIT_FAILURE);
-	(void) cmd;
+	if (!cmd->execute)
+		return (EXIT_FAILURE);
 	getcwd(buffer, BUFFER_SIZE);
 	ft_printf("%s\r\n", buffer);
 	restore_stdfds(fd);
