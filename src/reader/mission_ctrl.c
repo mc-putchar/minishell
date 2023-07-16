@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:45:49 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/16 18:23:24 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 19:36:10 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static int	ctrl_cancel(t_cmdline *cmdl, char *prompt)
 	g_shell.status = 130;
 	if (prompt)
 		return (1);
-	(void)flush_history(cmdl);
 	reset_cmd_line(cmdl, prompt);
+	(void)flush_history(cmdl);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 21:21:54 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/08 21:24:05 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 19:27:08 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	delete(t_cmdline *cmdl)
 {
 	clear_to_line_end();
+	--(cmdl->size);
 	ft_memcpy(&cmdl->buff[cmdl->i], &cmdl->buff[cmdl->i + 1], \
 		cmdl->size - cmdl->i);
 	cmdl->buff[cmdl->size] = 0;
-	write(1, &cmdl->buff[cmdl->i], cmdl->size - cmdl->i);
-	(cmdl->size)--;
+	write(1, &cmdl->buff[cmdl->i], cmdl->size - cmdl->i + 1);
 	if (cmdl->size > cmdl->i)
 		move_left(cmdl->size - cmdl->i);
 }
