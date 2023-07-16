@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/16 18:35:44 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 18:47:20 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@ void	gtfo(t_cmdline *cmdl, int status, char *msg, bool ischild)
 	if (g_shell.ast)
 		free_cmd_ast(g_shell.ast);
 	ft_strarrfree(g_shell.envp);
-	if (!msg)
-		ft_dprintf(STDOUT_FILENO, "\r\nbyeee!\r\n");
-	else
-		ft_dprintf(STDOUT_FILENO, "%s\r\n", msg);
 	if (!ischild)
+	{
+		if (!msg)
+			ft_dprintf(STDOUT_FILENO, "\r\nbyeee!\r\n");
+		else
+			ft_dprintf(STDOUT_FILENO, "%s\r\n", msg);
 		reset_terminal(g_shell.term_backup);
+	}
 	exit(status);
 }
 
