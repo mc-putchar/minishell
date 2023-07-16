@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 10:28:59 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/03 22:05:42 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/16 17:04:02 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ static void	handle_op(char **s, t_token **last)
 		*last = new_token(LPARENT, "(", *last);
 	else if (**s == ')' && ++(*s))
 		*last = new_token(RPARENT, ")", *last);
+	else if (**s == '&' && ++(*s))
+		*last = new_token(INVALID, "&", *last);
+	else if (**s == ';' && ++(*s))
+		*last = new_token(INVALID, ";", *last);
 }
 
 /* Handle the words for lexer, default option. */
