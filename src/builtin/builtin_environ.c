@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 14:09:02 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/15 03:29:48 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 17:57:53 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ int	builtin_env(t_cmd *cmd)
 
 	backup_stdfds(fd);
 	if (!redir_setup(cmd))
+		return (EXIT_FAILURE);
+	if (!cmd->execute)
 		return (EXIT_FAILURE);
 	i = -1;
 	while (g_shell.envp[++i] && cmd)

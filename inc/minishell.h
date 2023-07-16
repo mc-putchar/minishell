@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/15 14:25:54 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 17:40:26 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include "control_sequences.h"
 # include "format_output.h"
 # include "lexer.h"
-# include <stdbool.h>
 # include <errno.h>
 # include <unistd.h>
 # include <dirent.h>
@@ -43,6 +42,7 @@
 # define MAX_ENV		4096
 # define MAX_ARG_E		8192
 # define WC_CHAR		128
+# define EXIT_CMD		127
 
 /* Commands. */
 

@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 03:17:04 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/15 15:17:24 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 17:57:17 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	builtin_help(t_cmd *cmd)
 	backup_stdfds(fds);
 	if (!redir_setup(cmd))
 		return (EXIT_FAILURE);
+	if (!cmd->execute)
+		return (EXIT_FAILURE);
 	(void) ft_printf("\
                   .--,       .--,\n\
                  ( (  \\.---./  ) )\n\
@@ -46,6 +48,5 @@ int	builtin_help(t_cmd *cmd)
                    (((__) (__)))", " ", HEADER, " ", " ", AUTHORS);
 	(void)ft_printf("\r\n\r\n%s\r\n%s\r\n\r\n%s\r\n%s\r\n%s\r\n%s\r\n", \
 		ABOUT1, ABOUT2, USAGE, AVAIL, DISCL, WARANTY);
-	restore_stdfds(fds);
-	return (EXIT_SUCCESS);
+	return (restore_stdfds(fds), EXIT_SUCCESS);
 }
