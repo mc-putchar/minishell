@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 12:44:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/16 19:33:51 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 19:41:42 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,14 @@ void	ctrl_down_history(t_cmdline *cmdl, char *prompt)
 	cmdl->i = cmdl->size;
 }
 
+static void	reprint_prompt(char *prompt)
+{
+	clear_line();
+	move_col(0);
+	if (print_prompt(prompt))
+		ft_printf("%s%s", MISH, PROMPT);
+}
+
 void	ctrl_up_history(t_cmdline *cmdl, char *prompt)
 {
 	t_list	*tmp;
@@ -94,10 +102,7 @@ void	ctrl_up_history(t_cmdline *cmdl, char *prompt)
 		}
 		else
 			update_history_entry(g_shell.hist_i - 2, cmdl->buff, cmdl->size);
-		clear_line();
-		move_col(0);
-		if (print_prompt(prompt))
-			ft_printf("%s%s", MISH, PROMPT);
+		reprint_prompt(prompt);
 		ft_printf("%s", tmp->content);
 		cmdl->size = ft_strlen(tmp->content);
 		(void)ft_memcpy(cmdl->buff, tmp->content, cmdl->size);
