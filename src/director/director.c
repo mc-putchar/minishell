@@ -6,15 +6,18 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 05:26:20 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/15 14:47:48 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 18:35:44 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	gtfo(t_cmdline *cmdl, int status, char *msg)
+void	gtfo(t_cmdline *cmdl, int status, char *msg, bool ischild)
 {
-	ft_lstclear(&g_shell.hist, free);
+	if (ischild && g_shell.pids)
+		free(g_shell.pids);
+	if (g_shell.hist)
+		ft_lstclear(&g_shell.hist, free);
 	(void) cmdl;
 	if (g_shell.tok_head)
 		free_token(g_shell.tok_head);
@@ -25,7 +28,8 @@ void	gtfo(t_cmdline *cmdl, int status, char *msg)
 		ft_dprintf(STDOUT_FILENO, "\r\nbyeee!\r\n");
 	else
 		ft_dprintf(STDOUT_FILENO, "%s\r\n", msg);
-	reset_terminal(g_shell.term_backup);
+	if (!ischild)
+		reset_terminal(g_shell.term_backup);
 	exit(status);
 }
 

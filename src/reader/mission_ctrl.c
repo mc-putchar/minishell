@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:45:49 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/15 10:58:09 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 18:23:24 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	ctrl_exit(t_cmdline *cmdl, char *prompt)
 (wanted `EOF')\r\n", MISH);
 		return (1);
 	}
-	return (gtfo(cmdl, EXIT_SUCCESS, NULL), 0);
+	return (gtfo(cmdl, EXIT_SUCCESS, NULL, false), 0);
 }
 
 static int	ctrl_cancel(t_cmdline *cmdl, char *prompt)
