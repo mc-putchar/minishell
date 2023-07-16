@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:34:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/16 18:33:31 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 18:41:09 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,13 @@ int	pipex(t_cmd *cmd)
 	while (++i < pipelen)
 	{
 		if (luigi(i, pipelen, fd))
-			return (free(g_shell.pids), ft_dprintf(STDERR_FILENO, "%s %s: %s", MISH, \
-				"pipex", strerror(errno)), EXIT_FAILURE);
+			return (free(g_shell.pids), ft_dprintf(STDERR_FILENO, \
+			"%s %s: %s", MISH, "pipex", strerror(errno)), EXIT_FAILURE);
 		g_shell.pids[i] = fork();
-		if (g_shell.pids[i] < 0 || (!g_shell.pids[i] && supermario(cmd, i, pipelen, fd)))
-			return (free(g_shell.pids), ft_dprintf(STDERR_FILENO, "%s %s: %s", MISH, \
-				"pipex", strerror(errno)), EXIT_FAILURE);
+		if (g_shell.pids[i] < 0 || (!g_shell.pids[i] && \
+			supermario(cmd, i, pipelen, fd)))
+			return (free(g_shell.pids), ft_dprintf(STDERR_FILENO, \
+			"%s %s: %s", MISH, "pipex", strerror(errno)), EXIT_FAILURE);
 		cmd = cmd->pipe;
 	}
 	if (close(fd[i & 1][0]) || close(fd[i & 1][1]))
