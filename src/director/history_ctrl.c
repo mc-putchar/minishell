@@ -6,14 +6,27 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 12:44:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/08 21:06:28 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 19:41:42 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	update_history_entry(int i, char *new, int size)
+{
+	t_list	*tmp;
+
+	tmp = ft_lstget_atindex(g_shell.hist, i);
+	if (!tmp)
+		return ;
+	free(tmp->content);
+	new[size] = 0;
+	tmp->content = ft_strdup(new);
+}
+
 void	ctrl_end_history(t_cmdline *cmdl, char *prompt)
 {
+	update_history_entry(g_shell.hist_i, cmdl->buff, cmdl->size);
 	if (cmdl->hist)
 	{
 		cmdl->size = ft_strlen(cmdl->hist);
@@ -45,18 +58,28 @@ void	ctrl_down_history(t_cmdline *cmdl, char *prompt)
 		ctrl_end_history(cmdl, prompt);
 		return ;
 	}
+	cmdl->buff[cmdl->size] = 0;
+	update_history_entry(g_shell.hist_i, cmdl->buff, cmdl->size);
 	tmp = ft_lstget_atindex(g_shell.hist, g_shell.hist_i - 1);
 	if (!tmp)
 		return ;
 	line = tmp->content;
-	cmdl->buff[cmdl->size] = 0;
-	(void)ft_memcpy(cmdl->buff, line, ft_strlen(line));
+	cmdl->size = ft_strlen(line);
+	(void)ft_memcpy(cmdl->buff, line, cmdl->size);
 	clear_line();
 	move_col(0);
 	if (print_prompt(prompt))
 		ft_printf("%s%s", MISH, PROMPT);
 	ft_printf("%s", line);
 	cmdl->i = cmdl->size;
+}
+
+static void	reprint_prompt(char *prompt)
+{
+	clear_line();
+	move_col(0);
+	if (print_prompt(prompt))
+		ft_printf("%s%s", MISH, PROMPT);
 }
 
 void	ctrl_up_history(t_cmdline *cmdl, char *prompt)
@@ -77,10 +100,9 @@ void	ctrl_up_history(t_cmdline *cmdl, char *prompt)
 			if (!cmdl->hist)
 				return ;
 		}
-		clear_line();
-		move_col(0);
-		if (print_prompt(prompt))
-			ft_printf("%s%s", MISH, PROMPT);
+		else
+			update_history_entry(g_shell.hist_i - 2, cmdl->buff, cmdl->size);
+		reprint_prompt(prompt);
 		ft_printf("%s", tmp->content);
 		cmdl->size = ft_strlen(tmp->content);
 		(void)ft_memcpy(cmdl->buff, tmp->content, cmdl->size);
