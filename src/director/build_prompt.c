@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 13:19:39 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/08 19:45:35 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/16 17:13:40 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,19 @@
 char	*compact_cwd(char *cwd)
 {
 	char			*compact;
+	char			*tmp;
 	size_t const	homelen = ft_strlen(g_shell.home);
 
 	if (!ft_strncmp(cwd, g_shell.home, homelen))
 	{
 		compact = ft_strjoin("~", cwd + homelen);
+		free(cwd);
+		cwd = compact;
+	}
+	if (ft_strlen(cwd) > 21 && ft_strrchr(cwd, '/'))
+	{
+		tmp = ft_strrchr(cwd, '/');
+		compact = ft_strdup(tmp + 1);
 		free(cwd);
 		cwd = compact;
 	}
