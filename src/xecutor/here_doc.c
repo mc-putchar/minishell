@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 19:16:56 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/08 19:42:18 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/17 23:21:58 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,14 @@ static void	here_doc_reader(int fd, char *token)
 {
 	char			*line;
 	t_termios		term_backup;
-	size_t const	toklen = ft_strlen(token);
-	bool const		expand = !ft_memchr(token, '"', toklen);
+	bool const		expand = !ft_memchr(token, '"', ft_strlen(token));
 
 	ft_bzero(&term_backup, sizeof(term_backup));
 	setup_terminal(&term_backup);
 	if (!expand)
 		token = ft_strtrim(token, "\"");
 	line = read_line("> ");
-	while (line && ft_strncmp(line, token, toklen))
+	while (line && ft_strncmp(line, token, ft_strlen(line)))
 	{
 		if (output_line(fd, &line, expand && \
 			ft_memchr(line, '$', ft_strlen(line))))
