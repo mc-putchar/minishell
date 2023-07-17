@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:34:17 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/16 18:41:09 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/17 23:33:27 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,16 @@ static int	wait_for_children(pid_t *pids, int len)
 	int	status;
 
 	i = -1;
+	signal_suspend();
 	while (++i < len)
 	{
 		waitpid(pids[i], &status, 0);
 		if (WIFEXITED(status))
 			status = WEXITSTATUS(status);
 	}
+	free(g_shell.pids);
+	g_shell.pids = NULL;
+	signal_restore();
 	return (status);
 }
 
@@ -110,13 +114,11 @@ int	pipex(t_cmd *cmd)
 		g_shell.pids[i] = fork();
 		if (g_shell.pids[i] < 0 || (!g_shell.pids[i] && \
 			supermario(cmd, i, pipelen, fd)))
-			return (free(g_shell.pids), ft_dprintf(STDERR_FILENO, \
+			return (free(g_shell.pids), g_shell.pids = NULL, ft_dprintf(2, \
 			"%s %s: %s", MISH, "pipex", strerror(errno)), EXIT_FAILURE);
 		cmd = cmd->pipe;
 	}
 	if (close(fd[i & 1][0]) || close(fd[i & 1][1]))
 		ft_dprintf(STDERR_FILENO, "%s %s: %s", MISH, "pipex", strerror(errno));
-	signal_suspend();
-	i = wait_for_children(g_shell.pids, pipelen);
-	return (signal_restore(), free(g_shell.pids), i);
+	return (wait_for_children(g_shell.pids, pipelen));
 }
