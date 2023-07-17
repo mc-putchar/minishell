@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:06 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/15 16:53:48 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/17 10:04:52 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	main(int ac, char **av, char **ev)
 {
 	int	status;
 
+	g_shell.ac = ac;
+	g_shell.av = av;
 	if (!env_setup(ev))
 		return (EXIT_FAILURE);
 	status = director(ac, av);

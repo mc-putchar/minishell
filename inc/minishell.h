@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:12:54 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/16 18:32:55 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/17 10:04:30 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ typedef struct s_cmdline
 
 typedef struct s_shell
 {
+	int			ac;
+	char		**av;
 	char		**envp;
 	t_list		*hist;
 	int			hist_i;

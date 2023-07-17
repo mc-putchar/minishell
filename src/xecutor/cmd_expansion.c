@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:13:47 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/17 09:52:29 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/17 10:35:31 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,19 @@ static int	get_envname(char *s, char *name)
 	return (i);
 }
 
+/* Get the value of command line argument passed to program */
+static int	get_argvalue(int ac, char *ret, int *j)
+{
+	char	*temp;
+
+	if (ac > g_shell.ac - 1)
+		return (1);
+	temp = ft_strdup(g_shell.av[ac]);
+	*j = ft_strlcat(ret, temp, BUFFER_SIZE);
+	free(temp);
+	return (1);
+}
+
 /* Put the value of environment varibale and increment the pointers. */
 static void	put_envvalue(char *arg, char *ret, int *i, int *j)
 {
@@ -45,8 +58,7 @@ static void	put_envvalue(char *arg, char *ret, int *i, int *j)
 		(arg[*i + 1] != '_') && arg[*i + 1] != '?' && arg[*i + 1] != '"' && \
 		arg[*i + 1] != '\''))
 	{
-		ret[*j] = '$';
-		(*j)++;
+		ret[(*j)++] = '$';
 		return ;
 	}
 	if (*i && arg[*i - 1] == '\\')
@@ -54,6 +66,8 @@ static void	put_envvalue(char *arg, char *ret, int *i, int *j)
 		ret[*j - 1] = '$';
 		return ;
 	}
+	if (ft_isdigit(arg[*i + 1]) && !ft_isdigit(arg[*i + 2]) && get_argvalue(ft_atoi(&arg[(*i)++ + 1]), ret, j))
+		return ;
 	*i += get_envname(&arg[*i], env_name) - 1;
 	if (ft_strncmp(env_name, "?", 1) == 0)
 	{
