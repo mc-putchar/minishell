@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 22:05:50 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/15 03:34:28 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/17 12:18:42 by dlu              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ int	execute_builtin(t_cmd *cmd)
 	if (ft_strncmp(cmd->args[0], "echo", 4) == 0)
 		return (builtin_echo(cmd));
 	else if (ft_strncmp(cmd->args[0], "cd", 2) == 0)
-		return (builtin_cd(cmd));
+	{
+		if (builtin_cd(cmd) < 0)
+			return (EXIT_FAILURE);
+		return (EXIT_SUCCESS);
+	}
 	else if (ft_strncmp(cmd->args[0], "pwd", 3) == 0)
 		return (builtin_pwd(cmd));
 	else if (ft_strncmp(cmd->args[0], "export", 6) == 0)
