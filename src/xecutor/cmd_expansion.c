@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:13:47 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 15:43:52 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/17 09:52:29 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,19 @@ static void	put_envvalue(char *arg, char *ret, int *i, int *j)
 	char	*temp;
 	char	env_name[ENVNAME_MAX];
 
+	if (!arg[*i + 1] || arg[*i + 1] == ' ' || (!ft_isalnum(arg[*i + 1]) && \
+		(arg[*i + 1] != '_') && arg[*i + 1] != '?' && arg[*i + 1] != '"' && \
+		arg[*i + 1] != '\''))
+	{
+		ret[*j] = '$';
+		(*j)++;
+		return ;
+	}
+	if (*i && arg[*i - 1] == '\\')
+	{
+		ret[*j - 1] = '$';
+		return ;
+	}
 	*i += get_envname(&arg[*i], env_name) - 1;
 	if (ft_strncmp(env_name, "?", 1) == 0)
 	{
