@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 13:13:47 by dlu               #+#    #+#             */
-/*   Updated: 2023/07/07 15:43:52 by dlu              ###   ########.fr       */
+/*   Updated: 2023/07/17 11:36:26 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,44 @@ static int	get_envname(char *s, char *name)
 	return (i);
 }
 
+/* Get the value of command line argument passed to program */
+static int	get_argvalue(char *arg, char *ret, int *i, int *j)
+{
+	int		ac;
+	char	*temp;
+
+	if (!arg[*i + 1] || arg[*i + 1] == ' ' || (!ft_isalnum(arg[*i + 1]) && \
+		(arg[*i + 1] != '_') && arg[*i + 1] != '?' && arg[*i + 1] != '"' && \
+		arg[*i + 1] != '\''))
+	{
+		ret[(*j)++] = '$';
+		return (1);
+	}
+	if (*i && arg[*i - 1] == '\\')
+	{
+		ret[*j - 1] = '$';
+		return (1);
+	}
+	if (ft_isdigit(arg[*i + 1]))
+	{
+		ac = arg[(*i)++ + 1] - '0';
+		if (ac > g_shell.ac - 1)
+			return (1);
+		temp = ft_strdup(g_shell.av[ac]);
+		*j = ft_strlcat(ret, temp, BUFFER_SIZE);
+		return (free(temp), 1);
+	}
+	return (0);
+}
+
 /* Put the value of environment varibale and increment the pointers. */
 static void	put_envvalue(char *arg, char *ret, int *i, int *j)
 {
 	char	*temp;
 	char	env_name[ENVNAME_MAX];
 
+	if (get_argvalue(arg, ret, i, j))
+		return ;
 	*i += get_envname(&arg[*i], env_name) - 1;
 	if (ft_strncmp(env_name, "?", 1) == 0)
 	{
