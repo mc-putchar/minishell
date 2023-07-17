@@ -6,7 +6,7 @@
 /*   By: mcutura <mcutura@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 01:36:26 by mcutura           #+#    #+#             */
-/*   Updated: 2023/07/16 18:39:20 by mcutura          ###   ########.fr       */
+/*   Updated: 2023/07/17 09:22:06 by mcutura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,15 @@ static void	cmd_exec(t_cmd *cmd)
 	args = cmd_expansion(cmd->args);
 	path = cmd_path(args[0]);
 	if (!path && invalid_command(cmd))
+	{
+		ft_strarrfree(args);
 		gtfo(g_shell.cmdl, EXIT_CMD, NULL, true);
+	}
 	if (execve(path, args, g_shell.envp) == -1)
+	{
+		ft_strarrfree(args);
 		gtfo(g_shell.cmdl, EXIT_FAILURE, NULL, true);
+	}
 }
 
 /* Execute one simple command. */
