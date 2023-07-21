@@ -36,7 +36,9 @@ static char	*get_next_block(const char *s, char c, int i, const char *blockers)
 	if (!end)
 		return (NULL);
 	if (ft_strchr(blockers, s[start]) && ++start && --end)
+	{
 		;
+	}
 	return (ft_substr(s, start, end - start));
 }
 
